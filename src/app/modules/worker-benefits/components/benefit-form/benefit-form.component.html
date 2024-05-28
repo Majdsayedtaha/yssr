@@ -1,0 +1,63 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<div class="form-section">
+  <form novalidate [formGroup]="requestForm">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="report"></mat-icon>
+        <span>{{ 'basic_info' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="workerId"
+          label="worker"
+          [selectValueAsObject]="true"
+          type="searchableSelect"
+          apiEndpoint="Worker/GetWorkersSelect"
+          [group]="requestForm"></mat-custom-field>
+        <mat-custom-field
+          controlName="benefitTypeId"
+          label="label.benefit.allowances"
+          type="select"
+          [callApiFunction]="fetchBenefitTypes"
+          [group]="requestForm">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="amount"
+          label="amount"
+          type="number"
+          [group]="requestForm"
+          [callApiFunction]="fetchAllJobsSearchableSelect">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="daysWithoutWork"
+          label="without_work"
+          type="number"
+          [textSuffix]="'day' | translate"
+          [group]="requestForm">
+        </mat-custom-field>
+        <mat-custom-field controlName="date" label="due_date" type="date" [group]="requestForm"> </mat-custom-field>
+      </div>
+      <mat-custom-field controlName="notes" label="label.benefit.notes" type="textarea" [group]="requestForm">
+      </mat-custom-field>
+    </div>
+  </form>
+  <div class="stepper-actions">
+    <button mat-stroked-button color="primary" class="mt-3" (click)="cancel()">
+      {{ 'buttons.cancel' | translate }}
+    </button>
+    <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+    <ng-template #raisedButton>
+      <button mat-raised-button color="primary" class="mt-3" (click)="submit()" [disabled]="!requestForm.valid">
+        {{ 'buttons.save' | translate }}
+      </button>
+    </ng-template>
+
+    <ng-template #strokedButton>
+      <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </button>
+    </ng-template>
+  </div>
+</div>

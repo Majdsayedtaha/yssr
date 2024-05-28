@@ -1,0 +1,115 @@
+<div class="form-section">
+  <form novalidate [formGroup]="form">
+    <!-- Relative Section -->
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+        <span>{{ 'relative_section_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <!-- Relative Name -->
+        <mat-custom-field controlName="RelativeName" label="field.worker.relativeName" type="text" [group]="form">
+        </mat-custom-field>
+
+        <!-- Relative Type -->
+        <mat-custom-field controlName="RelativeType" label="field.worker.relativeType" type="text" [group]="form">
+        </mat-custom-field>
+
+        <!-- Relative Phone -->
+        <mat-custom-field controlName="RelativePhone" label="field.worker.relativePhone" type="tel" [group]="form">
+        </mat-custom-field>
+
+        <!-- Relative Address -->
+        <mat-custom-field controlName="RelativeAddress" label="field.worker.relativeAddress" type="text" [group]="form">
+        </mat-custom-field>
+      </div>
+    </div>
+
+    <!-- Worker Skill Section -->
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+        <span>{{ 'worker_section_skills' | translate }}</span>
+      </div>
+      <!-- Worker Skills -->
+      <div style="max-height: 400px; overflow: auto">
+        <mat-custom-field controlName="SkillsIds" type="checkbox" [options]="skillList" [group]="form">
+        </mat-custom-field>
+      </div>
+    </div>
+
+    <!-- Worker Files Section -->
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+        <span>{{ 'attachments' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <!-- Personal Image -->
+
+        <mat-custom-field
+          controlName="PersonalImage"
+          fileAccept="image"
+          type="file"
+          label="field.worker.personalImage"
+          [customUrl]="form.get('PersonalImagePath')?.value"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Border And Visa Image -->
+        <mat-custom-field
+          controlName="BorderAndVisaImage"
+          type="file"
+          fileAccept="image"
+          label="field.worker.borderAndVisaImage"
+          [customUrl]="form.get('BorderAndVisaImagePath')?.value"
+          [group]="form">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <!-- Iqama Image -->
+        <mat-custom-field
+          controlName="IqamaImage"
+          type="file"
+          fileAccept="image"
+          label="field.worker.iqamaImage"
+          [customUrl]="form.get('IqamaImagePath')?.value"
+          [group]="form">
+        </mat-custom-field>
+        <!-- Passport Image -->
+        <mat-custom-field
+          controlName="PassportImage"
+          type="file"
+          fileAccept="image"
+          label="field.worker.passportImage"
+          [customUrl]="form.get('PassportImagePath')?.value"
+          [group]="form">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <!-- CV Image -->
+        <mat-custom-field
+          controlName="CVImage"
+          type="file"
+          fileAccept="all"
+          label="field.worker.cVImage"
+          [customUrl]="form.get('CVImagePath')?.value"
+          [group]="form">
+        </mat-custom-field>
+      </div>
+    </div>
+
+    <!-- Worker Detail Section -->
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+        <span>{{ 'cv_section_details' | translate }}</span>
+      </div>
+      <!-- Worker Details -->
+      <div style="max-height: 400px; overflow: auto">
+        <mat-custom-field controlName="DetailsIds" type="checkbox" [options]="detailList" [group]="form">
+        </mat-custom-field>
+      </div>
+    </div>
+  </form>
+</div>

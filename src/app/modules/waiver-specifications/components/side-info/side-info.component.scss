@@ -1,0 +1,17 @@
+.skills-section {
+    display: flex;
+    column-gap: 0.5em;
+    row-gap: 1em;
+
+    .skill-tag {
+        padding: 8px 11px 8px 25px;
+        border-radius: 8px;
+    }
+
+}
+
+.row-grid-division {
+    display: grid;
+    column-gap: 0.5em;
+    grid-template-columns: repeat(3, 1fr);
+}

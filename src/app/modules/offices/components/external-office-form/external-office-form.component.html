@@ -1,0 +1,98 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<div class="form-section">
+  <form novalidate [formGroup]="externalOfficeForm">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="housing"></mat-icon>
+        <span>{{ 'main' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="nameAr"
+          label="field.office.name_company_arabic"
+          type="text"
+          [group]="externalOfficeForm"></mat-custom-field>
+        <mat-custom-field
+          controlName="nameEn"
+          label="field.office.name_company_english"
+          type="text"
+          [group]="externalOfficeForm"></mat-custom-field>
+
+        <mat-searchable-select
+          controlName="countryId"
+          label="country"
+          [callApiFunction]="fetchCountries"
+          [group]="externalOfficeForm"></mat-searchable-select>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="licenseNo"
+          label="field.office.license_number"
+          type="number"
+          [group]="externalOfficeForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="phoneFirst"
+          label="field.office.first_mobile"
+          type="tel"
+          [group]="externalOfficeForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="phoneSecond"
+          label="field.office.second_mobile"
+          type="tel"
+          [group]="externalOfficeForm"></mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title list-icon" svgIcon="list-numbers"></mat-icon>
+        <span>{{ 'field.office.communication_number' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="emailFirst"
+          label="field.office.official_email"
+          type="email"
+          [group]="externalOfficeForm"></mat-custom-field>
+        <mat-custom-field
+          controlName="emailSecond"
+          label="field.office.email2"
+          type="email"
+          [group]="externalOfficeForm"></mat-custom-field>
+
+        <mat-custom-field
+          controlName="workPhoneNumber"
+          label="field.office.Work_phone"
+          type="tel"
+          [group]="externalOfficeForm"></mat-custom-field>
+      </div>
+    </div>
+    <div class="stepper-actions">
+      <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+      <ng-template #raisedButton>
+        <button
+          mat-raised-button
+          color="primary"
+          class="mt-3"
+          (click)="!officeId ? addOffice() : updateOffice()"
+          [disabled]="!externalOfficeForm.valid">
+          <span *ngIf="officeId">
+            {{ 'buttons.update' | translate }}
+          </span>
+          <span *ngIf="!officeId">
+            {{ 'buttons.add' | translate }}
+          </span>
+        </button>
+      </ng-template>
+
+      <ng-template #strokedButton>
+        <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+          <mat-spinner [diameter]="30"></mat-spinner>
+        </button>
+      </ng-template>
+    </div>
+  </form>
+</div>

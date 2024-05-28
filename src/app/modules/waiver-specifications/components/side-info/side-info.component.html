@@ -1,0 +1,98 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <div class="title mb-1 d-flex justify-between">
+      <nav-breadcrumb child="label.waiver.info"></nav-breadcrumb>
+      <mat-icon svgIcon="close" class="c-pointer" (click)="closeSideNav()"></mat-icon>
+    </div>
+
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div class="section" *ngIf="!isLoading">
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'order_date' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.requestDate | timezoneToDate }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'order_number' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.requestNumber }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'religion' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.religion?.name }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'occupation' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.job?.name }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'age' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.age?.name }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'country' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.country?.name }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'conditions-and-specifications' | translate }}</mat-label>
+            <div class="skills-section mt-1">
+              <span *ngFor="let skill of [1, 2, 4]" class="skill-tag">hello</span>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'attachments' | translate }}</mat-label>
+            <div class="row-grid-division mt-1">
+              <a
+                class="col d-flex flex-1 cursor-pointer"
+                (click)="downloadURL(requestData?.personalPhotoUrl, 'Personal Photo')">
+                <mat-icon class="icon-disabled" svgIcon="pdf-disabled"></mat-icon>
+                <mat-label class="label f-size-12">{{ 'personal_photo' | translate }}</mat-label>
+              </a>
+              <a
+                class="col d-flex flex-1 cursor-pointer"
+                (click)="downloadURL(requestData?.visaAndBorderNumberUrl, 'Visa & Border Photo')">
+                <mat-icon class="icon-disabled" svgIcon="pdf-disabled"></mat-icon>
+                <mat-label class="label f-size-12">{{ 'visa_border_number' | translate }}</mat-label>
+              </a>
+              <a
+                class="col d-flex flex-1 cursor-pointer"
+                (click)="downloadURL(requestData?.residenceUrl, 'Residence Photo')">
+                <mat-icon class="icon-disabled" svgIcon="pdf-disabled"></mat-icon>
+                <mat-label class="label f-size-12">{{ 'residence' | translate }}</mat-label>
+              </a>
+            </div>
+            <div class="row-grid-division mt-1">
+              <a
+                class="col d-flex flex-1 cursor-pointer"
+                (click)="downloadURL(requestData?.passportUrl, 'Passport Photo')">
+                <mat-icon class="icon-disabled" svgIcon="pdf-disabled"></mat-icon>
+                <mat-label class="label f-size-12">{{ 'passport' | translate }}</mat-label>
+              </a>
+              <a class="col d-flex flex-1 cursor-pointer" (click)="downloadURL(requestData?.cvUrl, 'CV Image')">
+                <mat-icon class="icon-disabled" svgIcon="pdf-disabled"></mat-icon>
+                <mat-label class="label f-size-12">{{ 'cv' | translate }}</mat-label>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'comments' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.note }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

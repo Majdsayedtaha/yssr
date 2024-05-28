@@ -1,0 +1,355 @@
+<!-- Form -->
+<form class="form-section" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- Contract Details Base -->
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'contract_detail_base' | translate }}</span>
+    </div>
+    <div class="row-flex-division">
+      <!-- date -->
+      <mat-custom-field controlName="date" label="field.rent.date" type="date" [group]="form"> </mat-custom-field>
+
+      <!-- request -->
+      <mat-searchable-select
+        controlName="customerId"
+        label="field.rent.customer"
+        [callApiFunction]="getRentCustomersSelect"
+        [group]="form"></mat-searchable-select>
+
+      <mat-searchable-select
+        [readonly]="!form.get('customerId')?.value"
+        controlName="rentRequestId"
+        label="field.rent.rentRequest"
+        [callApiFunction]="fetchCustomerRentRequestsSelect"
+        [group]="form"></mat-searchable-select>
+
+      <!-- procedure -->
+      <mat-custom-field
+        [disabled]="!form.get('rentRequestId')?.value"
+        [matTooltip]="form.get('rentRequestId')?.value ? '' : ('enter-request-number' | translate)"
+        controlName="procedureId"
+        label="field.rent.procedure"
+        type="select"
+        [callApiFunction]="fetchRequestProceduresSelect"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+
+  <!-- Contract Details Period -->
+  <div class="section-card" *ngIf="rentRequest">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'contract_detail_period' | translate }}</span>
+    </div>
+    <div class="section">
+      <div class="row mb-2 d-flex gap-1">
+        <div class="col d-flex flex-column flex-1">
+          <mat-label class="label f-size-12">{{ 'rent_span.contract_create_date' | translate }}</mat-label>
+          <span class="mt-1" flipDirection>{{ rentRequest.requestDateMilady }}</span>
+        </div>
+        <div class="col d-flex flex-column flex-1">
+          <mat-label class="label f-size-12">{{ 'rent_span.customer_name' | translate }}</mat-label>
+          <span class="mt-1" flipDirection>{{ rentRequest.customer?.name }}</span>
+        </div>
+        <div class="col d-flex flex-column flex-1">
+          <mat-label class="label f-size-12">{{ 'rent_span.worker_name' | translate }}</mat-label>
+          <span class="mt-1" flipDirection>{{ rentRequest.worker?.name }}</span>
+        </div>
+        <div class="col d-flex flex-column flex-1">
+          <mat-label class="label f-size-12">{{ 'rent_span.period_rent' | translate }}</mat-label>
+          <span class="mt-1" flipDirection
+            >{{ rentRequest.rentDaysPeriod ? rentRequest.rentDaysPeriod + ' ' + rentRequest.rentType?.name : '__' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Retrieve Worker -->
+  <div class="section-card" *ngIf="procedureValue == 5">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'retrieve_worker_data' | translate }}</span>
+    </div>
+
+    <!-- Row 1 -->
+    <div class="row-flex-division">
+      <!-- retrieveDate-->
+      <mat-custom-field controlName="retrieveDate" label="field.rent.retrieveDate" type="date" [group]="form">
+      </mat-custom-field>
+
+      <!-- realCustomerContractPeriod -->
+      <mat-custom-field
+        controlName="realCustomerContractPeriod"
+        label="field.rent.realCustomerContractPeriod"
+        type="number"
+        [disabled]="true"
+        textSuffix="label.suffixes.day"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- fine -->
+      <mat-custom-field
+        controlName="fine"
+        label="field.rent.fine"
+        type="number"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="row-flex-division">
+      <!-- workerSalary -->
+      <mat-custom-field
+        controlName="workerSalary"
+        label="field.rent.workerSalary"
+        [disabled]="true"
+        type="number"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- officeAmount -->
+      <mat-custom-field
+        controlName="officeAmount"
+        label="field.rent.officeAmount"
+        [disabled]="true"
+        type="number"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- returnCustomerAmount -->
+      <mat-custom-field
+        controlName="returnCustomerAmount"
+        label="field.rent.returnCustomerAmount"
+        [disabled]="true"
+        type="number"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="row-flex-division">
+      <!-- rentPeriod -->
+      <mat-custom-field
+        controlName="rentPeriod"
+        label="field.rent.rentDaysPeriod"
+        type="number"
+        [minNumberValue]="1"
+        [textSuffixNT]="rentRequest?.rentType?.name"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- restPeriod -->
+      <mat-custom-field
+        controlName="restPeriod"
+        label="field.rent.restPeriod"
+        type="number"
+        [disabled]="true"
+        [textSuffixNT]="rentRequest?.rentType?.name"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- totalPeriod -->
+      <mat-custom-field
+        controlName="totalPeriod"
+        label="field.rent.totalPeriod"
+        type="number"
+        [textSuffixNT]="rentRequest?.rentType?.name"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- returnRefuseReason -->
+      <mat-custom-field
+        controlName="returnRefuseReason"
+        label="field.rent.returnRefuseReason"
+        type="text"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+
+  <!--Extension -->
+  <div class="section-card" *ngIf="procedureValue === 4">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'extension' | translate }}</span>
+    </div>
+
+    <!-- Row 1 -->
+    <div class="row-flex-division">
+      <mat-custom-field
+        controlName="rentTypeId"
+        label="field.rent.rentType"
+        type="select"
+        [callApiFunction]="fetchRentTypes"
+        [group]="form">
+      </mat-custom-field>
+
+      <ng-container *ngIf="rentValue && rentValue === 3; then thenTemplate; else elseTemplate"></ng-container>
+
+      <!-- Time -->
+
+      <ng-template #thenTemplate>
+        <!-- fromTime -->
+        <mat-custom-field controlName="fromDateMilady" label="field.rent.fromTime" type="time_range" [group]="form">
+        </mat-custom-field>
+
+        <!-- rentDaysPeriod -->
+        <mat-custom-field
+          type="number"
+          [group]="form"
+          controlName="rentPeriod"
+          [minNumberValue]="1"
+          textSuffix="label.suffixes.day"
+          label="field.rent.rentDaysPeriod">
+        </mat-custom-field>
+
+        <!-- toTime -->
+        <mat-custom-field
+          controlName="toDateMilady"
+          [disabled]="true"
+          label="field.rent.toTime"
+          type="time_range"
+          [group]="form">
+        </mat-custom-field>
+      </ng-template>
+
+      <!-- Date -->
+
+      <ng-template #elseTemplate>
+        <!-- fromDateMilady -->
+        <mat-custom-field controlName="fromDateMilady" label="field.rent.fromDateMilady" type="date" [group]="form">
+        </mat-custom-field>
+
+        <!-- rentDaysPeriod -->
+        <mat-custom-field
+          controlName="rentPeriod"
+          label="field.rent.rentDaysPeriod"
+          type="number"
+          [minNumberValue]="1"
+          [textSuffix]="'label.suffixes.' + rentPeriodUnit"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- toDateMilady -->
+        <mat-custom-field
+          controlName="toDateMilady"
+          [disabled]="true"
+          label="field.rent.toDateMilady"
+          type="date"
+          [group]="form">
+        </mat-custom-field>
+      </ng-template>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="row-flex-division">
+      <!-- taxTypeId -->
+      <mat-custom-field
+        controlName="taxTypeId"
+        label="field.rent.taxType"
+        type="select"
+        [callApiFunction]="fetchTaxTypes"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- rentAmount -->
+      <mat-custom-field
+        controlName="rentAmount"
+        label="field.rent.rentAmount"
+        type="number"
+        [minNumberValue]="0"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="row-flex-division">
+      <!-- taxAmount -->
+
+      <mat-custom-field
+        controlName="taxAmount"
+        label="field.rent.taxAmount"
+        type="number"
+        [minNumberValue]="0"
+        [disabled]="true"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+      <!-- rentAmountWithoutTax -->
+      <mat-custom-field
+        controlName="rentAmountWithoutTax"
+        label="field.rent.rentAmountWithoutTax"
+        type="number"
+        [minNumberValue]="0"
+        [disabled]="true"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- rentAmountWithTax -->
+      <mat-custom-field
+        controlName="rentAmountWithTax"
+        label="field.rent.rentAmountWithTax"
+        type="number"
+        [minNumberValue]="0"
+        [disabled]="true"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+
+  <!-- Finish -->
+  <div class="section-card" *ngIf="procedureValue === 8 || procedureValue === 7">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'finish' | translate }}</span>
+    </div>
+
+    <!-- Row 3 -->
+    <mat-custom-field controlName="note" label="field.rent.note" type="textarea" [group]="form"> </mat-custom-field>
+  </div>
+
+  <!-- Last Procedures -->
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="oclock"></mat-icon>
+      <span>{{ 'previous_procedures' | translate }}</span>
+    </div>
+    <p *ngIf="f['rentRequestId'].value == null">{{ 'choose_contract_to_view_procedures' | translate }}</p>
+    <hr class="v-line" />
+    <div class="history-timeline">
+      <span class="point" *ngFor="let procedure of contractProcedures; even as isEven">
+        <span class="tick bottom-tick" *ngIf="isEven">
+          <span class="legend">{{ procedure.procedureName }}</span>
+          <span class="date">{{ procedure.procedureDate | timezoneToDate }}</span>
+        </span>
+        <span class="tick top-tick" *ngIf="!isEven">
+          <span class="legend">{{ procedure.procedureName }}</span>
+          <span class="date">{{ procedure.procedureDate | timezoneToDate }}</span>
+        </span>
+      </span>
+    </div>
+  </div>
+</form>
+
+<!-- Footer -->
+<div class="text-left">
+  <!-- Cancel -->
+  <button mat-stroked-button color="primary" class="ml-2 w-10" (click)="location.back()">
+    {{ 'buttons.cancel' | translate }}
+  </button>
+  <!-- Submit -->
+  <button mat-raised-button color="primary" class="ml-2 w-10" (click)="submit()" [disabled]="form.invalid || loading">
+    {{ 'buttons.save' | translate }}
+    <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+  </button>
+</div>

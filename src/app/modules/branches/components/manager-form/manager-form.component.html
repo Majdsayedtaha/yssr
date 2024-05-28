@@ -1,0 +1,75 @@
+<form novalidate [formGroup]="branchManagerFrom">
+  <div class="form-section">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="branch"></mat-icon>
+        <span>{{ 'branch_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field controlName="username" label="field.branch.name" type="text" [group]="branchManagerFrom">
+        </mat-custom-field>
+
+        <mat-custom-field controlName="password" label="field.branch.password" type="text" [group]="branchManagerFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="permissions"
+          label="field.branch.permission"
+          type="select"
+          [callApiFunction]="fetchCountries"
+          [group]="branchManagerFrom">
+        </mat-custom-field>
+      </div>
+
+      <div class="row-flex-division">
+        <mat-custom-field controlName="phone1" label="field.branch.first_mobile" type="tel" [group]="branchManagerFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="phone2"
+          label="field.branch.second_mobile"
+          type="tel"
+          [group]="branchManagerFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="email1"
+          label="field.branch.first_email"
+          type="email"
+          [group]="branchManagerFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="email2"
+          label="field.branch.second_email"
+          type="email"
+          [group]="branchManagerFrom">
+        </mat-custom-field>
+      </div>
+    </div>
+  </div>
+  <div class="stepper-actions">
+    <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+    <ng-template #raisedButton>
+      <button
+        [disabled]="!branchManagerFrom.valid"
+        mat-raised-button
+        color="primary"
+        class="mt-3"
+        (click)="!branchId ? addBranchManager() : updateBranchManager()">
+        <span *ngIf="!branchId">
+          {{ 'buttons.add' | translate }}
+        </span>
+        <span *ngIf="branchId">
+          {{ 'buttons.update' | translate }}
+        </span>
+      </button>
+    </ng-template>
+
+    <ng-template #strokedButton>
+      <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </button>
+    </ng-template>
+  </div>
+</form>

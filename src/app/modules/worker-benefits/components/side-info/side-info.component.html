@@ -1,0 +1,37 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <div class="title mb-1 d-flex justify-between">
+      <nav-breadcrumb child="label.benefit.details"></nav-breadcrumb>
+      <mat-icon svgIcon="close" class="c-pointer" (click)="closeSideNav()"></mat-icon>
+    </div>
+
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div class="section" *ngIf="!isLoading">
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'worker' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.worker?.name }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'label.benefit.allowances' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.benefitType?.name }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'amount' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.amount }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'without_work' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.daysWithoutWork }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

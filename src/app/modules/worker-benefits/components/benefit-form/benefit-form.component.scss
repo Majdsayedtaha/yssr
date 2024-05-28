@@ -1,0 +1,9 @@
+:host {
+    height: 100%;
+}
+
+.row-grid-division {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 8px;
+}

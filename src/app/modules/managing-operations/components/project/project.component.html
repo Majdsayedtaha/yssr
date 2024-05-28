@@ -1,0 +1,47 @@
+<!-- Statistics -->
+<div class="d-flex-header">
+  <div class="statistics">
+    <div class="item">
+      <mat-icon svgIcon="statistics-inprogress"></mat-icon>
+      <span class="title">{{ 'project_no_complete' | translate }}</span>
+      <span class="f-weight-500" *ngIf="projectStatistics">{{ projectStatistics.projectCancel }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="statistics-cancelled"></mat-icon>
+      <span class="title">{{ 'project_daley' | translate }}</span>
+      <span class="f-weight-500" *ngIf="projectStatistics">{{ projectStatistics.projectDaley }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="statistics-closed"></mat-icon>
+      <span class="title">{{ 'project_ended' | translate }}</span>
+      <span class="f-weight-500" *ngIf="projectStatistics">{{ projectStatistics.projectEnded }}</span>
+    </div>
+  </div>
+  <mat-form-field [dir]="getDirection()" class="input-table">
+    <input matInput (input)="getDeepWithFilter($event)" placeholder="{{ 'search_for_specific_project' | translate }}" />
+    <mat-icon matSuffix class="icon" [svgIcon]="getDirection() === 'rtl' ? 'search-right' : 'search-left'"></mat-icon>
+  </mat-form-field>
+  <button mat-raised-button color="primary" style="width: 163px !important"  (click)="dialogAddProject()">
+    <span>
+      {{ 'label.managing_operations.add_project' | translate }}
+    </span>
+  </button>
+</div>
+
+
+<!-- Ag Grid -->
+<ag-grid-angular
+  id="myGrid"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="projectListData"
+  [enableRtl]="true"
+  (gridReady)="onGridReady($event)"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+
+<!-- Pagination -->
+<ag-pagination
+  (pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount">
+</ag-pagination>

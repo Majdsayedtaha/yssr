@@ -1,0 +1,21 @@
+<ul class="breadcrumb" [class.rtl-direction]="getDirection() == 'rtl'">
+  <li
+    class="breadcrumb-item d-flex"
+    *ngFor="let breadcrumb of breadcrumbs$ | async; let navIdx = index"
+    [class.active]="navIdx + 1 === (breadcrumbs$ | async)?.length">
+    <ng-container *ngIf="navIdx === 0; else elseShowCurrentPage">
+      <mat-icon class="icon" *ngIf="breadcrumb.icon" [svgIcon]="breadcrumb.icon" color="primary"></mat-icon>
+      <a [routerLink]="breadcrumb.url"> {{ breadcrumb.label | translate }} </a>
+    </ng-container>
+    <ng-template #elseShowCurrentPage>
+      <ng-container *ngIf="breadcrumb.label !== 'label.complaints.title'">
+        <span class="splitter">|</span>
+        <span [translate]="breadcrumb.label"></span>
+      </ng-container>
+    </ng-template>
+  </li>
+  <li *ngIf="child" class="breadcrumb-item d-flex">
+    <mat-icon class="splitter" [svgIcon]="getDirection() === 'ltr' ? 'next' : 'previous'"></mat-icon>
+    <span [translate]="child"></span>
+  </li>
+</ul>

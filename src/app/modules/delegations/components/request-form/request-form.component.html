@@ -1,0 +1,147 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<div class="form-section">
+  <form novalidate [formGroup]="requestForm">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="report"></mat-icon>
+        <span>{{ 'order_delegation' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="requestDateMilady"
+          label="order_date"
+          type="date"
+          [group]="requestForm"></mat-custom-field>
+        <mat-custom-field controlName="customer" label="customer_name" type="text" [group]="requestForm">
+        </mat-custom-field>
+
+        <mat-custom-field controlName="worker" label="worker_name" [group]="requestForm" type="text"></mat-custom-field>
+
+        <mat-searchable-select
+          controlName="jobId"
+          label="occupation"
+          [callApiFunction]="fetchAllJobsSearchableSelect"
+          [group]="requestForm"
+          [selectValueAsObject]="true">
+        </mat-searchable-select>
+      </div>
+      <div class="row-flex-division">
+        <mat-searchable-select
+          controlName="countryId"
+          label="country"
+          [callApiFunction]="fetchCountries"
+          [group]="requestForm"
+          [selectValueAsObject]="true">
+        </mat-searchable-select>
+
+        <mat-custom-field
+          controlName="workersCount"
+          label="worker_count"
+          type="number"
+          [textSuffix]="'worker' | translate"
+          [group]="requestForm">
+        </mat-custom-field>
+
+        <mat-custom-field controlName="delegationOffice" label="authorized_office" type="text" [group]="requestForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="delegationStatusId"
+          label="authorization_status"
+          type="select"
+          [group]="requestForm"
+          [callApiFunction]="fetchDelegationStatuses"
+          [selectValueAsObject]="true">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field controlName="delegationNum" label="authorization_number" type="text" [group]="requestForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="delegationDateMilady"
+          label="authorization_date"
+          type="date"
+          [group]="requestForm">
+        </mat-custom-field>
+
+        <mat-custom-field controlName="musanedNumber" label="supporting_number" type="text" [group]="requestForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="musanedDateMilady"
+          label="supporting_history"
+          type="date"
+          [group]="requestForm"></mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="financial-data"></mat-icon>
+        <span>{{ 'financial_data' | translate }}</span>
+      </div>
+
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="sponsorshipTransferAmount"
+          label="surety_transfer_amount"
+          type="number"
+          [textSuffix]="'label.suffixes.rial_sa' | translate"
+          [group]="requestForm">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="taxTypeId"
+          label="tax"
+          type="select"
+          [group]="requestForm"
+          [callApiFunction]="fetchTaxTypes"
+          [selectValueAsObject]="true">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="sponsorshipTransferTaxAmount"
+          label="tax_amount"
+          type="number"
+          [textSuffix]="'label.suffixes.rial_sa' | translate"
+          [group]="requestForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="taxNet"
+          label="total_amount"
+          type="number"
+          [textSuffix]="'label.suffixes.rial_sa' | translate"
+          [readonly]="true"
+          [group]="requestForm">
+        </mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="note"></mat-icon>
+        <span>{{ 'comments' | translate }}</span>
+      </div>
+
+      <div class="row-flex-division">
+        <mat-custom-field controlName="note" label="" type="textarea" [group]="requestForm"> </mat-custom-field>
+      </div>
+    </div>
+  </form>
+  <div class="stepper-actions">
+    <button mat-stroked-button color="primary" class="mt-3" (click)="cancel()">
+      {{ 'buttons.cancel' | translate }}
+    </button>
+    <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+    <ng-template #raisedButton>
+      <button mat-raised-button color="primary" class="mt-3" (click)="submit()" [disabled]="!requestForm.valid">
+        <!-- <mat-spinner [diameter]="30"></mat-spinner> -->
+        {{ 'buttons.save' | translate }}
+      </button>
+    </ng-template>
+
+    <ng-template #strokedButton>
+      <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </button>
+    </ng-template>
+  </div>
+</div>

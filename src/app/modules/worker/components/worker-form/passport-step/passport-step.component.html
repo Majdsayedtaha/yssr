@@ -1,0 +1,170 @@
+<div class="form-section">
+  <form novalidate [formGroup]="form">
+    <!-- Passport Section -->
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+        <span>{{ 'personal_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <!-- Passport Number -->
+        <mat-custom-field
+          controlName="PassportNo"
+          label="field.worker.passportNo"
+          [maxLengthValue]="10"
+          type="text"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Passport Place Of Issue -->
+        <mat-custom-field
+          controlName="PassportPlaceOfIssue"
+          label="field.worker.passportPlaceOfIssue"
+          type="text"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Passport Date Of Issue -->
+        <mat-custom-field
+          controlName="PassportDateOfIssue"
+          label="field.worker.passportDateOfIssue"
+          [maxDate]="currentAge"
+          type="date"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Passport Date Of Expire -->
+        <mat-custom-field
+          controlName="PassportDateOfExpire"
+          label="field.worker.passportDateOfExpire"
+          type="date"
+          [group]="form"
+          [compareControlName]="'PassportDateOfIssue'"
+          compareLabel="field.worker.passportDateOfIssue">
+        </mat-custom-field>
+      </div>
+    </div>
+
+    <ng-container *ngIf="haveData">
+      <!-- Iqama Section -->
+      <div class="section-card" *ngIf="cvTypeValue != RECRUITMENT">
+        <div class="title mb-1">
+          <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+          <span>{{ 'residence_section_data' | translate }}</span>
+        </div>
+        <div class="row-flex-division">
+          <!-- Iqama Number -->
+          <mat-custom-field
+            controlName="IqamaNumber"
+            label="field.worker.iqamaNumber"
+            type="text"
+            [textSuffix]="'-2'"
+            [maxLengthValue]="9"
+            [group]="form">
+          </mat-custom-field>
+
+          <!-- Iqama Place Of Issue -->
+          <mat-custom-field
+            controlName="IqamaPlaceOfIssue"
+            label="field.worker.iqamaPlaceOfIssue"
+            type="text"
+            [group]="form">
+          </mat-custom-field>
+
+          <!-- Iqama Start Date -->
+          <mat-custom-field controlName="IqamaStartDate" label="field.worker.iqamaStartDate" type="date" [group]="form">
+          </mat-custom-field>
+
+          <!-- Iqama End Date -->
+          <mat-custom-field
+            controlName="IqamaExpireDate"
+            label="field.worker.iqamaExpireDate"
+            type="date"
+            [group]="form"
+            [compareControlName]="'IqamaStartDate'"
+            compareLabel="field.worker.iqamaStartDate">
+          </mat-custom-field>
+
+          <!-- Border Number -->
+          <mat-custom-field controlName="BorderNumber" label="field.worker.borderNumber" type="number" [group]="form">
+          </mat-custom-field>
+        </div>
+      </div>
+
+      <!-- Work License Section -->
+      <div class="section-card" *ngIf="cvTypeValue != RECRUITMENT">
+        <div class="title mb-1">
+          <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+          <span>{{ 'work_section_data' | translate }}</span>
+        </div>
+        <div class="row-flex-division">
+          <!-- Work License Start Date -->
+          <mat-custom-field
+            controlName="WorkLicenseStartDate"
+            label="field.worker.workLicenseStartDate"
+            type="date"
+            [group]="form">
+          </mat-custom-field>
+
+          <!-- Work License End Date -->
+          <mat-custom-field
+            controlName="WorkLicenseExpireDate"
+            label="field.worker.workLicenseExpireDate"
+            type="date"
+            [group]="form"
+            [compareControlName]="'WorkLicenseStartDate'"
+            compareLabel="field.worker.workLicenseStartDate">
+          </mat-custom-field>
+        </div>
+      </div>
+
+      <!-- Insurance Section -->
+      <div class="section-card">
+        <div class="title mb-1">
+          <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+          <span>{{ 'insurance_section_data' | translate }}</span>
+        </div>
+        <div class="row-flex-division">
+          <!-- Insurance Company -->
+          <mat-custom-field
+            controlName="InsuranceCompany"
+            label="field.worker.insuranceCompany"
+            type="text"
+            [group]="form">
+          </mat-custom-field>
+
+          <!-- Insurance Category -->
+          <mat-custom-field
+            controlName="InsuranceCategory"
+            label="field.worker.insuranceCategory"
+            type="text"
+            [group]="form">
+          </mat-custom-field>
+
+          <!-- Policy Number -->
+          <mat-custom-field controlName="PolicyNumber" label="field.worker.policyNumber" type="text" [group]="form">
+          </mat-custom-field>
+
+          <!-- Insurance Start Date -->
+          <mat-custom-field
+            controlName="InsuranceStartDate"
+            label="field.worker.insuranceStartDate"
+            type="date"
+            [dateRequired]="cvTypeValue === 1 ? false : true"
+            [group]="form">
+          </mat-custom-field>
+
+          <!-- Insurance End Date -->
+          <mat-custom-field
+            controlName="InsuranceExpireDate"
+            label="field.worker.insuranceExpireDate"
+            type="date"
+            [group]="form"
+            [dateRequired]="cvTypeValue === 1 ? false : true"
+            [compareControlName]="'InsuranceStartDate'"
+            compareLabel="field.worker.insuranceStartDate">
+          </mat-custom-field>
+        </div></div
+    ></ng-container>
+  </form>
+</div>

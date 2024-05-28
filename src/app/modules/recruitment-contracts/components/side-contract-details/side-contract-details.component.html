@@ -1,0 +1,209 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="label.contract.info"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon
+        svgIcon="close"
+        class="c-pointer"
+        (click)="sidenav.close(); contractService.sideContractDetails.next(null)"></mat-icon>
+    </div>
+
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <mat-tab-group *ngIf="!isLoading && contractDetails">
+        <mat-tab [label]="'contract_details' | translate">
+          <div class="section">
+            <header class="d-flex header">
+              <mat-icon class="icon" svgIcon="rent"></mat-icon>
+              <span>{{ 'contract_data' | translate }}</span>
+            </header>
+            <div class="row mb-2 mt-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'contract_date' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.contractDateMilady | timezoneToDate }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'contract_or_visa_number' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.visaNo }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'customer_name' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.customer.name }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <header class="d-flex header">
+              <mat-icon class="icon" svgIcon="rent"></mat-icon>
+              <span>{{ 'visa_details' | translate }}</span>
+            </header>
+            <div class="row mb-2 mt-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'visa_number' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.visaNo }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'date_visa' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.visaDateMilady | timezoneToDate }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'visa_type' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.visaType.name }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <header class="d-flex header">
+              <mat-icon class="icon" svgIcon="rent"></mat-icon>
+              <span>{{ 'customer_requirements' | translate }}</span>
+            </header>
+            <div class="row mb-2 mt-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'religion' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.religion.name }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'age' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.age.name }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'occupation' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.job.name }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 mt-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'type_experience' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.experienceType.name }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'country' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.country.name }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1"></div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab [label]="'external_office_data' | translate">
+          <div class="section">
+            <header class="d-flex header">
+              <mat-icon class="icon" svgIcon="rent"></mat-icon>
+              <span>{{ 'external_office_data' | translate }}</span>
+            </header>
+            <div class="row mb-2 mt-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'external_office' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.externalOffice.name }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'external_office_representative' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.representative.name }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'external_office_amount' | translate }}</mat-label>
+                <span class="mt-1">{{
+                  contractDetails.externalOfficeAmount + ' ' + ('label.suffixes.rial_sa' | translate)
+                }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <header class="d-flex header">
+              <mat-icon class="icon" svgIcon="rent"></mat-icon>
+              <span>{{ 'additional_data' | translate }}</span>
+            </header>
+            <div class="row mb-2 mt-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'arrival_station' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.arrivalStation.name }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1"></div>
+              <div class="col d-flex flex-column flex-1"></div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab [label]="'financial_data' | translate">
+          <div class="section">
+            <header class="d-flex header">
+              <mat-icon class="icon" svgIcon="employment-benefits"></mat-icon>
+              <span>{{ 'financial_data' | translate }}</span>
+            </header>
+            <div class="row mb-2 mt-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'recruitment_amount' | translate }}</mat-label>
+                <span class="mt-1"
+                  >{{ contractDetails.contractAmount + ' ' + ('label.suffixes.rial_sa' | translate) }}
+                </span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'tax_amount' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.taxAmount + ' ' + ('label.suffixes.rial_sa' | translate) }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'transfer_fees' | translate }}</mat-label>
+                <span class="mt-1">{{
+                  contractDetails.transportationAmount + ' ' + ('label.suffixes.rial_sa' | translate)
+                }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 mt-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'discount' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.discount }}% </span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'tax_type' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.taxType.name }} </span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'total_amount_with_tax' | translate }}</mat-label>
+                <span class="mt-1">
+                  {{ contractDetails['totalWithTax'].toFixed(2) + ' ' + ('label.suffixes.rial_sa' | translate) }}
+                </span>
+              </div>
+            </div>
+            <div class="row mb-2 mt-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'total_amount_without_tax' | translate }}</mat-label>
+                <span class="mt-1">
+                  {{ contractDetails['totalWithoutTax'].toFixed(2) + ' ' + ('label.suffixes.rial_sa' | translate) }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="section">
+            <header class="d-flex header">
+              <mat-icon class="icon" svgIcon="rent"></mat-icon>
+              <span>{{ 'musaned_data' | translate }}</span>
+            </header>
+            <div class="row mb-2 mt-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'musaned_amount' | translate }}</mat-label>
+                <span class="mt-1"
+                  >{{ contractDetails.musanedRequestAmount }} {{ 'label.suffixes.rial_sa' | translate }}</span
+                >
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'musaned_contract_number' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.musanedRequestNum }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'type_request' | translate }}</mat-label>
+                <span class="mt-1">{{ contractDetails.musanedRequestType.name }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

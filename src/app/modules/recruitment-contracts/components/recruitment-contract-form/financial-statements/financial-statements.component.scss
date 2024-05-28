@@ -1,0 +1,35 @@
+.commissions-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  > .mat-custom-field {
+    flex: 0.4;
+  }
+  > button {
+    flex: 0.1;
+    height: 44.5px;
+    top: 17px;
+  }
+}
+.grid {
+  height: clamp(200px, 200px, 500px);
+}
+.more-btn {
+  cursor: pointer;
+  min-width: 47px !important;
+  height: 45px !important;
+  line-height: 0;
+  width: 47px;
+  align-self: flex-end;
+  margin: 0 5px;
+  mat-icon {
+    color: #f0c34e !important;
+  }
+}
+.commission-warning {
+  position: absolute;
+  background: #bde5ff;
+  padding: 0 0.5rem;
+  border-radius: 0.2rem;
+  color: #00a2bc;
+}

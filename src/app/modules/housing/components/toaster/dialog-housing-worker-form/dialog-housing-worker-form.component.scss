@@ -1,0 +1,55 @@
+.cdk-overlay-dark-backdrop {
+  background: rgb(77 77 77 / 50%);
+}
+
+.toast {
+  width: 500px;
+  min-height: 555px;
+  background: var(--background-color);
+  padding: 0 !important;
+  nav-breadcrumb::ng-deep ul li:first-child a {
+    font-size: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  .contant {
+    .toast-content {
+      p {
+        line-height: 1.2;
+        color: var(--primary-color);
+      }
+    }
+  }
+}
+
+.toast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .second {
+    font-family: 'Tajawal', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: right;
+    color: #4d4d4d;
+  }
+
+  .title {
+    font-family: 'Tajawal', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: right;
+    color: var(--primary-color);
+  }
+}
+::ng-deep .title-icon {
+  margin: 0 5px 0 5px;
+  svg path {
+    fill: var(--primary-color);
+  }
+}

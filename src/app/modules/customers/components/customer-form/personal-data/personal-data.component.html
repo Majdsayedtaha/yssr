@@ -1,0 +1,134 @@
+<div class="form-section">
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+      <span>{{ 'personal_data' | translate }}</span>
+    </div>
+    <form novalidate [formGroup]="personalDataGroup">
+      <div class="row-flex-division">
+        <mat-custom-field controlName="nameAr" label="customer_name_arabic" type="text" [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field controlName="nameEn" label="customer_name_english" type="text" [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="birthDateMilady"
+          otherControlName="birthDateHijri"
+          label="date_of_birth_ad"
+          type="date"
+          [maxDate]="acceptableAge"
+          [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="birthDateHijri"
+          otherControlName="birthDateMilady"
+          [hijriFormat]="true"
+          label="date_of_birth_hijri"
+          type="date"
+          [group]="personalDataGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="identificationTypeId"
+          label="id_type"
+          type="select"
+          [callApiFunction]="getIdentificationTypes"
+          [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="identificationNumber"
+          label="id_number"
+          [textSuffix]="startWithNumber"
+          [maxLengthValue]="9"
+          type="text"
+          [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="identificationExpireDate"
+          otherControlName="identificationExpireDateHijri"
+          label="id_expiration_date"
+          type="date"
+          [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="identificationExpireDateHijri"
+          otherControlName="identificationExpireDate"
+          [hijriFormat]="true"
+          label="id_expiration_date_hijri"
+          type="date"
+          [group]="personalDataGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field controlName="phone1" label="first_mobile" type="tel" [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field controlName="phone2" label="second_mobile" type="tel" [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field controlName="email" label="email" type="email" [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="maritalStatusId"
+          label="marital_status"
+          type="select"
+          [callApiFunction]="fetchMaritalStatuses"
+          [group]="personalDataGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-2">
+        <mat-custom-field
+          *ngIf="customerId"
+          controlName="financialStatusId"
+          label="financial_status"
+          type="select"
+          [callApiFunction]="getCustomerFinancialStatus"
+          [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="homeTypeId"
+          label="house_type"
+          type="select"
+          [group]="personalDataGroup"
+          [callApiFunction]="getHomeTypes">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="workersCount"
+          label="workers_count"
+          type="number"
+          [minNumberValue]="0"
+          [maxNumberValue]="100"
+          [group]="personalDataGroup"
+          textSuffix="worker">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="familyMembersCount"
+          label="family_members_count"
+          type="number"
+          [minNumberValue]="0"
+          [maxNumberValue]="20"
+          [group]="personalDataGroup"
+          textSuffix="member">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          class="radio"
+          controlName="customerTypeId"
+          label="customer_type"
+          type="radio"
+          [options]="customerTypes"
+          [group]="personalDataGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          class="radio"
+          controlName="vipCustomer"
+          label="customer_status"
+          type="radio"
+          [options]="vipCustomerOptions"
+          [translateOptions]="true"
+          [group]="personalDataGroup">
+        </mat-custom-field>
+        <div></div>
+      </div>
+    </form>
+  </div>
+</div>

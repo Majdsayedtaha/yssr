@@ -1,0 +1,61 @@
+<div class="form-section">
+  <form novalidate [formGroup]="externalOfficePriceForm">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+        <span>{{ 'label.offices.price' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-searchable-select
+          controlName="externalOfficeId"
+          [callApiFunction]="fetchExternalOffices"
+          label="field.office.external_office"
+          [group]="externalOfficePriceForm"></mat-searchable-select>
+
+        <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+        <ng-template #raisedButton>
+          <button
+            mat-raised-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            type="submit"
+            [disabled]="externalOfficePriceForm.get('externalOfficeId')?.invalid"
+            (click)="saveChanges()">
+            {{ 'buttons.save' | translate }}
+          </button>
+        </ng-template>
+
+        <ng-template #strokedButton>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            disabled>
+            <mat-spinner [diameter]="30"></mat-spinner>
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ag-grid-angular
+  id="myGrid"
+  class="ag-theme-alpine grid"
+  [columnDefs]="columnDefs"
+  [enableRtl]="true"
+  (gridReady)="onGridReady($event)"
+  [rowData]="rowData"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+
+<button
+  [matTooltip]="
+    !externalOfficePriceForm.get('externalOfficeId')?.value ? ('choose_external_office_first' | translate) : ''
+  "
+  mat-stroked-button
+  color="primary"
+  class="f-size-14 f-weight-500 btn-field-stander"
+  type="button"
+  (click)="addRecord()">
+  {{ 'buttons.record' | translate }}
+</button>

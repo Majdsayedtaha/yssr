@@ -1,0 +1,81 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="label.offices.info"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon
+        svgIcon="close"
+        class="c-pointer"
+        (click)="sidenav.close(); externalOfficesService.sideOfficeDetails.next(null)"></mat-icon>
+    </div>
+
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div class="section" *ngIf="!isLoading && officeDetails">
+        <header class="d-flex header">
+          <mat-icon class="icon" svgIcon="rent"></mat-icon>
+          <span>{{ 'label.offices.info' | translate }}</span>
+        </header>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.office.name_company_english' | translate }}</mat-label>
+            <span class="mt-1">{{ officeDetails.nameEn }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.office.name_company_arabic' | translate }}</mat-label>
+            <span class="mt-1">{{ officeDetails.nameAr }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'country' | translate }}</mat-label>
+            <span class="mt-1">{{ officeDetails.country.name }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.office.license_number' | translate }}</mat-label>
+            <span class="mt-1">{{ officeDetails.licenseNo }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.office.first_mobile' | translate }}</mat-label>
+            <span class="mt-1">{{ officeDetails.phoneFirst }}</span>
+          </div>
+
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.office.second_mobile' | translate }}</mat-label>
+            <span class="mt-1">{{ officeDetails.phoneSecond }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.office.official_email' | translate }}</mat-label>
+            <span class="mt-1">{{ officeDetails.emailFirst }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.office.email2' | translate }}</mat-label>
+            <span class="mt-1">{{ officeDetails.emailSecond }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.office.Work_phone' | translate }}</mat-label>
+            <span class="mt-1">{{ officeDetails.workPhoneNumber }}</span>
+          </div>
+        </div>
+        <div class="grid">
+          <ag-grid-angular
+            id="myGrid"
+            class="ag-theme-alpine grid"
+            [columnDefs]="columnDefs"
+            [enableRtl]="true"
+            (gridReady)="onGridReady($event)"
+            [rowData]="rowData"
+            [gridOptions]="gridOptions"></ag-grid-angular>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

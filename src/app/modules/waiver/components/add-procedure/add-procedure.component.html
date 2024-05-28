@@ -1,0 +1,94 @@
+<div class="form-section">
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'label.waiver.add_procedure' | translate }}</span>
+    </div>
+    <form [formGroup]="addProcedureForm">
+      <div class="row-flex-division">
+        <!-- <mat-custom-field
+          controlName="requestId"
+          label="order_number"
+          type="select"
+          [callApiFunction]="getWaiverRequestsSelect"
+          [group]="addProcedureForm">
+        </mat-custom-field> -->
+
+        <mat-searchable-select
+          controlName="requestId"
+          label="order_number"
+          [callApiFunction]="getWaiverRequestsSelect"
+          [group]="addProcedureForm">
+        </mat-searchable-select>
+        <mat-custom-field
+          controlName="procedureId"
+          label="procedure"
+          type="select"
+          [callApiFunction]="fetchRequestProceduresSelect"
+          [group]="addProcedureForm"
+          [disabled]="addProcedureForm.get('requestId')?.value ? false : true"
+          [matTooltip]="addProcedureForm.get('requestId')?.value ? '' : ('enter-request-number' | translate)"
+          >
+        </mat-custom-field>
+      </div>
+
+      <div class="row-flex-division">
+        <mat-custom-field controlName="date" label="procedure_date" type="date" [group]="addProcedureForm">
+        </mat-custom-field>
+        <mat-custom-field controlName="note" label="comments" type="textarea" [group]="addProcedureForm">
+        </mat-custom-field>
+        <div class="add-procedure">
+          <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+          <ng-template #raisedButton>
+            <button
+              style="width: fit-content"
+              [disabled]="!addProcedureForm.valid"
+              mat-raised-button
+              color="primary"
+              type="submit"
+              (click)="addProcedure()">
+              {{ 'add_procedure' | translate }}
+            </button>
+          </ng-template>
+
+          <ng-template #strokedButton>
+            <button
+              mat-stroked-button
+              color="primary"
+              class="f-size-14 f-weight-500 btn-field-stander add-button"
+              disabled>
+              <mat-spinner [diameter]="30"></mat-spinner>
+            </button>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Last Procedures -->
+      <div class="section-card mt-3">
+        <div class="title mb-1">
+          <mat-icon class="icon-title" svgIcon="oclock"></mat-icon>
+          <span>{{ 'previous_procedures' | translate }}</span>
+        </div>
+        <p *ngIf="addProcedureForm.controls['requestId'].value == null">
+          {{ 'choose_request_to_view_procedures' | translate }}
+        </p>
+        <p *ngIf="addProcedureForm.controls['requestId'].value && lastProcedures?.length == 0">
+          {{ 'no_request_procedure_yet' | translate }}
+        </p>
+        <hr class="v-line" />
+        <div class="history-timeline">
+          <span class="point" *ngFor="let procedure of lastProcedures; even as isEven">
+            <span class="tick bottom-tick" *ngIf="isEven">
+              <span class="legend">{{ procedure.procedureName }}</span>
+              <span class="date">{{ procedure.procedureDate | timezoneToDate }}</span>
+            </span>
+            <span class="tick top-tick" *ngIf="!isEven">
+              <span class="legend">{{ procedure.procedureName }}</span>
+              <span class="date">{{ procedure.procedureDate | timezoneToDate }}</span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

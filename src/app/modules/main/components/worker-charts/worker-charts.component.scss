@@ -1,0 +1,18 @@
+:host {
+  height: 100%;
+}
+
+// Charts
+.chart-container {
+  display: flex;
+  & > * {
+    flex: 1;
+  }
+  .pie {
+    align-items: center;
+    justify-content: center;
+  }
+  .chart {
+    width: 200px;
+  }
+}

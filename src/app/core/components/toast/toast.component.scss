@@ -1,0 +1,30 @@
+.cdk-overlay-dark-backdrop {
+  background: rgb(77 77 77 / 50%);
+}
+
+.toast {
+  border-top: 9px solid var(--primary-color);
+  .toast-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .toast-content {
+    .mat-icon {
+      width: 100%;
+      margin: 0 auto;
+      margin-bottom: 1rem;
+      height: 175px;
+    }
+    p {
+      line-height: 1.2;
+      color: var(--primary-color);
+    }
+  }
+  .toast-footer {
+    & button:first-child,
+    & button:last-child {
+      margin: 1rem 0 0 0;
+    }
+  }
+}

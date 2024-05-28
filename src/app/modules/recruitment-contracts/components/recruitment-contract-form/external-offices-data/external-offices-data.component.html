@@ -1,0 +1,80 @@
+<div class="form-section">
+  <form novalidate [formGroup]="externalOfficeData">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'external_office_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division-2">
+        <!-- <mat-custom-field
+          controlName="externalOfficeId"
+          label="external_office"
+          type="select"
+          [callApiFunction]="fetchExternalOffices"
+          [group]="externalOfficeData"></mat-custom-field> -->
+        <mat-searchable-select
+          controlName="externalOfficeId"
+          label="external_office"
+          [callApiFunction]="fetchExternalOffices"
+          [queryParams]="{ countryId: countryIdValue }"
+          [group]="externalOfficeData"></mat-searchable-select>
+
+        <!-- <mat-custom-field
+          [matTooltip]="!externalOfficeData.get('externalOfficeId')?.value ? ('choose_office' | translate) : ''"
+          controlName="representativeId"
+          label="external_office_representative"
+          type="select"
+          [callApiFunction]="fetchRepresentativesSelect"
+          [group]="externalOfficeData"></mat-custom-field> -->
+
+        <mat-searchable-select
+          [matTooltip]="!externalOfficeData.get('externalOfficeId')?.value ? ('choose_office' | translate) : ''"
+          controlName="representativeId"
+          label="external_office_representative"
+          [callApiFunction]="fetchRepresentativesSelect"
+          [group]="externalOfficeData"></mat-searchable-select>
+
+        <mat-custom-field
+          controlName="externalOfficeAmount"
+          label="external_office_amount"
+          type="text"
+          textSuffix="dollar"
+          [readonly]="true"
+          [group]="externalOfficeData"></mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'additional_data' | translate }}</span>
+      </div>
+      <!-- <mat-custom-field
+
+        controlName="arrivalStationId"
+        label="arrival_station"
+        type="select"
+        [callApiFunction]="fetchArrivalStation"
+        [group]="externalOfficeData"></mat-custom-field> -->
+
+      <mat-searchable-select
+        class="single-field-width"
+        controlName="arrivalStationId"
+        label="arrival_station"
+        [callApiFunction]="fetchArrivalStation"
+        [group]="externalOfficeData"></mat-searchable-select>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'terms_conditions' | translate }}</span>
+      </div>
+      <div>
+        <mat-custom-field
+          controlName="skillsIds"
+          type="checkbox"
+          [options]="skills"
+          [group]="externalOfficeData"></mat-custom-field>
+      </div>
+    </div>
+  </form>
+</div>

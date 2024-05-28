@@ -1,0 +1,198 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="label.customer.info"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon
+        svgIcon="close"
+        class="c-pointer"
+        (click)="sidenav.close(); customerService.sideData.next('')"></mat-icon>
+    </div>
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <mat-tab-group *ngIf="!isLoading && customerData">
+        <mat-tab [label]="'personal_data' | translate">
+          <div class="section">
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'customer_name_arabic' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.nameAr }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'customer_name_english' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.nameEn }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'date_of_birth_ad' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.birthDateMilady | timezoneToDate }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'date_of_birth_hijri' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.birthDateHijri.date | timezoneToDate }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'id_type' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.identificationType.name }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'id_number' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.identificationNumber }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'first_mobile' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.phone1 }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'second_mobile' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.phone2 }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'email' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.email }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'marital_status' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.maritalStatus.name }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'house_type' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.homeType.name }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'workers_count' | translate }}</mat-label>
+                <span class="mt-1"
+                  >{{ customerData.workersCount }} <span class="suffix">{{ 'worker' | translate }}</span></span
+                >
+              </div>
+            </div>
+            <div class="row d-flex">
+              <div class="col d-flex flex-1 align-center">
+                <mat-label class="label f-size-12">{{ 'customer_type' | translate }}</mat-label>
+                <span class="d-flex align-center radio">
+                  <mat-icon class="radio-icon" svgIcon="radio"></mat-icon>
+                  <span>{{ customerData.customerType.name }}</span>
+                </span>
+              </div>
+              <div class="col d-flex flex-1 align-center">
+                <mat-label class="label f-size-12">{{ 'customer_type' | translate }}</mat-label>
+                <span class="d-flex align-center radio">
+                  <mat-icon class="radio-icon" svgIcon="radio"></mat-icon>
+                  <span>
+                    {{ customerData.vipCustomer === true ? ('distinct' | translate) : ('indistinctive' | translate) }}
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab [label]="'business_case' | translate" *ngIf="customerData.business.length > 0">
+          <div class="section">
+            <ag-grid-angular
+              id="myGrid"
+              class="ag-theme-alpine"
+              [columnDefs]="columnDefs"
+              [rowData]="customerData.business"
+              [enableRtl]="true"
+              (gridReady)="onGridReady($event)"
+              [gridOptions]="gridOptions"></ag-grid-angular>
+          </div>
+        </mat-tab>
+
+        <mat-tab [label]="'national_address' | translate">
+          <div class="section">
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'region' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.region.name }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'city' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.city.name }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'street' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.street }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'district' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.district }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'postal_code' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.postalCode }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'additional_code' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.additionalCode }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'unit_number' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.unitNumber }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'building_number' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.buildingNumber }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab [label]="'work_data' | translate">
+          <div class="section">
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'workplace' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.customerPosition }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'work_phone' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.workTel }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'monthly_income' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.monthlyIncome }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'relative_name' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.relativeName }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'relative_mobile' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.relativePhone }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'relative_relation' | translate }}</mat-label>
+                <span class="mt-1">{{ customerData.relativeType }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

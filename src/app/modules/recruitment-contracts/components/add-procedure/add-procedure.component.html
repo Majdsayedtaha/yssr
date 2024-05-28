@@ -1,0 +1,99 @@
+<div class="form-section">
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'contract_procedures' | translate }}</span>
+    </div>
+    <form [formGroup]="addProcedureForm">
+      <div class="row-flex-division">
+        <mat-custom-field
+          (click)="resetCustomer = true"
+          apiEndpoint="Customer/GetCustomersSelect"
+          controlName="customerId"
+          label="customer_name"
+          type="searchableSelect"
+          [selectValueAsObject]="false"
+          [group]="addProcedureForm">
+        </mat-custom-field>
+        <mat-custom-field
+          [apiEndpoint]="
+            f['customerId'].value
+              ? 'RecruitmentContract/GetCustomerContractSelect'
+              : 'RecruitmentContract/GetContractsSelect'
+          "
+          [apiEndpointQueryParams]="f['customerId'].value ? { customerId: f['customerId'].value } : null"
+          controlName="contractId"
+          type="searchableSelect"
+          [selectValueAsObject]="false"
+          label="contract_or_visa_number"
+          [group]="addProcedureForm">
+        </mat-custom-field>
+
+        <mat-searchable-select
+          [readonly]="!f['customerId'].value || !f['contractId'].value"
+          controlName="procedureId"
+          label="procedure"
+          [callApiFunction]="fetchCustomerProceduresSelect"
+          [group]="addProcedureForm">
+        </mat-searchable-select>
+
+        <mat-custom-field
+          controlName="statusId"
+          label="procedure_status"
+          type="select"
+          [callApiFunction]="fetchStatus"
+          [group]="addProcedureForm">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-1">
+        <mat-custom-field controlName="date" label="procedure_date" type="date" [group]="addProcedureForm">
+        </mat-custom-field>
+      </div>
+      <mat-custom-field controlName="note" label="comments" type="textarea" [group]="addProcedureForm">
+      </mat-custom-field>
+
+      <div class="add-procedure">
+        <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+        <ng-template #raisedButton>
+          <button
+            style="width: fit-content"
+            [disabled]="!addProcedureForm.valid"
+            mat-raised-button
+            color="primary"
+            type="submit"
+            (click)="addProcedure()">
+            {{ 'add_procedure' | translate }}
+          </button>
+        </ng-template>
+
+        <ng-template #strokedButton>
+          <button style="width: fit-content" mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+            <mat-spinner [diameter]="30"></mat-spinner>
+          </button>
+        </ng-template>
+      </div>
+    </form>
+  </div>
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="oclock"></mat-icon>
+      <span>{{ 'previous_procedures' | translate }}</span>
+    </div>
+    <p *ngIf="!f['customerId']?.value">{{ 'choose_contract_to_view_procedures' | translate }}</p>
+    <ng-container *ngIf="f['customerId']?.value">
+      <hr class="v-line" />
+      <div class="history-timeline">
+        <span class="point" *ngFor="let procedure of contractProcedures; even as isEven">
+          <span class="tick bottom-tick" *ngIf="isEven">
+            <span class="legend">{{ procedure.procedure.name }}</span>
+            <span class="date">{{ procedure.procedureDate }}</span>
+          </span>
+          <span class="tick top-tick" *ngIf="!isEven">
+            <span class="legend">{{ procedure.procedure.name }}</span>
+            <span class="date">{{ procedure.procedureDate }}</span>
+          </span>
+        </span>
+      </div>
+    </ng-container>
+  </div>
+</div>

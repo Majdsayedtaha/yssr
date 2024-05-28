@@ -1,0 +1,108 @@
+<div class="form-section">
+  <form novalidate [formGroup]="form">
+    <!-- Experience Section -->
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+        <span>{{ 'experience_section_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <!-- Experience Type -->
+        <mat-custom-field
+          controlName="ExperienceTypeId"
+          label="field.worker.experienceType"
+          type="select"
+          [callApiFunction]="fetchExperienceTypes"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Experience Of Years -->
+        <mat-custom-field
+          controlName="YearsOfExperience"
+          label="field.worker.yearsOfExperience"
+          type="number"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Last Country -->
+        <mat-searchable-select
+          controlName="LastCountryId"
+          label="field.worker.lastCountry"
+          [callApiFunction]="fetchCountries"
+          [group]="form"></mat-searchable-select>
+      </div>
+      <!-- Experience Detail -->
+      <mat-custom-field
+        controlName="DetailsOfExperience"
+        label="field.worker.detailsOfExperience"
+        type="textarea"
+        [rows]="5"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+
+    <!-- Education & Learning Section -->
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+        <span>{{ 'education_section_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <!-- Education Level -->
+        <mat-custom-field
+          controlName="EducationalLevel"
+          label="field.worker.educationalLevel"
+          type="text"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Arabic Level -->
+        <mat-custom-field
+          controlName="ArabicLevelId"
+          label="field.worker.arabicLevel"
+          type="select"
+          [callApiFunction]="fetchLanguageLevels"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- English Level -->
+        <mat-custom-field
+          controlName="EnglishLevelId"
+          label="field.worker.englishLevel"
+          type="select"
+          [callApiFunction]="fetchLanguageLevels"
+          [group]="form">
+        </mat-custom-field>
+      </div>
+    </div>
+
+    <!-- Extra Details Section -->
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+        <span>{{ 'extra_section_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <!-- External Office -->
+        <mat-searchable-select
+          [group]="form"
+          controlName="ExternalOfficeId"
+          label="field.worker.externalOffice"
+          [callApiFunction]="fetchExternalOffices"
+          [queryParams]="{ countryId: countryIdValue }">
+        </mat-searchable-select>
+
+        <!-- Monthly Salary -->
+        <mat-custom-field controlName="MonthlySalary" label="field.worker.monthlySalary" type="number" [group]="form">
+        </mat-custom-field>
+
+        <!-- Apartment -->
+        <mat-searchable-select
+          controlName="ApartmentId"
+          label="field.worker.apartment"
+          [callApiFunction]="fetchApartments"
+          [group]="form"></mat-searchable-select>
+      </div>
+    </div>
+  </form>
+</div>

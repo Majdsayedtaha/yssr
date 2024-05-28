@@ -1,0 +1,64 @@
+<mat-dialog-content class="toast">
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <div class="toast-container">
+      <!-- Header -->
+      <div class="toast-header bg-white p-2">
+        <nav-breadcrumb
+          [child]="
+            editData.update ? 'label.managing_operations.update_project' : 'label.managing_operations.add_project'
+          "></nav-breadcrumb>
+        <mat-icon svgIcon="close" class="c-pointer" (click)="closeDialog(null)"> </mat-icon>
+      </div>
+      <div class="bg-body p-3">
+        <div class="content bg-white p-2">
+          <div class="d-flex align-center justify-center loader-background" *ngIf="isLoading">
+            <mat-spinner [diameter]="30"></mat-spinner>
+          </div>
+          <!-- Body -->
+          <div class="toast-content">
+            <div class="row-flex-division">
+              <mat-custom-field
+                controlName="nameEn"
+                label="field.managing_operations.nameEn"
+                type="text"
+                [group]="form">
+              </mat-custom-field>
+              <mat-custom-field
+                controlName="nameAr"
+                label="field.managing_operations.nameAr"
+                type="text"
+                [group]="form">
+              </mat-custom-field>
+            </div>
+            <div class="row-flex-division">
+              <mat-custom-field
+                controlName="startDate"
+                label="field.managing_operations.date_start"
+                type="date"
+                [group]="form">
+              </mat-custom-field>
+              <mat-custom-field
+                controlName="endDate"
+                label="field.managing_operations.date_end"
+                type="date"
+                [group]="form">
+              </mat-custom-field>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="toast-footer d-flex align-center gap-1">
+            <!-- Submit -->
+            <button [disabled]="!form.valid" mat-raised-button color="primary" class="mt-3 p-3" type="submit">
+              {{ 'buttons.save' | translate }}
+            </button>
+
+            <!-- cancel -->
+            <button mat-stroked-button color="primary" class="mt-3 p-3" type="button" (click)="closeDialog(null)">
+              {{ 'buttons.cancel' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

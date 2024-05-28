@@ -1,0 +1,68 @@
+@mixin snackContainerStyles {
+  app-notifier {
+    .mat-icon {
+      scale: 3 !important;
+      padding-top: 4px !important;
+    }
+  }
+  mat-snack-bar-container {
+    border-radius: 4px !important;
+  }
+
+  .snack-container-message {
+    display: flex;
+    column-gap: 1em;
+    justify-content: space-between;
+
+    .message-container {
+      display: flex;
+      flex-direction: column;
+      row-gap: 0.5em;
+      text-align: right;
+
+      .title {
+        font-size: 24px !important;
+      }
+    }
+  }
+
+  .mat-mdc-snack-bar-container .mdc-snackbar__surface {
+    background: transparent !important;
+  }
+
+  .mat-snack-bar-container {
+    min-width: 850px !important;
+  }
+
+  .snack-container-icon {
+    cursor: pointer !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 0.5rem !important;
+    width: fit-content !important;
+  }
+}
+
+::ng-deep {
+  .normal-snackbar .mdc-snackbar__label {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .warning-snackbar {
+    background: var(--yellow-status) !important;
+    color: var(--accent-color);
+    margin-top: 20px !important;
+    @include snackContainerStyles;
+  }
+
+  .error-snackbar {
+    background: var(--red-status) !important;
+    @include snackContainerStyles;
+  }
+
+  .info-snackbar {
+    background: var(--status-blue) !important;
+    @include snackContainerStyles;
+  }
+}

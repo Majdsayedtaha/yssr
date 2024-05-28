@@ -1,0 +1,36 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="procedures_contracts"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon svgIcon="close" class="c-pointer" (click)="close()"></mat-icon>
+    </div>
+
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="loading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <ng-container *ngIf="!loading && procedures.length > 0">
+        <div class="procedure-card" *ngFor="let procedure of procedures">
+          <mat-icon
+            class="icon c-pointer"
+            [ngClass]="getDirection() === 'rtl' ? 'icon-rtl' : 'icon-ltr'"
+            svgIcon="edit-row"
+            (click)="edit(procedure)"></mat-icon>
+          <div class="grid-2-column row">
+            <span>{{ 'procedure' | translate }} </span>
+            <span> {{ procedure.procedureName }}</span>
+          </div>
+          <div class="grid-2-column row">
+            <span>{{ 'procedure_date' | translate }}</span>
+            <span>{{ procedure.procedureDate | timezoneToDate }}</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

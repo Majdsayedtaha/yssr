@@ -1,0 +1,80 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="label.order.info"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon
+        svgIcon="close"
+        class="c-pointer"
+        (click)="sidenav.close(); refundService.sideOrderDetails.next(null)"></mat-icon>
+    </div>
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div class="section" *ngIf="!isLoading">
+        <header class="d-flex header">
+          <mat-icon class="icon" svgIcon="rent"></mat-icon>
+          <span>{{ 'setting.fields.order_data' | translate }}</span>
+        </header>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.request_number' | translate }}</mat-label>
+            <span class="mt-1">{{ orderDetails?.code }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.visa_cost' | translate }}</mat-label>
+            <span class="mt-1">{{ orderDetails?.visaCost }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.date' | translate }}</mat-label>
+            <span class="mt-1">{{ orderDetails?.date | timezoneToDate }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.worker_salary' | translate }}</mat-label>
+            <span class="mt-1">{{ orderDetails?.workerSalary }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.accommodation_fee' | translate }}</mat-label>
+            <span class="mt-1">{{ orderDetails?.accomodationFee }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.customer_recruit_amount' | translate }}</mat-label>
+            <span class="mt-1">{{ orderDetails?.customerRecruitAmount }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.note' | translate }}</mat-label>
+            <span class="mt-1">{{ orderDetails?.note }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.recruit_amount' | translate }}</mat-label>
+            <span class="mt-1">{{ orderDetails?.recruitAmount }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.recruitment_contract' | translate }}</mat-label>
+            <span class="mt-1">{{ orderDetails?.recruitmentContract?.name }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 mt-2 d-flex">
+          <!-- <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'setting.fields.customer_procedure' | translate }}</mat-label>
+                <span class="mt-1">{{ orderDetails?.customerProcedureId }}</span>
+              </div> -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.customer_procedure' | translate }}</mat-label>
+            <span class="mt-1">{{ orderDetails?.customerProcedure?.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

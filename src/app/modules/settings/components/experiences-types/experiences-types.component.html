@@ -1,0 +1,64 @@
+<div class="form-section">
+  <form novalidate [formGroup]="experienceForm">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+        <span>{{ 'label.setting.experience' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="nameEn"
+          label="setting.fields.experience_en"
+          type="text"
+          [group]="experienceForm">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="nameAr"
+          label="setting.fields.experience_ar"
+          type="text"
+          [group]="experienceForm">
+        </mat-custom-field>
+
+        <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+        <ng-template #raisedButton>
+          <button
+            mat-raised-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            type="submit"
+            [disabled]="!experienceForm.valid"
+            (click)="!update ? experienceRow('add') : experienceRow('update')">
+            <ng-container *ngIf="update">
+              {{ 'buttons.update' | translate }}
+            </ng-container>
+            <ng-container *ngIf="!update">
+              {{ 'buttons.add' | translate }}
+            </ng-container>
+          </button>
+        </ng-template>
+
+        <ng-template #strokedButton>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            disabled>
+            <mat-spinner [diameter]="30"></mat-spinner>
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </form>
+  <ag-grid-angular
+    id="myGrid"
+    class="ag-theme-alpine grid"
+    [columnDefs]="columnDefs"
+    [enableRtl]="true"
+    (gridReady)="onGridReady($event)"
+    [rowData]="experienceTypeDataList"
+    [gridOptions]="gridOptions"></ag-grid-angular>
+  <ag-pagination
+    [pageSize]="paginationOptions.pageSize"
+    [lengthData]="paginationOptions.totalCount"
+    (pageChanged)="onSetPage($event)"></ag-pagination>
+</div>

@@ -1,0 +1,64 @@
+<div class="form-section">
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+      <span>{{ 'national_address' | translate }}</span>
+    </div>
+    <form novalidate [formGroup]="nationalAddressGroup">
+      <div class="row-flex-division">
+        <mat-searchable-select
+          controlName="regionId"
+          label="region"
+          type="searchableSelect"
+          [callApiFunction]="getRegions"
+          [group]="nationalAddressGroup">
+        </mat-searchable-select>
+        <mat-searchable-select
+          controlName="cityId"
+          label="city"
+          [callApiFunction]="getRegionCitiesSettings"
+          type="searchableSelect"
+          [group]="nationalAddressGroup"></mat-searchable-select>
+        <mat-custom-field
+          controlName="street"
+          label="setting.fields.street"
+          type="text"
+          [group]="nationalAddressGroup"></mat-custom-field>
+        <mat-custom-field
+          controlName="streetEn"
+          label="setting.fields.street_en"
+          type="text"
+          [group]="nationalAddressGroup"></mat-custom-field>
+        <mat-custom-field
+          controlName="district"
+          label="setting.fields.district"
+          type="text"
+          [group]="nationalAddressGroup"></mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="districtEn"
+          label="setting.fields.district_en"
+          type="text"
+          [group]="nationalAddressGroup"></mat-custom-field>
+
+        <mat-custom-field controlName="postalCode" label="postal_code" type="number" [group]="nationalAddressGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="additionalCode"
+          label="additional_code"
+          type="text"
+          [group]="nationalAddressGroup">
+        </mat-custom-field>
+        <mat-custom-field controlName="unitNumber" label="unit_number" type="number" [group]="nationalAddressGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="buildingNumber"
+          label="building_number"
+          type="number"
+          [group]="nationalAddressGroup">
+        </mat-custom-field>
+      </div>
+    </form>
+  </div>
+</div>

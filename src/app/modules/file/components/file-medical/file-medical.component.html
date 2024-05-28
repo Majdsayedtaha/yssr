@@ -1,0 +1,47 @@
+<form class="form-section" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- Acceptance -->
+  <div class="section-card">
+    <div class="row-flex-division">
+      <!-- DoctorName -->
+      <mat-custom-field controlName="DoctorName" label="field.file.DoctorName" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- LaboratoryName -->
+      <mat-custom-field controlName="LaboratoryName" label="field.file.LaboratoryName" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- DiagnoseACondition -->
+      <mat-custom-field
+        controlName="DiagnoseACondition"
+        label="field.file.DiagnoseACondition"
+        type="text"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+    <div class="row-flex-division">
+      <!-- DoctorName -->
+      <mat-custom-field controlName="PatientName" label="field.file.PatientName" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- ExaminationDate -->
+      <mat-custom-field controlName="ExaminationDate" label="field.file.ExaminationDate" type="date" [group]="form">
+      </mat-custom-field>
+    </div>
+    <div class="row-flex-division">
+      <!-- Employee1Name -->
+      <mat-custom-field controlName="Employee1Name" label="field.file.Employee1Name" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- Employee2Name -->
+      <mat-custom-field controlName="Employee2Name" label="field.file.Employee2Name" type="text" [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+</form>
+
+<div class="text-left">
+  <button mat-raised-button color="primary" class="ml-2 w-10" (click)="submit()" [disabled]="form.invalid || loading">
+    {{ 'buttons.save' | translate }}
+    <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+  </button>
+</div>

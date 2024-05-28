@@ -1,0 +1,66 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="label.branch.info"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon
+        svgIcon="close"
+        class="c-pointer"
+        (click)="sidenav.close(); branchService.sideBranchDetails.next(null)"></mat-icon>
+    </div>
+
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div *ngIf="!isLoading && branchData">
+        <div class="section">
+          <header class="d-flex header">
+            <mat-icon class="icon" svgIcon="rent"></mat-icon>
+            <span>{{ 'label.branch.info' | translate }}</span>
+          </header>
+          <div class="row mb-2 mt-2 d-flex">
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.branch.name_branch_ar' | translate }}</mat-label>
+              <span class="mt-1">{{ branchData.nameAr }}</span>
+            </div>
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.branch.name_branch_en' | translate }}</mat-label>
+              <span class="mt-1">{{ branchData.nameEn }}</span>
+            </div>
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.branch.branch_address' | translate }}</mat-label>
+              <span class="mt-1">{{ branchData.address }}</span>
+            </div>
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.branch.branch_manager' | translate }}</mat-label>
+              <span class="mt-1">{{ branchData.branchManager.name }}</span>
+            </div>
+          </div>
+          <div class="row mb-2 mt-2 d-flex">
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.branch.first_mobile' | translate }}</mat-label>
+              <span class="mt-1">{{ branchData.phone1 }}</span>
+            </div>
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.branch.second_mobile' | translate }}</mat-label>
+              <span class="mt-1">{{ branchData.phone2 }}</span>
+            </div>
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.branch.first_email' | translate }}</mat-label>
+              <span class="mt-1">{{ branchData.email1 }}</span>
+            </div>
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.branch.second_email' | translate }}</mat-label>
+              <span class="mt-1">{{ branchData.email2 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

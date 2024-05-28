@@ -1,0 +1,61 @@
+<div *ngIf="businessCaseGroup" class="form-section">
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="business-case"></mat-icon>
+      <span>{{ 'business_case' | translate }}</span>
+    </div>
+    <form novalidate [formGroup]="businessCaseGroup">
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="nameAr"
+          label="setting.fields.employee_ar"
+          type="text"
+          [group]="businessCaseGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="nameEn"
+          label="setting.fields.employee_en"
+          type="text"
+          [group]="businessCaseGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="businessPositionId"
+          label="business_position"
+          type="select"
+          [callApiFunction]="getBusinessPositions"
+          [group]="businessCaseGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field controlName="phone" label="phone" type="tel" [group]="businessCaseGroup"> </mat-custom-field>
+        <mat-custom-field controlName="email" label="email" type="email" [group]="businessCaseGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division flex-row-reverse mt-1">
+        <button
+          mat-raised-button
+          color="primary"
+          class="f-size-14 f-weight-500"
+          type="submit"
+          [disabled]="!businessCaseGroup.valid || !allFilled"
+          (click)="addBusinessCaseRow()">
+          <span *ngIf="!update">{{ 'buttons.add' | translate }}</span>
+          <span *ngIf="update">{{ 'buttons.update' | translate }}</span>
+        </button>
+        <div class="row-flex-division"></div>
+        <div class="row-flex-division"></div>
+        <div class="row-flex-division"></div>
+        <div class="row-flex-division"></div>
+      </div>
+    </form>
+    <ag-grid-angular
+      id="myGrid"
+      style="width: 100%; height: 68vh; min-height: 68vh"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefs"
+      [enableRtl]="true"
+      [rowData]="business"
+      (gridReady)="onGridReady($event)"
+      [gridOptions]="gridOptions"></ag-grid-angular>
+  </div>
+</div>

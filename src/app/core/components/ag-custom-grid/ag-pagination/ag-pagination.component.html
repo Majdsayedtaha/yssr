@@ -1,0 +1,63 @@
+<div class="d-flex justify-center ag-pagination" *ngIf="totalPages > 1">
+  <!-- First Page -->
+  <span
+    class="ag-page text-color first-page"
+    [class.event-disabled]="currentPage === 1 || currentPage - 1 === 1"
+    (click)="moveToPage(1)">
+    <mat-icon [class.rtl-icon]="getDirection() == 'rtl'" svgIcon="first"></mat-icon>
+  </span>
+
+  <!-- Back Page -->
+  <span
+    class="ag-page text-color back-page"
+    (click)="moveToPage(currentPage - 1)"
+    [class.event-disabled]="currentPage === 1">
+    <mat-icon [class.rtl-icon]="getDirection() == 'rtl'" svgIcon="previous"></mat-icon>
+  </span>
+
+  <!-- Page Numbers -->
+  <div class="d-flex page-numbers justify-between">
+    <!-- Page Number -->
+    <span
+      class="ag-page text-color page-number"
+      *ngFor="let page of previewNumbers"
+      (click)="moveToPage(page)"
+      [class.active]="currentPage === page">
+      {{ page }}
+    </span>
+
+    <!-- Extra Pages -->
+    <span
+      class="ag-page text-color page-number more-pages"
+      (click)="
+        moveToPage(morePageNumber === -1 ? this.previewNumbers[this.previewNumbers.length - 1] + 1 : morePageNumber)
+      "
+      [class.active]="currentPage === morePageNumber">
+      {{ morePageNumber === -1 ? '...' : morePageNumber }}
+    </span>
+
+    <!-- Last Page Number -->
+    <span
+      class="ag-page text-color page-number last-page-number"
+      (click)="moveToPage(totalPages)"
+      [class.active]="currentPage === totalPages">
+      {{ totalPages }}
+    </span>
+  </div>
+
+  <!-- Next Page -->
+  <span
+    class="ag-page text-color next-page"
+    [class.event-disabled]="currentPage === totalPages"
+    (click)="moveToPage(currentPage + 1)">
+    <mat-icon [class.rtl-icon]="getDirection() == 'rtl'" svgIcon="next"></mat-icon>
+  </span>
+
+  <!-- Last Page -->
+  <span
+    class="ag-page text-color last-page"
+    [class.event-disabled]="currentPage === totalPages || currentPage + 1 === totalPages"
+    (click)="moveToPage(totalPages)">
+    <mat-icon [class.rtl-icon]="getDirection() == 'rtl'" svgIcon="last"></mat-icon>
+  </span>
+</div>

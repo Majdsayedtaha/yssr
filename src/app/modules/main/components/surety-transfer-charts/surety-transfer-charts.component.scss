@@ -1,0 +1,12 @@
+:host {
+  height: 100%;
+}
+// Charts
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .chart {
+    width: 200px;
+  }
+}

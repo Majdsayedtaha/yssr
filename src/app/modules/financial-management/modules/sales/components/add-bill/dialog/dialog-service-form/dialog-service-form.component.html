@@ -1,0 +1,142 @@
+<mat-dialog-content class="toast">
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <div class="toast-container">
+      <!-- Header -->
+      <div class="toast-header bg-white p-2">
+        <nav-breadcrumb
+          [child]="editMode ? 'label.financial.update_service' : 'label.financial.add_service'"></nav-breadcrumb>
+        <mat-icon svgIcon="close" class="c-pointer" (click)="closeDialog()"> </mat-icon>
+      </div>
+      <div class="bg-body p-3">
+        <div class="contant bg-white p-2">
+          <!-- Body -->
+          <div class="toast-content">
+            <div class="row-flex-division">
+              <!-- Main Service -->
+              <mat-custom-field
+                [selectValueAsObject]="true"
+                controlName="serviceMain"
+                label="service_main"
+                [callApiFunction]="getMainServices"
+                type="select"
+                [group]="form">
+              </mat-custom-field>
+              <!-- Service Name -->
+              <mat-custom-field
+                [selectValueAsObject]="true"
+                [matTooltip]="!form.get('serviceMain')?.value ? ('choose_service_main' | translate) : ''"
+                [matTooltipShowDelay]="500"
+                [disabled]="!form.get('serviceMain')?.value"
+                controlName="serviceName"
+                [callApiFunction]="getParallelServicesDepartment"
+                label="table.sales.service_name"
+                type="select"
+                [group]="form">
+              </mat-custom-field>
+              <!-- Service Number -->
+              <mat-custom-field
+                [selectValueAsObject]="true"
+                [matTooltip]="!this.form.get('serviceName')?.value ? ('choose_service_name' | translate) : ''"
+                [matTooltipShowDelay]="500"
+                [disabled]="!form.get('serviceName')?.value"
+                controlName="serviceNumber"
+                [apiEndpoint]="apiGetRequestsSelect"
+                label="table.sales.service_number"
+                type="searchableSelect"
+                [group]="form">
+              </mat-custom-field>
+
+              <!--Account Number -->
+              <!-- <mat-custom-field
+                controlName="accountNumber"
+                label="table.sales.account_number"
+                type="number"
+                [group]="form">
+              </mat-custom-field> -->
+            </div>
+            <mat-spinner [diameter]="30" *ngIf="isLoading"></mat-spinner>
+            <ng-container *ngIf="!isLoading && this.form.get('serviceNumber')?.value">
+              <div class="row-flex-division">
+                <!-- Tax Type -->
+                <mat-custom-field
+                  [selectValueAsObject]="true"
+                  [disabled]="true"
+                  controlName="taxType"
+                  label="table.sales.tax_type"
+                  type="select"
+                  [group]="form">
+                </mat-custom-field>
+
+                <!-- Tax Value -->
+                <mat-custom-field
+                  [disabled]="true"
+                  controlName="taxAmount"
+                  label="table.sales.tax_value"
+                  type="text"
+                  [group]="form">
+                </mat-custom-field>
+
+                <!-- Discount Unit -->
+                <mat-custom-field
+                  [disabled]="true"
+                  controlName="discount"
+                  label="table.sales.discount"
+                  type="text"
+                  [group]="form">
+                </mat-custom-field>
+              </div>
+
+              <div class="row-flex-division">
+                <!-- Price -->
+                <mat-custom-field
+                  [disabled]="true"
+                  controlName="contractAmount"
+                  label="table.sales.price"
+                  type="number"
+                  [group]="form">
+                </mat-custom-field>
+                <!-- Price With Tax -->
+                <mat-custom-field
+                  [disabled]="true"
+                  controlName="totalWithTax"
+                  label="total_amount_with_tax"
+                  type="number"
+                  [group]="form">
+                </mat-custom-field>
+
+                <!-- Price Without Tax -->
+                <mat-custom-field
+                  [disabled]="true"
+                  controlName="totalWithoutTax"
+                  label="total_amount_without_tax"
+                  type="number"
+                  [group]="form">
+                </mat-custom-field>
+              </div>
+            </ng-container>
+
+            <!-- Description -->
+            <mat-custom-field controlName="description" label="table.sales.description" type="textarea" [group]="form">
+            </mat-custom-field>
+
+            <!-- Details -->
+            <mat-custom-field controlName="details" label="table.sales.details" type="textarea" [group]="form">
+            </mat-custom-field>
+          </div>
+          <!-- Footer -->
+          <div class="toast-footer d-flex align-center gap-1">
+            <!-- Submit -->
+            <button [disabled]="!form.valid" mat-raised-button color="primary" class="mt-3 p-3" type="submit">
+              {{ 'buttons.save' | translate }}
+            </button>
+
+            <!-- Add -->
+            <button mat-stroked-button color="primary" class="mt-3 p-3" type="button" (click)="closeDialog()">
+              {{ 'buttons.cancel' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

@@ -1,0 +1,328 @@
+<div class="form-section">
+  <div *ngIf="isLoading" class="loader">
+    <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="company">
+    <!-- Basic Information -->
+    <section class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="housing"></mat-icon>
+        <span>{{ 'setting.fields.basic_information' | translate }}</span>
+      </div>
+      <div class="section-card-body">
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.company_name_arabic' | translate }}</mat-label>
+            <span class="mt-1">{{ company.nameAr }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.company_name_english' | translate }}</mat-label>
+            <span class="mt-1">{{ company.nameEn }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.license_number' | translate }}</mat-label>
+            <span class="mt-1">{{ company.licenseNumber }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.fax' | translate }}</mat-label>
+            <span class="mt-1">{{ company.fax }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'first_mobile' | translate }}</mat-label>
+            <span class="mt-1">{{ company.mobile1 }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'second_mobile' | translate }}</mat-label>
+            <span class="mt-1">{{ company.mobile2 }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.official_email' | translate }}</mat-label>
+            <span class="mt-1">{{ company.email1 }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'email' | translate }}</mat-label>
+            <span class="mt-1">{{ company.email2 }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Support Settings -->
+    <section class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'setting.fields.supporting_settings' | translate }}</span>
+      </div>
+      <div class="section-card-body">
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.supporting_ratio' | translate }}</mat-label>
+            <span class="mt-1">{{ company.musanedPercent }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.known_amount' | translate }}</mat-label>
+            <span class="mt-1">{{ company.maroofaAmount }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Responsible Manager -->
+    <section class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+        <span>{{ 'setting.fields.responsible_manager_info' | translate }}</span>
+      </div>
+      <div class="section-card-body">
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.Name_responsible_manager_Arabic' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.managerNameAr }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.Name_responsible_manager_English' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.managerNameEn }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.username' | translate }}</mat-label>
+            <span class="mt-1">{{ company.managerUserName }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.mobile_responsible_manager' | translate }}</mat-label>
+            <span class="mt-1">{{ company.managerPhoneNumber }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.as' | translate }}</mat-label>
+            <span class="mt-1">{{ company.managerRole }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- National Address -->
+    <section class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'national_address' | translate }}</span>
+      </div>
+      <div class="section-card-body">
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'region' | translate }}</mat-label>
+            <span class="mt-1">{{ company.region.name }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'city' | translate }}</mat-label>
+            <span class="mt-1">{{ company.city.name }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'street' | translate }}</mat-label>
+            <span class="mt-1">{{ company.street }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'street_en' | translate }}</mat-label>
+            <span class="mt-1">{{ company.streetEn }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'district' | translate }}</mat-label>
+            <span class="mt-1">{{ company.district }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'district_en' | translate }}</mat-label>
+            <span class="mt-1">{{ company.districtEn }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'postal_code' | translate }}</mat-label>
+            <span class="mt-1">{{ company.postalCode }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'additional_code' | translate }}</mat-label>
+            <span class="mt-1">{{ company.additionalCode }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'building_number' | translate }}</mat-label>
+            <span class="mt-1">{{ company.buildingNumber }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Additional Details -->
+    <section class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="additional-data"></mat-icon>
+        <span>{{ 'setting.fields.additional_data' | translate }}</span>
+      </div>
+      <div class="section-card-body">
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.commercial_registration_number' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.commercialRegister }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.commercial_registration_unique_number' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.commercialRegisterUniqueNumber }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.ad_registration_expiry_date' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.commercialRegisterExpireDateMiladi }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.hijri_registration_expiry_date' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.commercialRegisterExpireDateHijri.date }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.partial_registration' | translate }}</mat-label>
+            <span class="mt-1">{{ company.partialRegister }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.partial_registration_unique_number' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.partialRegisterUniqueNumber }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.partial_registration_expire_miladi' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.partialRegisterExpireDateMiladi }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.partial_registration_expire_hijri' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.partialRegisterExpireDateHijri }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.country_license' | translate }}</mat-label>
+            <span class="mt-1">{{ company.countryLicense }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.country_license_issue_date' | translate }}</mat-label>
+            <span class="mt-1">{{ company.countryLicenseIssueDate }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.country_license_expire_date' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.countryLicenseExpireDate }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.commerce_chamber' | translate }}</mat-label>
+            <span class="mt-1">{{ company.commerceChamber }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.commerce_chamber_issue_date' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.commerceChamberIssueDate }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{
+              'setting.fields.commerce_chamber_expire_date' | translate
+            }}</mat-label>
+            <span class="mt-1">{{ company.commerceChamberExpireDate }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.saudi_email' | translate }}</mat-label>
+            <span class="mt-1">{{ company.saudiEmail }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.saudi_email_issue_date' | translate }}</mat-label>
+            <span class="mt-1">{{ company.saudiEmailIssueDate }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.saudi_email_expire_date' | translate }}</mat-label>
+            <span class="mt-1">{{ company.saudiEmailExpireDate }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 mt-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.tax' | translate }}</mat-label>
+            <span class="mt-1">{{ company.tax }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.contract_end_manually' | translate }}</mat-label>
+            <span class="mt-1">{{ company.endWarrantyManually ? ('yes' | translate) : ('no' | translate) }}</span>
+          </div>
+        </div>
+        <div class="row-flex-division">
+          <!-- Logo 1 -->
+          <div class="row-flex-division">
+            <mat-label
+              title="{{ 'setting.fields.logo' | translate }}"
+              class="f-size-14 f-weight-700 mb-1 accent-color label w-75 cursor-pointer attachment-label"
+              [dir]="getDirection()">
+              {{ 'setting.fields.logo' | translate }}
+            </mat-label>
+            <span class="img-container" [class.img-dashed]="company.logoUrl1 == null">
+              <img
+                *ngIf="company.logoUrl1"
+                class="attachment-img"
+                [src]="previewFileUrl(company.logoUrl1)"
+                (click)="downloadLink(company.logoUrl1, 'setting.fields.logo')" />
+            </span>
+          </div>
+          <!-- Logo 2 -->
+          <div class="row-flex-division">
+            <mat-label
+              title="{{ 'setting.fields.top_logo' | translate }}"
+              class="f-size-14 f-weight-700 mb-1 accent-color label w-75 cursor-pointer attachment-label"
+              [dir]="getDirection()">
+              {{ 'setting.fields.top_logo' | translate }}
+            </mat-label>
+            <span class="img-container" [class.img-dashed]="company.logoUrl2 == null">
+              <img
+                *ngIf="company.logoUrl2"
+                class="attachment-img"
+                [src]="previewFileUrl(company.logoUrl2)"
+                (click)="downloadLink(company.logoUrl2, 'setting.fields.top_logo')" />
+            </span>
+          </div>
+          <!-- Logo 3 -->
+          <div class="row-flex-division">
+            <mat-label
+              title="{{ 'setting.fields.top_logo' | translate }}"
+              class="f-size-14 f-weight-700 mb-1 accent-color label w-75 attachment-label"
+              [dir]="getDirection()">
+              {{ 'setting.fields.bottom_logo' | translate }}
+            </mat-label>
+            <span class="img-container" [class.img-dashed]="company.logoUrl3 == null">
+              <img
+                *ngIf="company.logoUrl3"
+                class="attachment-img"
+                [src]="previewFileUrl(company.logoUrl3)"
+                (click)="downloadLink(company.logoUrl3, 'setting.fields.bottom_logo')" />
+            </span>
+          </div>
+        </div>
+      </div></section
+  ></ng-container>
+</div>

@@ -1,0 +1,44 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb [child]="readonly ? 'label.user.info' : 'label.user.edit_permissions'"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon svgIcon="close" class="c-pointer" (click)="closeSideNav()"></mat-icon>
+    </div>
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div class="section">
+        <div class="row mb-2 d-flex" *ngIf="!isLoading">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'table.user.username' | translate }}</mat-label>
+            <span class="mt-1">{{ rowData.userName }}</span>
+          </div>
+          <!-- <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.password' | translate }}</mat-label>
+            <span class="mt-1">{{ rowData.password }}</span>
+          </div> -->
+        </div>
+        <permission-table [rowData]="permissions" [readonly]="readonly" [userId]="userId"></permission-table>
+        <div class="stepper-actions" *ngIf="!readonly">
+          <ng-container *ngIf="submitLoader; then strokedButton; else raisedButton"></ng-container>
+          <ng-template #raisedButton>
+            <button mat-raised-button color="primary" class="mt-3" (click)="updatePermissions()">
+              {{ 'buttons.update_permissions' | translate }}
+            </button>
+          </ng-template>
+          <ng-template #strokedButton>
+            <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+              <mat-spinner [diameter]="30"></mat-spinner>
+            </button>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

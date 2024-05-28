@@ -1,0 +1,253 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<form class="form-section" [formGroup]="form">
+  <!-- Contract Details Base -->
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'contract_detail_base' | translate }}</span>
+    </div>
+    <div class="row-flex-division">
+      <!-- requestDateMilady -->
+      <mat-custom-field controlName="requestDateMilady" label="field.rent.requestDateMilady" type="date" [group]="form">
+      </mat-custom-field>
+
+      <!-- customer -->
+      <mat-custom-field
+        apiEndpoint="Customer/GetCustomersSelect"
+        controlName="customerId"
+        label="customer_name"
+        type="searchableSelect"
+        [selectValueAsObject]="true"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- worker -->
+      <mat-custom-field
+        apiEndpoint="Worker/GetWorkersSelect"
+        [queryParamWithEndpoint]="{ name: 'cvType', value: 4 }"
+        controlName="workerId"
+        label="field.rent.worker"
+        type="searchableSelect"
+        (onSearchableValueChange)="getWorkerDetails($event)"
+        [selectValueAsObject]="true"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+
+  <!-- Contract Details Period -->
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'contract_detail_period' | translate }}</span>
+    </div>
+    <div class="row-flex-division">
+      <!-- rentType -->
+      <mat-custom-field
+        controlName="rentTypeId"
+        label="field.rent.rentType"
+        type="select"
+        [callApiFunction]="fetchRentTypes"
+        [group]="form">
+      </mat-custom-field>
+
+      <ng-container *ngIf="rentValue && rentValue === 3; then thenTemplate; else elseTemplate"></ng-container>
+
+      <ng-template #thenTemplate>
+        <!-- fromTime -->
+        <mat-custom-field controlName="fromDateMilady" label="field.rent.fromTime" type="time_range" [group]="form">
+        </mat-custom-field>
+
+        <!-- rentHoursPeriod -->
+        <mat-custom-field
+          type="number"
+          [group]="form"
+          [minNumberValue]="1"
+          [maxNumberValue]="23"
+          controlName="rentHoursPeriod"
+          label="field.rent.rentDaysPeriod"
+          [textSuffix]="'label.suffixes.hour'">
+        </mat-custom-field>
+
+        <!-- toTime -->
+        <mat-custom-field
+          controlName="toDateMilady"
+          [readonly]="true"
+          label="field.rent.toTime"
+          type="time_range"
+          [group]="form">
+        </mat-custom-field>
+      </ng-template>
+      <ng-template #elseTemplate>
+        <!-- fromDateMilady -->
+        <mat-custom-field controlName="fromDateMilady" label="field.rent.fromDateMilady" type="date" [group]="form">
+        </mat-custom-field>
+
+        <!-- rentDaysPeriod -->
+        <mat-custom-field
+          controlName="rentDaysPeriod"
+          label="field.rent.rentDaysPeriod"
+          type="number"
+          [minNumberValue]="1"
+          [textSuffix]="'label.suffixes.' + rentPeriodUnit"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- toDateMilady -->
+        <mat-custom-field
+          controlName="toDateMilady"
+          [readonly]="true"
+          label="field.rent.toDateMilady"
+          type="date"
+          [group]="form">
+        </mat-custom-field>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Worker Details Receiving -->
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'worker_detail_receiving' | translate }}</span>
+    </div>
+    <div class="row-flex-division">
+      <!-- receivingTypeId -->
+      <mat-custom-field
+        controlName="receivingTypeId"
+        label="field.rent.receivingType"
+        type="select"
+        [callApiFunction]="fetchReceivingTypes"
+        [group]="form">
+      </mat-custom-field>
+
+      <ng-container *ngIf="receivingTypeValue && receivingTypeValue === 2">
+        <!-- receivingLocation -->
+        <mat-custom-field
+          controlName="receivingLocation"
+          label="field.rent.receivingLocation"
+          type="text"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- receivingAddress -->
+        <mat-custom-field controlName="receivingAddress" label="field.rent.receivingAddress" type="text" [group]="form">
+        </mat-custom-field>
+
+        <!-- receivingFees -->
+        <mat-custom-field
+          controlName="receivingFees"
+          label="field.rent.receivingFees"
+          type="number"
+          [minNumberValue]="0"
+          textSuffix="label.suffixes.rial_sa"
+          [group]="form">
+        </mat-custom-field>
+      </ng-container>
+
+      <!-- receivingSuggestedTime -->
+      <mat-custom-field
+        controlName="receivingSuggestedTime"
+        label="field.rent.receivingSuggestedTime"
+        type="time_range"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+
+  <!-- Finical Data -->
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+      <span>{{ 'financial_data' | translate }}</span>
+    </div>
+
+    <!-- Row 1 -->
+    <div class="row-flex-division">
+      <!-- taxTypeId -->
+      <mat-custom-field
+        controlName="taxTypeId"
+        label="field.rent.taxType"
+        type="select"
+        [callApiFunction]="fetchTaxTypes"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- rentAmount -->
+      <mat-custom-field
+        controlName="rentAmount"
+        label="field.rent.rentAmount"
+        type="number"
+        [minNumberValue]="0"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="row-flex-division">
+      <!-- taxAmount -->
+      <mat-custom-field
+        controlName="taxAmount"
+        label="field.rent.taxAmount"
+        type="number"
+        [minNumberValue]="0"
+        [readonly]="true"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- rentAmountWithoutTax -->
+      <mat-custom-field
+        controlName="rentAmountWithoutTax"
+        label="field.rent.rentAmountWithoutTax"
+        type="number"
+        [minNumberValue]="0"
+        [readonly]="true"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- rentAmountWithTax -->
+      <mat-custom-field
+        controlName="rentAmountWithTax"
+        label="field.rent.rentAmountWithTax"
+        type="number"
+        [minNumberValue]="0"
+        [readonly]="true"
+        textSuffix="label.suffixes.rial_sa"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+  <div class="text-left">
+    <button mat-stroked-button color="primary" class="ml-2 w-10" (click)="location.back()">
+      {{ 'buttons.cancel' | translate }}
+    </button>
+    <button
+      type="click"
+      [matMenuTriggerFor]="saveRentOptions"
+      mat-raised-button
+      color="primary"
+      class="ml-2 w-10"
+      [disabled]="form.invalid || loading">
+      {{ (editMode ? 'buttons.update' : 'buttons.save') | translate }}
+      <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+    </button>
+  </div>
+</form>
+
+<mat-menu #saveRentOptions="matMenu">
+  <button mat-menu-item (click)="submit()">
+    {{ editMode ? ('buttons.update' | translate) : ('buttons.save' | translate) }}
+  </button>
+  <button mat-menu-item (click)="submit(true, true)">
+    {{ editMode ? ('edit_with_email_sms' | translate) : ('save_with_email_sms' | translate) }}
+  </button>
+  <button mat-menu-item (click)="submit(true)">
+    {{ editMode ? ('edit_with_email' | translate) : ('save_with_email' | translate) }}
+  </button>
+  <button mat-menu-item (click)="submit(false, true)">
+    {{ editMode ? ('edit_with_sms' | translate) : ('save_with_sms' | translate) }}
+  </button>
+</mat-menu>

@@ -1,0 +1,39 @@
+<mat-dialog-content class="toast">
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <div class="toast-container">
+      <!-- Header -->
+      <div class="toast-header bg-white p-2">
+        <nav-breadcrumb
+          [child]="'tooltip.edit_payment_amount' | translate"></nav-breadcrumb>
+        <mat-icon svgIcon="close" class="c-pointer" (click)="closeDialog()"> </mat-icon>
+      </div>
+      <div class="bg-body p-3">
+        <div class="contant bg-white p-2">
+          <!-- Body -->
+          <div class="toast-content">
+            <div class="row-flex-division">
+              <mat-custom-field
+                controlName="paymentAmount"
+                label="table.receipt.payment_amount"
+                type="number"
+                [group]="form">
+              </mat-custom-field>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="toast-footer d-flex align-center gap-1">
+            <!-- Submit -->
+            <button [disabled]="!form.valid" mat-raised-button color="primary" class="mt-3 p-3" type="submit">
+              {{ 'buttons.save' | translate }}
+            </button>
+
+            <!-- Add -->
+            <button mat-stroked-button color="primary" class="mt-3 p-3" type="button" (click)="closeDialog()">
+              {{ 'buttons.cancel' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

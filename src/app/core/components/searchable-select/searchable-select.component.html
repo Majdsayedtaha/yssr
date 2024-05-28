@@ -1,0 +1,42 @@
+<div class="d-flex-c" [formGroup]="group">
+  <mat-label class="f-size-14 f-weight-700 accent-color label" *ngIf="label">{{ label | translate }}</mat-label>
+  <mat-form-field
+    appearance="outline"
+    style="width: 100%"
+    *ngIf="control"
+    [dir]="getDirection()"
+    (click)="getOptions()">
+    <mat-select [formControlName]="controlName" (opened)="open()" (selectionChange)="catchData($event)">
+      <div class="input-container">
+        <input
+          type="text"
+          matInput
+          #searchInput
+          class="custom-input"
+          [formControl]="myControl"
+          (keydown.space)="$event.stopPropagation()" />
+      </div>
+
+      <div infiniteScroll (scrollPosition)="onScroll($event)" class="scrollable-list">
+        <ng-container *ngIf="selectedOption">
+          <mat-option *ngFor="let f of [selectedOption]" [value]="selectValueAsObject ? f : f?.id">
+            <span [innerHTML]="f.name | highlight : searchInput.value"> </span
+          ></mat-option>
+        </ng-container>
+
+        <mat-option *ngFor="let option of options" [value]="selectValueAsObject ? option : option.id">
+          <span [innerHTML]="option.name | highlight : searchInput.value"> </span>
+        </mat-option>
+        <mat-spinner
+          class="list-spinner"
+          [style.visibility]="isScrolling ? 'visible' : 'hidden'"
+          [diameter]="20"></mat-spinner>
+      </div>
+    </mat-select>
+    <mat-spinner *ngIf="isLoading" matPrefix [diameter]="20"></mat-spinner>
+    <mat-error *ngIf="group">
+      <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+      <validation-fields [control]="control"></validation-fields>
+    </mat-error>
+  </mat-form-field>
+</div>

@@ -1,0 +1,60 @@
+<form novalidate [formGroup]="form">
+  <div class="form-section">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="branch"></mat-icon>
+        <span>{{ 'branch_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <!-- Employee -->
+        <mat-custom-field
+          controlName="userId"
+          label="employee"
+          type="select"
+          [callApiFunction]="getEmployeesSelect"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Roles -->
+        <mat-custom-field
+          controlName="roleId"
+          label="role_position"
+          type="select"
+          [callApiFunction]="fetchRoles"
+          [group]="form">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <!-- Username -->
+        <mat-custom-field controlName="userName" label="field.user.name" type="text" [group]="form"> </mat-custom-field>
+        <!-- Password -->
+        <mat-custom-field controlName="password" label="field.user.password" type="password" [group]="form">
+        </mat-custom-field>
+        <div class="stepper-actions">
+          <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+          <ng-template #raisedButton>
+            <button
+            [disabled]="!form.valid"
+            mat-raised-button
+            color="primary"
+            class="mt-3"
+            (click)="submit()">
+            <span>
+              {{ 'buttons.add' | translate }}
+            </span>
+          </button>
+          </ng-template>
+          <ng-template #strokedButton>
+            <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+              <mat-spinner [diameter]="30"></mat-spinner>
+            </button>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <permission-table
+    [rowData]="contentData"
+    (newData)="contentData = $event"
+    style="height: 35vh; display: block"></permission-table>
+</form>

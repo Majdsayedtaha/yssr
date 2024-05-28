@@ -1,0 +1,40 @@
+<waiver-specification-side-info></waiver-specification-side-info>
+<div class="d-flex-header">
+  <div class="statistics" *ngIf="statistics">
+    <div class="item">
+      <mat-icon svgIcon="customers-rounded-blue"></mat-icon>
+      <span class="title">{{ 'all_orders' | translate }}</span>
+      <span class="f-weight-500">{{ statistics.totalCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="moved-requests"></mat-icon>
+      <span class="title">{{ 'confirmed_orders' | translate }}</span>
+      <span class="f-weight-500">{{ statistics.sponsorshipTransferredCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="not-moved-yet"></mat-icon>
+      <span class="title">{{ 'unconfirmed_orders' | translate }}</span>
+      <span class="f-weight-500">{{ statistics.sponsorshipNotTransferredCount }}</span>
+    </div>
+  </div>
+  <mat-form-field [dir]="getDirection()" class="input-table">
+    <mat-icon
+      matSuffix
+      class="icon"
+      [svgIcon]="getDirection() === 'rtl' ? 'search-right' : 'search-left'"></mat-icon>
+    <input matInput (input)="getDeepWithFilter($event)" [placeholder]="'search_for_order' | translate" />
+  </mat-form-field>
+</div>
+
+<ag-grid-angular
+  id="myGrid"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="listData"
+  [enableRtl]="true"
+  (gridReady)="onGridReady($event)"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+<ag-pagination
+  (pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount"></ag-pagination>

@@ -1,0 +1,55 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="display_details"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon
+        svgIcon="close"
+        class="c-pointer"
+        (click)="sidenav.close(); salesReboundService.sideData.next(null)"></mat-icon>
+    </div>
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+          <div class="section"  *ngIf="!isLoading">
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'table.sales.service_name' | translate }}</mat-label>
+                <span class="mt-1">{{ serviceData.serviceName }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'table.sales.service_number' | translate }}</mat-label>
+                <span class="mt-1">{{ serviceData.serviceNumber }}</span>
+              </div>
+            </div>
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'table.sales.tax_type' | translate }}</mat-label>
+                <span class="mt-1">{{ serviceData.taxType }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'table.sales.price' | translate }}</mat-label>
+                <span class="mt-1">{{ serviceData.price }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'table.sales.description' | translate }}</mat-label>
+                <span class="mt-1">{{ serviceData.description }}</span>
+              </div>
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'table.sales.details' | translate }}</mat-label>
+                <span class="mt-1">{{ serviceData.details }}</span>
+              </div>
+            </div>
+          </div>
+
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

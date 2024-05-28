@@ -1,0 +1,35 @@
+.breadcrumb-item:not(:first-child) {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+ul {
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+
+  li {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 18px;
+  }
+
+  li:first-child a {
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.icon {
+  width: 25px;
+  height: 35px;
+}
+
+.icon:not(.splitter) {
+  margin-left: 10px;
+}
+
+.rtl-direction {
+  direction: rtl;
+}

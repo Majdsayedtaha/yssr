@@ -1,0 +1,20 @@
+:host {
+  height: 100%;
+}
+
+
+
+.refund-rounded {
+  width: 24px;
+  height: 24px;
+  background-color: rgb(234, 84, 85, 12%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0.1;
+  .icon {
+    width: 14px;
+    height: 14px;
+  }
+}

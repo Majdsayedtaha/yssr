@@ -1,0 +1,59 @@
+<mat-dialog-content class="toast">
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <div class="toast-container">
+      <!-- Header -->
+      <div class="toast-header bg-white p-2">
+        <nav-breadcrumb
+        [child]="'label.financial.update_service'"></nav-breadcrumb>
+        <mat-icon svgIcon="close" class="c-pointer" (click)="closeDialog()"> </mat-icon>
+      </div>
+      <div class="bg-body p-3">
+        <div class="contant bg-white p-2">
+          <!-- Body -->
+          <div class="toast-content">
+            <div class="row-flex-division">
+              <mat-custom-field controlName="serviceName" label="table.sales.service_name" type="text" [group]="form">
+              </mat-custom-field>
+              <mat-custom-field
+                controlName="serviceNumber"
+                label="table.sales.service_number"
+                type="number"
+                [group]="form">
+              </mat-custom-field>
+              <mat-custom-field controlName="price" label="table.sales.price" type="number" [group]="form">
+              </mat-custom-field>
+            </div>
+            <div class="row-flex-division">
+              <mat-custom-field controlName="taxType" label="table.sales.tax_type" type="select" [group]="form">
+              </mat-custom-field>
+              <mat-custom-field controlName="procedure" label="table.sales.procedure" type="select" [group]="form">
+              </mat-custom-field>
+            </div>
+            <div class="row-flex-division">
+              <mat-custom-field
+                controlName="description"
+                label="table.sales.description"
+                type="textarea"
+                [group]="form">
+              </mat-custom-field>
+              <mat-custom-field controlName="details" label="table.sales.details" type="textarea" [group]="form">
+              </mat-custom-field>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="toast-footer d-flex align-center gap-1">
+            <!-- Submit -->
+            <button [disabled]="!form.valid" mat-raised-button color="primary" class="mt-3 p-3" type="submit">
+              {{ 'buttons.save' | translate }}
+            </button>
+
+            <!-- Add -->
+            <button mat-stroked-button color="primary" class="mt-3 p-3" type="button" (click)="closeDialog()">
+              {{ 'buttons.cancel' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

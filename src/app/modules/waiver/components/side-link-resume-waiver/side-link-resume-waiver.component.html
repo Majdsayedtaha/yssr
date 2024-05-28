@@ -1,0 +1,144 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="link_resume"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon
+        svgIcon="close"
+        class="c-pointer"
+        (click)="sidenav.close(); linkResumeWaiverService.sideLinkResume.next('')"></mat-icon>
+    </div>
+
+    <!-- Body -->
+    <mat-spinner class="loader" color="primary" [diameter]="50" *ngIf="isLoading"></mat-spinner>
+    <ng-container *ngIf="!isLoading">
+      <p flipDirection class="px-1 text-right">{{ 'exact_workers' | translate }}</p>
+      <div infiniteScroll (scrollPosition)="onExactWorkersScroll($event)" class="details">
+        <span *ngIf="requestLinkResumes?.length === 0">{{ 'no_exact_workers_exists' | translate }}</span>
+        <div class="procedure-card" *ngFor="let linkResume of requestLinkResumes">
+          <mat-icon
+            class="icon-edit icon c-pointer"
+            [ngClass]="getDirection() === 'rtl' ? 'icon-edit-rtl' : 'icon-edit-ltr'"
+            (click)="editWorker(linkResume.id)"
+            [matTooltip]="'tooltip.edit_resume' | translate"
+            svgIcon="edit-row"></mat-icon>
+          <div class="row grid-2-column worker-name">
+            <span>{{ 'worker_ar' | translate }} </span>
+            <span class="procedure-notes">{{ linkResume.arName }}</span>
+          </div>
+          <div class="row grid-2-column">
+            <span>{{ 'worker_date_birth' | translate }}</span>
+            <span>{{ linkResume.birthDate | timezoneToDate }}</span>
+          </div>
+          <div class="row grid-2-column">
+            <span>{{ 'worker_status_marital' | translate }}</span>
+            <span> {{ linkResume.maritalStatus }}</span>
+          </div>
+          <div class="row grid-2-column">
+            <span>{{ 'children_number' | translate }}</span>
+            <span> {{ linkResume.childrenCount }}</span>
+          </div>
+          <!-- <div *ngIf="!linkResume.connectedWithContract" class="linked-status">
+          {{ 'linked_with_contract' | translate }}
+        </div> -->
+          <div class="btn-link" [ngClass]="getDirection() === 'rtl' ? 'btn-link-rtl' : 'btn-link-ltr'">
+            <button
+              *ngIf="!linkResume.loading || linkResume.loading == undefined"
+              mat-stroked-button
+              color="primary"
+              class="d-flex justify-between align-center"
+              (click)="linkToContract(linkResume.id, 'exact')">
+              <mat-icon class="icon" svgIcon="link"></mat-icon>
+              <span>{{ 'link_contract' | translate }}</span>
+            </button>
+          </div>
+          <div class="btn-link" [ngClass]="getDirection() === 'rtl' ? 'btn-link-rtl' : 'btn-link-ltr'">
+            <button
+              mat-raised-button
+              *ngIf="linkResume.loading"
+              disabled
+              color="primary"
+              class="d-flex justify-between align-center">
+              <mat-spinner [diameter]="20" color="primary"></mat-spinner>
+            </button>
+          </div>
+        </div>
+      </div>
+      <mat-spinner *ngIf="paginateLoader" style="margin: 0 auto" [diameter]="30" color="primary"></mat-spinner>
+
+      <p flipDirection class="px-1 text-right">{{ 'suggested_workers' | translate }}</p>
+      <div infiniteScroll (scrollPosition)="onSuggestedWorkersScroll($event)" class="details">
+        <span *ngIf="requestSuggestedResumes?.length === 0">
+          {{ 'no_suggested_workers_exists' | translate }}
+        </span>
+        <div class="procedure-card" *ngFor="let linkResume of requestSuggestedResumes">
+          <mat-icon
+            class="icon-edit icon c-pointer"
+            [ngClass]="getDirection() === 'rtl' ? 'icon-edit-rtl' : 'icon-edit-ltr'"
+            (click)="editWorker(linkResume.id)"
+            [matTooltip]="'tooltip.edit_resume' | translate"
+            svgIcon="edit-row"></mat-icon>
+          <div class="row grid-2-column worker-name">
+            <span>{{ 'worker_ar' | translate }} </span>
+            <span class="procedure-notes">{{ linkResume.arName }}</span>
+          </div>
+          <div class="row grid-2-column">
+            <span>{{ 'worker_date_birth' | translate }}</span>
+            <span>{{ linkResume.birthDate | timezoneToDate }}</span>
+          </div>
+          <div class="row grid-2-column">
+            <span>{{ 'worker_status_marital' | translate }}</span>
+            <span> {{ linkResume.maritalStatus }}</span>
+          </div>
+          <div class="row grid-2-column">
+            <span>{{ 'children_number' | translate }}</span>
+            <span> {{ linkResume.childrenCount }}</span>
+          </div>
+          <div class="specifications-row">
+            <mat-chip [class]="linkResume?.sameExperienceType ? 'green-chip' : 'red-chip'">
+              <mat-icon [svgIcon]="linkResume?.sameExperienceType ? 'green-check' : 'x-icon'"></mat-icon>
+              {{ linkResume.experienceType?.name }}
+            </mat-chip>
+            <mat-chip [class]="linkResume?.sameExternalOffice ? 'green-chip' : 'red-chip'">
+              <mat-icon [svgIcon]="linkResume?.sameExternalOffice ? 'green-check' : 'x-icon'"></mat-icon>
+              {{ linkResume.externalOffice?.name }}
+            </mat-chip>
+            <mat-chip [class]="linkResume?.sameJob ? 'green-chip' : 'red-chip'">
+              <mat-icon [svgIcon]="linkResume?.sameJob ? 'green-check' : 'x-icon'"></mat-icon>
+              {{ linkResume.job?.name }}
+            </mat-chip>
+            <mat-chip [class]="linkResume?.sameReligion ? 'green-chip' : 'red-chip'">
+              <mat-icon [svgIcon]="linkResume?.sameReligion ? 'green-check' : 'x-icon'"></mat-icon>
+              {{ linkResume.religion?.name }}
+            </mat-chip>
+          </div>
+          <div class="btn-link" [ngClass]="getDirection() === 'rtl' ? 'btn-link-rtl' : 'btn-link-ltr'">
+            <button
+              *ngIf="!linkResume.loading || linkResume.loading == undefined"
+              mat-stroked-button
+              color="primary"
+              class="d-flex justify-between align-center"
+              (click)="linkToContract(linkResume.id, 'suggested')">
+              <mat-icon class="icon" svgIcon="link"></mat-icon>
+              <span>{{ 'link_contract' | translate }}</span>
+            </button>
+          </div>
+          <div class="btn-link" [ngClass]="getDirection() === 'rtl' ? 'btn-link-rtl' : 'btn-link-ltr'">
+            <button
+              mat-raised-button
+              *ngIf="linkResume.loading"
+              disabled
+              color="primary"
+              class="d-flex justify-between align-center">
+              <mat-spinner [diameter]="20" color="primary"></mat-spinner>
+            </button>
+          </div>
+        </div>
+      </div>
+      <mat-spinner *ngIf="paginateLoader2" style="margin: 0 auto" [diameter]="30" color="primary"></mat-spinner>
+    </ng-container>
+  </mat-sidenav>
+</mat-sidenav-container>

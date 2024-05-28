@@ -1,0 +1,281 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<form novalidate [formGroup]="receiptForm">
+  <div class="form-section">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+        <span>{{
+          !receiptId ? ('label.financial.add_document' | translate) : ('label.financial.update_document' | translate)
+        }}</span>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          controlName="receiptNumber"
+          label="field.financial_management.number_bond"
+          type="number"
+          [disabled]="true"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="date"
+          label="field.financial_management.history_bond"
+          type="date"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="typeId"
+          label="field.financial_management.type_bond"
+          type="select"
+          [selectValueAsObject]="true"
+          [callApiFunction]="getReceiptTypes"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="sideTypeId"
+          label="field.financial_management.type_account"
+          type="select"
+          [selectValueAsObject]="true"
+          [callApiFunction]="getSideTypes"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="PaymentDestinationId"
+          [callApiFunction]="getPaymentDestinations"
+          label="field.financial_management.payment_type"
+          [selectValueAsObject]="true"
+          type="select"
+          [group]="receiptForm">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          *ngIf="typeSideDisplay === 1"
+          controlName="customerId"
+          apiEndpoint="Customer/GetCustomersSelect"
+          label="field.financial_management.customer_name"
+          type="searchableSelect"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="typeSideDisplay === 2"
+          controlName="employeeId"
+          apiEndpoint="Employee/GetEmployeesSelect"
+          label="field.financial_management.employee_name"
+          type="searchableSelect"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="typeSideDisplay === 3"
+          controlName="officeId"
+          apiEndpoint="ExternalOffice/GetExternalOffices"
+          label="field.financial_management.office_name"
+          type="searchableSelect"
+          [group]="receiptForm">
+        </mat-custom-field>
+        <mat-custom-field
+          *ngIf="paymentDisplay === 1"
+          controlName="storeId"
+          label="field.financial_management.storage"
+          [selectValueAsObject]="true"
+          type="searchableSelect"
+          apiEndpoint="Store/GetStoreSelect"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="typeBoundDisplay === 2"
+          [callApiFunction]="GetCustomerBills"
+          controlName="billId"
+          label="field.financial_management.side_bill"
+          [disabled]="!receiptForm.get('customerId')?.value"
+          type="select"
+          [group]="receiptForm">
+        </mat-custom-field>
+        <ng-container *ngIf="typeBoundDisplay !== 2">
+          <mat-custom-field
+            controlName="amount"
+            [textSuffix]="textSuffix"
+            label="field.financial_management.amount"
+            type="number"
+            [group]="receiptForm">
+          </mat-custom-field>
+
+          <mat-custom-field
+            [title]="receiptForm.get('amountWritten')?.value || ''"
+            controlName="amountWritten"
+            [disabled]="true"
+            [textSuffix]="textSuffix"
+            label="field.financial_management.amount_ar"
+            type="text"
+            [group]="receiptForm">
+          </mat-custom-field>
+
+          <mat-custom-field
+            [title]="receiptForm.get('amountWrittenEn')?.value || ''"
+            controlName="amountWrittenEn"
+            [disabled]="true"
+            [textSuffix]="textSuffix"
+            label="field.financial_management.amount_en"
+            type="text"
+            [group]="receiptForm">
+          </mat-custom-field
+        ></ng-container>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          *ngIf="paymentDisplay === 4"
+          controlName="networkId"
+          label="field.financial_management.network"
+          apiEndpoint="Network/GetNetworksSelect"
+          type="searchableSelect"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 4"
+          controlName="operationDate"
+          label="field.financial_management.transaction_date"
+          type="date"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 4"
+          controlName="operationNumber"
+          label="field.financial_management.transaction_number"
+          type="number"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 4"
+          controlName="deviceId"
+          label="field.financial_management.device"
+          apiEndpoint="Device/GetDevicesSelect"
+          type="searchableSelect"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 4"
+          controlName="bankId"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          label="field.financial_management.bank"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 2"
+          controlName="bankId"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          label="field.financial_management.bank"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 2"
+          controlName="transferDate"
+          label="field.financial_management.transfer_date"
+          type="date"
+          [group]="receiptForm">
+        </mat-custom-field>
+        <mat-custom-field
+          *ngIf="paymentDisplay === 5"
+          controlName="accountName"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          label="field.financial_management.account_name"
+          [group]="receiptForm">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          *ngIf="paymentDisplay === 3"
+          controlName="bankId"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          label="field.financial_management.bank"
+          [group]="receiptForm">
+        </mat-custom-field>
+        <mat-custom-field
+          *ngIf="paymentDisplay === 3"
+          controlName="checkNumber"
+          label="field.financial_management.number_check"
+          type="number"
+          [group]="receiptForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 3"
+          controlName="benefitDate"
+          label="dateBenefitCheck"
+          type="date"
+          [group]="receiptForm">
+        </mat-custom-field>
+      </div>
+
+      <mat-custom-field
+        controlName="description"
+        label="field.financial_management.note"
+        type="textarea"
+        [group]="receiptForm">
+      </mat-custom-field>
+    </div>
+    <ng-container *ngIf="typeBoundDisplay === 2">
+      <div class="section-card">
+        <div class="title mb-1">
+          <span>{{ 'field.financial_management.services_table' | translate }}</span>
+        </div>
+        <!-- Ag Grid -->
+        <ag-grid-angular
+          id="myGrid"
+          style="height: 38vh"
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefs"
+          [rowData]="rowData"
+          [enableRtl]="true"
+          (gridReady)="onGridReady($event)"
+          [gridOptions]="gridOptions"></ag-grid-angular>
+        <!-- Pagination -->
+        <ag-pagination
+          (pageChanged)="onSetPage($event)"
+          [pageSize]="paginationOptions.pageSize"
+          [lengthData]="paginationOptions.totalCount">
+        </ag-pagination>
+      </div>
+    </ng-container>
+  </div>
+  <div class="stepper-actions">
+    <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+    <ng-template #raisedButton>
+      <!-- [disabled]="!receiptForm.valid" -->
+      <button
+        mat-raised-button
+        color="primary"
+        class="mt-3"
+        (click)="!receiptId ? addReceipt() : updateReceipt()"
+        [disabled]="!receiptForm.valid">
+        <span *ngIf="!receiptId">
+          {{ 'buttons.add' | translate }}
+        </span>
+        <span *ngIf="receiptId">
+          {{ 'buttons.update' | translate }}
+        </span>
+      </button>
+    </ng-template>
+
+    <ng-template #strokedButton>
+      <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </button>
+    </ng-template>
+  </div>
+</form>

@@ -1,0 +1,81 @@
+:host {
+  position: fixed;
+  z-index: 10;
+}
+
+.side-nav-container {
+  position: relative;
+
+  .loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .side-nav {
+    min-width: 600px;
+    border-radius: 0.5rem;
+    background-color: var(--background-color);
+
+    .title {
+      background-color: var(--white);
+      // padding: 1rem;
+    }
+
+    .details {
+      padding: 20px;
+      padding-top: 0;
+
+      .section {
+        background-color: var(--white);
+        padding: 16px 20px;
+        border-radius: 5px;
+        height: auto;
+        overflow-y: auto;
+
+        .row {
+          gap: 12px;
+
+          .col {
+            .label {
+              color: var(--accent-color);
+              font-weight: 700;
+            }
+
+            span {
+              background-color: #f8f8f8;
+              padding: 8px 11px 8px 25px;
+              border-radius: 5px;
+              color: var(--text-color);
+              font-size: 12px;
+              min-height: 32px;
+            }
+
+            .radio,
+            .checkbox {
+              background-color: var(--white);
+
+              span {
+                background-color: var(--white);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.checkbox-title {
+  padding: 8px 11px 8px 25px;
+  border-radius: 5px;
+  color: var(--text-color);
+  font-size: 12px;
+  min-height: 32px;
+}
+
+.icon-disabled {
+  width: 16px;
+  height: 16px;
+}

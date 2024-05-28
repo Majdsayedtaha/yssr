@@ -1,0 +1,267 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<form novalidate [formGroup]="billExchangeFrom">
+  <div class="form-section">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+        <span>{{
+          !billExchangeId
+            ? ('label.financial.add_document' | translate)
+            : ('label.financial.update_document' | translate)
+        }}</span>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          [disabled]="true"
+          controlName="billExchangeTypeNumber"
+          label="field.financial_management.bill_exchange_type_number"
+          type="number"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="date"
+          label="field.financial_management.history_bond"
+          type="date"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+
+        <!-- <mat-custom-field
+          controlName="sideTypeId"
+          label="field.financial_management.side"
+          type="select"
+          [selectValueAsObject]="true"
+          [callApiFunction]="getSideTypes"
+          [group]="billExchangeFrom">
+        </mat-custom-field> -->
+
+        <mat-custom-field
+          controlName="paymentDestinationId"
+          label="field.financial_management.payment_type"
+          type="select"
+          [selectValueAsObject]="true"
+          [callApiFunction]="getPaymentDestinations"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-4">
+        <!-- <mat-custom-field
+          controlName="expenseTypeId"
+          label="field.financial_management.expense_type"
+          type="select"
+          [selectValueAsObject]="true"
+          [callApiFunction]="getExpensesTypesSelect"
+          [group]="billExchangeFrom">
+        </mat-custom-field> -->
+        <mat-custom-field
+          *ngIf="paymentDisplay === 1"
+          controlName="storeId"
+          label="field.financial_management.storage"
+          [selectValueAsObject]="true"
+          type="searchableSelect"
+          apiEndpoint="Store/GetStoreSelect"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="amount"
+          label="field.financial_management.amount"
+          type="number"
+          textSuffix="label.suffixes.rial_sa"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+        <!-- <mat-custom-field
+          controlName="withTax"
+          label="field.financial_management.with_tax"
+          type="checkbox"
+          [group]="billExchangeFrom">
+        </mat-custom-field> -->
+        <mat-custom-field
+          *ngIf="paymentDisplay === 5"
+          controlName="account"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          label="field.financial_management.account_name"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-4" *ngIf="billExchangeFrom.get('withTax')?.value">
+        <!-- <mat-custom-field
+          controlName="tax"
+          label="field.financial_management.tax_amount"
+          type="number"
+          textSuffix="label.suffixes.rial_sa"
+          [group]="billExchangeFrom">
+        </mat-custom-field> -->
+        <mat-custom-field
+          [disabled]="true"
+          controlName="totalAmountWithTax"
+          label="field.financial_management.total_amount_with_tax"
+          type="number"
+          textSuffix="label.suffixes.rial_sa"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          [disabled]="true"
+          controlName="totalAmountWithoutTax"
+          label="field.financial_management.total_amount_without_tax"
+          type="number"
+          textSuffix="label.suffixes.rial_sa"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-2">
+        <mat-custom-field
+          *ngIf="paymentDisplay === 2"
+          controlName="bankId"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          label="field.financial_management.bank"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 2"
+          controlName="transferDate"
+          label="field.financial_management.transfer_date"
+          type="date"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          *ngIf="paymentDisplay === 3"
+          controlName="bankId"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          label="field.financial_management.bank"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+        <mat-custom-field
+          *ngIf="paymentDisplay === 3"
+          controlName="checkNumber"
+          label="field.financial_management.number_check"
+          type="number"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 3"
+          controlName="benefitDate"
+          label="dateBenefitCheck"
+          type="date"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          *ngIf="paymentDisplay === 4"
+          controlName="networkId"
+          label="field.financial_management.network"
+          apiEndpoint="Network/GetNetworksSelect"
+          type="searchableSelect"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 4"
+          controlName="operationDate"
+          label="field.financial_management.transaction_date"
+          type="date"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 4"
+          controlName="operationNumber"
+          label="field.financial_management.transaction_number"
+          type="number"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 4"
+          controlName="deviceId"
+          label="field.financial_management.device"
+          apiEndpoint="Device/GetDevicesSelect"
+          type="searchableSelect"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="paymentDisplay === 4"
+          controlName="bankId"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          label="field.financial_management.bank"
+          [group]="billExchangeFrom">
+        </mat-custom-field>
+      </div>
+
+      <mat-custom-field
+        controlName="details"
+        label="field.financial_management.details"
+        type="textarea"
+        [group]="billExchangeFrom">
+      </mat-custom-field>
+    </div>
+    <!-- Table -->
+    <div class="section-card">
+      <div class="title mb-1">
+        <span>{{ 'field.financial_management.bills_exchange_table' | translate }}</span>
+      </div>
+      <div class="stepper-actions service">
+        <button mat-raised-button color="primary" class="mt-3" (click)="openDialogBillsExchange()">
+          <span>
+            {{ 'buttons.bills_exchange_add' | translate }}
+          </span>
+        </button>
+      </div>
+
+      <!-- Ag Grid -->
+      <ag-grid-angular
+        id="myGrid"
+        style="height: 50vh"
+        class="ag-theme-alpine"
+        [columnDefs]="columnDefs"
+        [rowData]="rowData"
+        [enableRtl]="true"
+        (gridReady)="onGridReady($event)"
+        [gridOptions]="gridOptions"></ag-grid-angular>
+
+      <!-- Pagination -->
+      <ag-pagination
+        (pageChanged)="onSetPage($event)"
+        [pageSize]="paginationOptions.pageSize"
+        [lengthData]="paginationOptions.totalCount">
+      </ag-pagination>
+    </div>
+  </div>
+
+
+  <div class="stepper-actions">
+    <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+    <ng-template #raisedButton>
+      <button
+        [disabled]="!billExchangeFrom.valid"
+        mat-raised-button
+        color="primary"
+        class="mt-3"
+        (click)="billExchangeId ? updateBillExchange() : addBillExchange()">
+        <span *ngIf="!billExchangeId">
+          {{ 'buttons.save' | translate }}
+        </span>
+        <span *ngIf="billExchangeId">
+          {{ 'buttons.update' | translate }}
+        </span>
+      </button>
+    </ng-template>
+
+    <ng-template #strokedButton>
+      <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </button>
+    </ng-template>
+  </div>
+</form>

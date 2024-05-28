@@ -1,0 +1,58 @@
+<h2 class="title-char">{{ 'customer' | translate }}</h2>
+<div class="cards">
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="customers"></mat-icon>
+        </div>
+        <h6>{{ 'total_number_customer' | translate }}</h6>
+      </div>
+      <span>{{ customerStatistics ? customerStatistics.total : 0 }}</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="customers"></mat-icon>
+        </div>
+        <h6>{{ 'number_customer_recruitment_workers' | translate }}</h6>
+      </div>
+      <span>{{ customerStatistics ? customerStatistics.hasRecruitmentWorkers : 0 }}</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="customers"></mat-icon>
+        </div>
+        <h6>{{ 'number_customer_rental_workers' | translate }}</h6>
+      </div>
+      <span>{{ customerStatistics ? customerStatistics.hasRentWorkers : 0 }}</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="customers"></mat-icon>
+        </div>
+        <h6>{{ 'number_individual_customers' | translate }}</h6>
+      </div>
+      <span>{{ customerStatistics ? customerStatistics.individualCount : 0 }}</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="customers"></mat-icon>
+        </div>
+        <h6>{{ 'number_business_customers' | translate }}</h6>
+      </div>
+      <span>{{ customerStatistics ? customerStatistics.businessCount : 0 }}</span>
+    </div>
+  </div>
+</div>

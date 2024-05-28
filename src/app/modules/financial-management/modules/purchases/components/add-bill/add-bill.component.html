@@ -1,0 +1,168 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+
+<form novalidate [formGroup]="purchasesForm">
+  <div class="form-section">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+        <span>{{
+          !purchasesId ? ('label.financial.add_bill' | translate) : ('label.financial.update_bill' | translate)
+        }}</span>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          controlName="purchaseNumber"
+          label="field.financial_management.billNumber"
+          [disabled]="true"
+          type="number"
+          [group]="purchasesForm">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="date"
+          label="field.financial_management.date"
+          type="date"
+          [group]="purchasesForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="externalOfficeId"
+          label="field.financial_management.supplier_name"
+          type="select"
+          [callApiFunction]="fetchExternalOffices"
+          [group]="purchasesForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="typeId"
+          label="field.financial_management.billType"
+          type="select"
+          [callApiFunction]="getBillTypes"
+          [group]="purchasesForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="(billTypeValue$ | async) === 2"
+          controlName="paymentDestinationId"
+          label="payment_method"
+          type="select"
+          [callApiFunction]="getPaymentDestinations"
+          [group]="purchasesForm">
+        </mat-custom-field>
+      </div>
+      <!-- Bill Type Options -->
+      <div
+        class="row-flex-division-1"
+        *ngIf="(paymentDestinationValue$ | async) === 1 && (billTypeValue$ | async) === 2">
+        <!-- Payment Method Cash Strategy -->
+        <mat-custom-field
+          controlName="storeId"
+          label="storage_financial"
+          type="searchableSelect"
+          apiEndpoint="Store/GetStoreSelect"
+          [group]="purchasesForm">
+        </mat-custom-field>
+      </div>
+      <div
+        class="row-flex-division-2"
+        *ngIf="(paymentDestinationValue$ | async) === 2 && (billTypeValue$ | async) === 2">
+        <!-- Payment Method Transferring Strategy -->
+        <!-- Bank -->
+
+        <mat-custom-field
+          controlName="bankId"
+          label="bank"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          [group]="purchasesForm">
+        </mat-custom-field>
+
+        <!-- Transfer date -->
+
+        <mat-custom-field
+          controlName="dateTransfer"
+          label="field.financial_management.date_transfer"
+          type="date"
+          [group]="purchasesForm">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division" *ngIf="(paymentDestinationValue$ | async) === 3 && (billTypeValue$ | async) === 2">
+        <!-- Payment Method Check Strategy -->
+
+        <!-- Check Number -->
+        <mat-custom-field controlName="checkNumber" label="check_number" type="number" [group]="purchasesForm">
+        </mat-custom-field>
+
+        <!-- Check Benefit Date -->
+        <mat-custom-field controlName="checkDueDate" label="dateBenefitCheck" type="date" [group]="purchasesForm">
+        </mat-custom-field>
+
+        <!-- Bank -->
+        <mat-custom-field
+          controlName="bankId"
+          label="bank"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          [group]="purchasesForm">
+        </mat-custom-field>
+      </div>
+      <div
+        class="row-flex-division-1"
+        *ngIf="(paymentDestinationValue$ | async) === 4 && (billTypeValue$ | async) === 2">
+        <!-- Payment Method Network Strategy -->
+        <!-- Network Number -->
+        <mat-custom-field
+          controlName="networkId"
+          label="network_number"
+          type="searchableSelect"
+          apiEndpoint="Network/GetNetworksSelect"
+          [group]="purchasesForm">
+        </mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <span>{{ 'field.financial_management.purchases_table' | translate }}</span>
+      </div>
+
+      <!-- Ag Grid -->
+      <ag-grid-angular
+        id="myGrid"
+        style="height: 50vh"
+        class="ag-theme-alpine"
+        [columnDefs]="columnDefs"
+        [rowData]="rowData"
+        [enableRtl]="true"
+        (gridReady)="onGridReady($event)"
+        [gridOptions]="gridOptions"></ag-grid-angular>
+      <!-- Pagination -->
+      <ag-pagination
+        (pageChanged)="onSetPage($event)"
+        [pageSize]="paginationOptions.pageSize"
+        [lengthData]="paginationOptions.totalCount">
+      </ag-pagination>
+    </div>
+  </div>
+  <div class="stepper-actions">
+    <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+    <ng-template #raisedButton>
+      <button
+        mat-raised-button
+        color="primary"
+        class="mt-3"
+        (click)="!purchasesId ? addPurchases() : updatePurchases()">
+        <span *ngIf="!purchasesId">
+          {{ 'buttons.add' | translate }}
+        </span>
+        <span *ngIf="purchasesId">
+          {{ 'buttons.update' | translate }}
+        </span>
+      </button>
+    </ng-template>
+
+    <ng-template #strokedButton>
+      <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </button>
+    </ng-template>
+  </div>
+</form>

@@ -1,0 +1,71 @@
+<form class="form-section" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- EMail -->
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+      <span>{{ 'email_settings' | translate }}</span>
+    </div>
+    <div class="row-flex-division">
+      <!-- MailboxAddress -->
+      <mat-custom-field controlName="MailboxAddress" label="setting.fields.mail_box_address" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- MailHost -->
+      <mat-custom-field controlName="MailHost" label="setting.fields.mail_host" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- MailHost -->
+      <mat-custom-field controlName="MailPort" label="setting.fields.port" type="number" [group]="form">
+      </mat-custom-field>
+    </div>
+    <div class="row-flex-division">
+      <!-- MailUserName -->
+      <mat-custom-field controlName="MailUserName" label="user_name" type="text" [group]="form"> </mat-custom-field>
+
+      <!-- SMSPassword -->
+      <mat-custom-field
+        controlName="MailPassword"
+        [type]="showMAILPasswordStatus ? 'text' : 'password'"
+        label="password"
+        [group]="form"
+        [suffix]="showMAILPasswordStatus ? 'eye-open' : 'eye-close'"
+        [cursorStatus]="true"
+        (onSuffixCLicked)="showMAILPasswordStatus = $event">
+      </mat-custom-field>
+    </div>
+  </div>
+
+  <!-- SMS -->
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+      <span>{{ 'sms_settings' | translate }}</span>
+    </div>
+    <div class="row-flex-division">
+      <!-- SMSUrl -->
+      <mat-custom-field controlName="SMSUrl" label="setting.fields.sms_url" type="url" [group]="form">
+      </mat-custom-field>
+
+      <!-- SMSUserName -->
+      <mat-custom-field controlName="SMSUserName" label="user_name" type="text" [group]="form"> </mat-custom-field>
+
+      <!-- SMSPassword -->
+      <mat-custom-field
+        controlName="SMSPassword"
+        [type]="showSMSPasswordStatus ? 'text' : 'password'"
+        label="password"
+        [group]="form"
+        [suffix]="showSMSPasswordStatus ? 'eye-open' : 'eye-close'"
+        [cursorStatus]="true"
+        (onSuffixCLicked)="showSMSPasswordStatus = $event">
+      </mat-custom-field>
+    </div>
+  </div>
+</form>
+
+<div class="text-left">
+  <button mat-raised-button color="primary" class="ml-2 w-10" (click)="submit()" [disabled]="form.invalid || loading">
+    {{ 'buttons.save' | translate }}
+    <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+  </button>
+</div>

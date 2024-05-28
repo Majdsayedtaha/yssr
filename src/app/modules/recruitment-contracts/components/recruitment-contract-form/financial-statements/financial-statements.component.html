@@ -1,0 +1,163 @@
+<div class="form-section">
+  <form novalidate [formGroup]="financialData">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'financial_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="contractAmount"
+          label="recruitment_amount"
+          [minNumberValue]="0"
+          type="number"
+          textSuffix="label.suffixes.rial_sa"
+          [group]="financialData"></mat-custom-field>
+        <mat-custom-field
+          controlName="taxTypeId"
+          label="tax_type"
+          type="select"
+          [callApiFunction]="fetchTaxTypes"
+          [group]="financialData"></mat-custom-field>
+        <mat-custom-field
+          controlName="discount"
+          label="discount"
+          type="number"
+          [minNumberValue]="0"
+          [maxNumberValue]="100"
+          textSuffix="%"
+          [group]="financialData"></mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="transportationAmount"
+          label="transfer_fees"
+          type="number"
+          [minNumberValue]="0"
+          textSuffix="label.suffixes.rial_sa"
+          [group]="financialData"></mat-custom-field>
+
+        <mat-custom-field
+          controlName="taxAmount"
+          label="tax_amount"
+          type="number"
+          textSuffix="label.suffixes.rial_sa"
+          [readonly]="true"
+          [minNumberValue]="0"
+          [group]="financialData"></mat-custom-field>
+
+        <mat-custom-field
+          controlName="withoutTaxAmount"
+          label="without_tax_amount"
+          type="number"
+          textSuffix="label.suffixes.rial_sa"
+          [minNumberValue]="0"
+          [readonly]="true"
+          [group]="financialData"></mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="totalRecruitmentAmountWithTax"
+          label="total_amount_with_tax"
+          type="number"
+          [minNumberValue]="0"
+          textSuffix="label.suffixes.rial_sa"
+          [readonly]="true"
+          [group]="financialData"></mat-custom-field>
+
+        <mat-custom-field
+          controlName="totalRecruitmentAmountWithoutTax"
+          label="total_amount_without_tax"
+          type="number"
+          [minNumberValue]="0"
+          textSuffix="label.suffixes.rial_sa"
+          [readonly]="true"
+          [group]="financialData"></mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'musaned_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="musanedRequestTypeId"
+          label="type_request"
+          type="select"
+          [callApiFunction]="fetchMusanedRequestTypesSelect"
+          [group]="financialData"></mat-custom-field>
+        <mat-custom-field
+          controlName="musanedRequestNum"
+          label="supporting_contract_number"
+          type="number"
+          [group]="financialData"></mat-custom-field>
+        <mat-custom-field
+          controlName="musanedRequestAmount"
+          label="musaned_amount"
+          textSuffix="label.suffixes.rial_sa"
+          type="number"
+          [readonly]="true"
+          [group]="financialData"></mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'commissions' | translate }}</span>
+      </div>
+      <div class="commissions-row mb-2">
+        <div class="w-100" style="position: relative">
+          <mat-custom-field
+            controlName="employee"
+            label="employee_name"
+            type="select"
+            [callApiFunction]="getEmployeesSelect"
+            [selectValueAsObject]="true"
+            [group]="financialData"></mat-custom-field>
+          <span *ngIf="showHaveCommissionWarning" class="commission-warning">
+            {{ 'employee_do_not_have_commission' | translate }}
+          </span>
+          <span *ngIf="showDeserveCommissionWarning && !showHaveCommissionWarning" class="commission-warning">
+            {{ 'employee_not_deserve_commission' | translate }}
+          </span>
+        </div>
+        <div class="d-flex align-center w-100">
+          <mat-custom-field
+            controlName="amount"
+            label="commission_amount"
+            textSuffix="label.suffixes.rial_sa"
+            type="number"
+            [group]="financialData"></mat-custom-field>
+          <button mat-icon-button class="more-btn mr-05 ml-05" [matTooltip]="'commission_info' | translate">
+            <mat-icon svgIcon="info"></mat-icon>
+          </button>
+        </div>
+        <button
+          mat-raised-button
+          color="primary"
+          *ngIf="!update"
+          (click)="update = false; actionCommission()"
+          [disabled]="!(financialData.get('employee')?.value && financialData.get('amount')?.value >= 0)">
+          {{ 'buttons.add' | translate }}
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="update = true; actionCommission()"
+          *ngIf="update"
+          [disabled]="!(financialData.get('employee')?.value && financialData.get('amount')?.value >= 0)">
+          {{ 'buttons.update' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+  <ag-grid-angular
+    id="myGrid"
+    class="ag-theme-alpine grid"
+    [columnDefs]="columnDefs"
+    [enableRtl]="true"
+    [rowData]="employees || []"
+    (gridReady)="onGridReady($event)"
+    [gridOptions]="gridOptions"></ag-grid-angular>
+</div>

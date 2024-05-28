@@ -1,0 +1,50 @@
+<!-- Side Info -->
+<side-data></side-data>
+
+<!-- Statistics -->
+<div class="d-flex-header">
+  <div class="statistics">
+    <div class="item">
+      <mat-icon svgIcon="customers-rounded-blue"></mat-icon>
+      <span class="title">{{ 'all_customers' | translate }}</span>
+      <span class="f-weight-500" *ngIf="customerStatistics">{{ customerStatistics.totalCustomersCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="stars-rounded"></mat-icon>
+      <span class="title">{{ 'vip_customers' | translate }}</span>
+      <span class="f-weight-500" *ngIf="customerStatistics">{{ customerStatistics.vipCustomersCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="blocked-rounded"></mat-icon>
+      <span class="title">{{ 'blocked_customers' | translate }}</span>
+      <span class="f-weight-500" *ngIf="customerStatistics">{{ customerStatistics.blockedCustomersCount }}</span>
+    </div>
+  </div>
+  <mat-form-field [dir]="getDirection()" class="input-table">
+    <input
+      matInput
+      (input)="getDeepWithFilter($event)"
+      placeholder="{{ 'search_for_specific_customer' | translate }}" />
+    <mat-icon
+      matSuffix
+      class="icon"
+      [svgIcon]="getDirection() === 'rtl' ? 'search-right' : 'search-left'"></mat-icon>
+  </mat-form-field>
+</div>
+
+<!-- Ag Grid -->
+<ag-grid-angular
+  id="myGrid"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="customerListData"
+  [enableRtl]="true"
+  (gridReady)="onGridReady($event)"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+
+<!-- Pagination -->
+<ag-pagination
+  (pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount">
+</ag-pagination>

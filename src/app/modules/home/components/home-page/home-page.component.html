@@ -1,0 +1,61 @@
+<div class="home">
+  <div class="profile">
+    <div class="card">
+      <div class="card-body">
+        <div class="title">
+          <div class="icon icon-shape">
+            <mat-icon svgIcon="personal-data"></mat-icon>
+          </div>
+          <h4>{{ 'profile' | translate }}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="details">
+      <div class="position">
+        <span>{{ user.userName | titlecase }}</span>
+        <span>{{ user.role | titlecase }}</span>
+      </div>
+      <img class="profile-image" src="assets/images/owner.jpg" />
+    </div>
+    <div class="activities">
+      <h3>{{ 'latest_activities' | translate }}</h3>
+      <ul class="list">
+        <li>تجديد عقد <mat-icon svgIcon="waiver-p"></mat-icon></li>
+        <li>إنهاء كفالة <mat-icon svgIcon="waiver-p"></mat-icon></li>
+        <li>تمديد كفالة <mat-icon svgIcon="waiver-p"></mat-icon></li>
+        <li>إضافة مستخدم <mat-icon svgIcon="waiver-p"></mat-icon></li>
+        <li>إضافة زبون <mat-icon svgIcon="waiver-p"></mat-icon></li>
+        <li>تمديد عقد عامل <mat-icon svgIcon="waiver-p"></mat-icon></li>
+        <li>إضافة مندوب <mat-icon svgIcon="waiver-p"></mat-icon></li>
+      </ul>
+    </div>
+  </div>
+  <div class="info">
+    <div class="cards">
+      <div class="card" *ngFor="let contract of contracts">
+        <div class="card-body">
+          <div class="title">
+            <h2>{{ contract.count }}</h2>
+            <span>{{ contract.name | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ag Grid -->
+    <ag-grid-angular
+      id="myGrid"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefs"
+      [rowData]="rowData"
+      [enableRtl]="true"
+      (gridReady)="onGridReady($event)"
+      [gridOptions]="gridOptions"></ag-grid-angular>
+
+    <!-- Pagination -->
+    <ag-pagination
+      (pageChanged)="onSetPage($event)"
+      [pageSize]="paginationOptions.pageSize"
+      [lengthData]="paginationOptions.totalCount">
+    </ag-pagination>
+  </div>
+</div>

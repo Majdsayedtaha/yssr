@@ -1,0 +1,45 @@
+<waiver-side-info></waiver-side-info>
+<waiver-external-side-info></waiver-external-side-info>
+<side-link-resume-waiver></side-link-resume-waiver>
+<div class="d-flex-header">
+  <div class="statistics">
+    <!-- <div class="item">
+      <mat-icon svgIcon="customers-rounded-blue"></mat-icon>
+      <span class="title">{{ 'all_orders' | translate }}</span>
+      <span class="f-weight-500" *ngIf="waiverStatistics">{{ waiverStatistics.totalCount }}</span>
+    </div> -->
+    <div class="item">
+      <mat-icon svgIcon="moved-requests"></mat-icon>
+      <span class="title">{{ 'worker_order_count' | translate }}</span>
+      <span class="f-weight-500" *ngIf="waiverStatistics">{{ waiverStatistics.waiverRequestsCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="not-moved-yet"></mat-icon>
+      <span class="title">{{ 'waiver_order_count' | translate }}</span>
+      <span class="f-weight-500" *ngIf="waiverStatistics">{{ waiverStatistics.externalWaiverRequestsCount }}</span>
+    </div>
+  </div>
+  <mat-form-field [dir]="getDirection()" class="input-table">
+    <mat-icon
+      matSuffix
+      class="icon"
+      [svgIcon]="getDirection() === 'rtl' ? 'search-right' : 'search-left'"></mat-icon>
+    <input matInput (input)="getDeepWithFilter($event)" [placeholder]="'search_for_order' | translate" />
+  </mat-form-field>
+</div>
+
+<!-- Table -->
+<ag-grid-angular
+  id="myGrid"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="waiverListData"
+  [enableRtl]="true"
+  (gridReady)="onGridReady($event)"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+
+<!-- Pagination -->
+<ag-pagination
+  (pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount"></ag-pagination>

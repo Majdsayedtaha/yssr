@@ -1,0 +1,251 @@
+<div class="form-section">
+  <form novalidate [formGroup]="additionalDetailsGroup">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="additional-data"></mat-icon>
+        <span>{{ 'setting.fields.additional_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          controlName="commercialRegister"
+          label="setting.fields.commercial_registration_number"
+          type="number"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="commercialRegisterUniqueNumber"
+          label="setting.fields.commercial_registration_unique_number"
+          type="text"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="commercialRegisterExpireDateMiladi"
+          otherControlName="commercialRegisterExpireDateHijri"
+          label="setting.fields.ad_registration_expiry_date"
+          type="date"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="commercialRegisterExpireDateHijri"
+          otherControlName="commercialRegisterExpireDateMiladi"
+          label="setting.fields.hijri_registration_expiry_date"
+          type="date"
+          [hijriFormat]="true"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          controlName="partialRegister"
+          label="setting.fields.partial_registration"
+          type="number"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="partialRegisterUniqueNumber"
+          label="setting.fields.partial_registration_unique_number"
+          type="text"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="partialRegisterExpireDateMiladi"
+          otherControlName="partialRegisterExpireDateHijri"
+          label="setting.fields.partial_registration_expire_miladi"
+          type="date"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="partialRegisterExpireDateHijri"
+          otherControlName="partialRegisterExpireDateMiladi"
+          label="setting.fields.partial_registration_expire_hijri"
+          type="date"
+          [hijriFormat]="true"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="countryLicense"
+          label="setting.fields.country_license"
+          type="text"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="countryLicenseIssueDate"
+          label="setting.fields.country_license_issue_date"
+          type="date"
+          otherControlName="countryLicenseIssueDateHijri"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="countryLicenseIssueDateHijri"
+          otherControlName="countryLicenseIssueDate"
+          label="setting.fields.country_license_issue_date_hijri"
+          type="date"
+          [hijriFormat]="true"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-2">
+        <mat-custom-field
+          controlName="countryLicenseExpireDate"
+          label="setting.fields.country_license_expire_date"
+          type="date"
+          otherControlName="countryLicenseExpireDateHijri"
+          [group]="additionalDetailsGroup"
+          [compareControlName]="'countryLicenseIssueDate'"
+          compareLabel="setting.fields.country_license_issue_date">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="countryLicenseExpireDateHijri"
+          otherControlName="countryLicenseExpireDate"
+          label="setting.fields.country_license_expire_date_hijri"
+          type="date"
+          [hijriFormat]="true"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          controlName="commerceChamber"
+          label="setting.fields.commerce_chamber"
+          type="text"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="commerceChamberIssueDate"
+          label="setting.fields.commerce_chamber_issue_date"
+          type="date"
+          otherControlName="commerceChamberIssueDateHijri"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="commerceChamberIssueDateHijri"
+          label="setting.fields.commerce_chamber_issue_date_hijri"
+          otherControlName="commerceChamberExpireDate"
+          type="date"
+          [hijriFormat]="true"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-2">
+        <mat-custom-field
+          controlName="commerceChamberExpireDate"
+          label="setting.fields.commerce_chamber_expire_date"
+          otherControlName="commerceChamberExpireDateHijri"
+          type="date"
+          [group]="additionalDetailsGroup"
+          [compareControlName]="'commerceChamberIssueDate'"
+          compareLabel="setting.fields.commerce_chamber_issue_date">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="commerceChamberExpireDateHijri"
+          otherControlName="commerceChamberExpireDate"
+          label="setting.fields.commerce_chamber_expire_date_hijri"
+          type="date"
+          [hijriFormat]="true"
+          [group]="additionalDetailsGroup"></mat-custom-field>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          controlName="saudiEmail"
+          label="setting.fields.saudi_email"
+          type="text"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="saudiEmailIssueDate"
+          label="setting.fields.saudi_email_issue_date"
+          otherControlName="saudiEmailIssueDateHijri"
+          type="date"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="saudiEmailIssueDateHijri"
+          otherControlName="saudiEmailIssueDate"
+          label="setting.fields.saudi_email_issue_date_hijri"
+          type="date"
+          [hijriFormat]="true"
+          [group]="additionalDetailsGroup"></mat-custom-field>
+      </div>
+      <div class="row-flex-division-2">
+        <mat-custom-field
+          controlName="saudiEmailExpireDate"
+          otherControlName="saudiEmailExpireDateHijri"
+          label="setting.fields.saudi_email_expire_date"
+          type="date"
+          [group]="additionalDetailsGroup"
+          [compareControlName]="'saudiEmailIssueDate'"
+          compareLabel="setting.fields.saudi_email_issue_date">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="saudiEmailExpireDateHijri"
+          otherControlName="saudiEmailExpireDate"
+          label="setting.fields.saudi_email_expire_date_hijri"
+          type="date"
+          [hijriFormat]="true"
+          [group]="additionalDetailsGroup"></mat-custom-field>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          controlName="tax"
+          label="setting.fields.tax"
+          textSuffix="%"
+          type="number"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="civilRegistry"
+          label="setting.fields.civil_registry"
+          type="text"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division-4">
+        <mat-custom-field
+          controlName="endWarrantyManually"
+          [label]="'setting.fields.contract_end_manually'"
+          type="checkbox"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="attachments"></mat-icon>
+        <span>{{ 'setting.fields.attachments' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="logo1"
+          type="file"
+          [customUrl]="additionalDetailsGroup.get('logoUrl1')?.value"
+          label="setting.fields.logo"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="logo2"
+          type="file"
+          [customUrl]="additionalDetailsGroup.get('logoUrl2')?.value"
+          label="setting.fields.top_logo"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="logo3"
+          type="file"
+          [customUrl]="additionalDetailsGroup.get('logoUrl3')?.value"
+          label="setting.fields.bottom_logo"
+          [group]="additionalDetailsGroup">
+        </mat-custom-field>
+      </div>
+    </div>
+  </form>
+</div>

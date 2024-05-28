@@ -1,0 +1,14 @@
+.parent-section {
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+.main-section {
+  position: relative;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height: calc(100vh - 150px);
+  background-color: var(--background-color);
+}

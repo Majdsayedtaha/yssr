@@ -1,0 +1,98 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <div class="title mb-1 d-flex justify-between">
+      <nav-breadcrumb child="label.delegations.info"></nav-breadcrumb>
+      <mat-icon svgIcon="close" class="c-pointer" (click)="closeSideNav()"></mat-icon>
+    </div>
+
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div class="section" *ngIf="!isLoading">
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'order_date' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.requestDateMilady | timezoneToDate }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'order_number' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.requestNumber }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'customer_name' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.customer }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'worker_name' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.worker }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'occupation' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.job?.name }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'worker_count' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.workersCount }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'authorization_status' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.delegationStatus?.name }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'authorization_number' | translate }}</mat-label>
+
+            <span class="mt-1">{{ requestData?.delegationNum }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'authorization_date' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.delegationDateMilady | timezoneToDate }}</span>
+          </div>
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'supporting_number' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.musanedNumber }}</span>
+          </div>
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'supporting_history' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.musanedDateMilady | timezoneToDate }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'surety_transfer_amount' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.sponsorshipTransferAmount }}</span>
+          </div>
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'tax' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.taxType?.name }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'tax_amount' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.sponsorshipTransferTaxAmount }}</span>
+          </div>
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'net_tax' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.sponsorshipTransferAmount }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'comments' | translate }}</mat-label>
+            <span class="mt-1">{{ requestData?.note }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

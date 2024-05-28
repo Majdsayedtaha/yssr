@@ -1,0 +1,112 @@
+:host {
+  position: fixed;
+  z-index: 10;
+}
+.side-nav-container {
+  position: relative;
+  .side-nav {
+    min-width: 600px;
+    background-color: var(--background-color);
+    .icon {
+      width: 16px;
+    }
+    .title {
+      // padding: 1rem;
+      background-color: var(--white);
+    }
+    .details {
+      background-color: var(--white);
+      border-radius: var(--button-radius);
+      margin: 1rem;
+      max-height: 400px;
+      overflow: auto;
+      border: 1rem solid var(--white);
+      border-right: none;
+      .procedure-card {
+        position: relative;
+        background-color: var(--background-color);
+        border-radius: var(--button-radius);
+        margin-bottom: 1rem;
+        padding: 1rem;
+        .icon-edit {
+          position: absolute;
+          top: 1rem;
+          &.icon-edit-rtl {
+            left: 1rem;
+          }
+          &.icon-edit-ltr {
+            right: 1rem;
+          }
+        }
+        .btn-link {
+          width: 175px !important;
+          &.btn-link-ltr {
+            margin-left: auto;
+          }
+
+          &.btn-link-rtl {
+            margin-right: auto;
+          }
+        }
+        .row {
+          margin-bottom: 0.75rem;
+          &.worker-name {
+            width: 71%;
+          }
+          > span {
+            width: fit-content;
+          }
+        }
+        .specifications-row {
+          height: 125px;
+          color: var(--white);
+          ::ng-deep {
+            mat-chip {
+              margin: 0.2rem;
+              &.green-chip {
+                background-color: var(--red-background) !important;
+                .mdc-evolution-chip__text-label,
+                .mat-mdc-chip-remove .mat-icon {
+                  color: var(--red-text) !important;
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                }
+              }
+              &.red-chip {
+                .mat-icon {
+                  scale: 0.6;
+                }
+                background-color: var(--green-background) !important;
+                .mdc-evolution-chip__text-label,
+                .mat-mdc-chip-remove .mat-icon {
+                  color: var(--green-text) !important;
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                }
+              }
+            }
+          }
+        }
+        .linked-status {
+          position: absolute;
+          width: 150px !important;
+          bottom: 1rem;
+          left: 1rem;
+          padding: 0.5rem;
+          border-radius: var(--button-radius);
+          color: var(--success-color);
+          background-color: rgba(21, 215, 161, 0.12);
+          text-align: center;
+        }
+      }
+      .procedure-notes {
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}

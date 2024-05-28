@@ -1,0 +1,45 @@
+<div class="d-flex-header">
+  <!-- Statistics -->
+  <div class="statistics">
+    <div class="item">
+      <mat-icon svgIcon="customers-rounded-blue"></mat-icon>
+      <span class="title">{{ 'count_worker_found' | translate }}</span>
+      <span class="f-weight-500" *ngIf="statistics"> {{ statistics.availableCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="customers-rounded-blue"></mat-icon>
+      <span class="title">{{ 'count_worker_not_found' | translate }}</span>
+      <span class="f-weight-500" *ngIf="statistics"> {{ statistics.unAvailableCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="customers-rounded-blue"></mat-icon>
+      <span class="title">{{ 'count_worker_expire' | translate }}</span>
+      <span class="f-weight-500" *ngIf="statistics"> {{ statistics.rentAboutToEndCount }}</span>
+    </div>
+  </div>
+  <!-- Search -->
+  <mat-form-field [dir]="getDirection()" class="input-table">
+    <input matInput (input)="getDeepWithFilter($event)" placeholder="{{ 'search_for_specific_worker' | translate }}" />
+    <mat-icon
+      matSuffix
+      class="icon"
+      [svgIcon]="getDirection() === 'rtl' ? 'search-right' : 'search-left'"></mat-icon>
+  </mat-form-field>
+</div>
+
+<!-- Ag Grid -->
+<ag-grid-angular
+  id="myGrid"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="rowData"
+  [enableRtl]="true"
+  (gridReady)="onGridReady($event)"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+
+<!-- Pagination -->
+<ag-pagination
+  (pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount">
+</ag-pagination>

@@ -1,0 +1,92 @@
+<div class="form-section">
+  <form
+    novalidate
+    [formGroup]="regionForm"
+    authorization
+    [roleValue]="role"
+    [authName]="[authCanAdd, authCanUpdate]"
+    roleCss="block">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+        <span>{{ 'label.setting.regions' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field controlName="nameAr" label="setting.fields.region_name_ar" type="text" [group]="regionForm">
+        </mat-custom-field>
+        <mat-custom-field controlName="nameEn" label="setting.fields.region_name_en" type="text" [group]="regionForm">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="countryId"
+          label="setting.fields.country"
+          type="select"
+          [callApiFunction]="fetchCountries"
+          [group]="regionForm">
+        </mat-custom-field>
+
+        <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+        <ng-template #raisedButton>
+          <button
+            authorization
+            [roleValue]="role"
+            [authName]="authCanAdd"
+            *ngIf="!isLoading && !update"
+            mat-raised-button
+            [disabled]="!regionForm.valid"
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            type="submit"
+            (click)="regionRow('add')">
+            {{ 'buttons.add' | translate }}
+          </button>
+          <button
+            authorization
+            [roleValue]="role"
+            [authName]="authCanUpdate"
+            *ngIf="!isLoading && update"
+            mat-raised-button
+            [disabled]="!regionForm.valid"
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            type="submit"
+            (click)="regionRow('update')">
+            {{ 'buttons.update' | translate }}
+          </button>
+        </ng-template>
+
+        <ng-template #strokedButton>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            disabled>
+            <mat-spinner [diameter]="30"></mat-spinner>
+          </button>
+        </ng-template>
+        <span></span>
+      </div>
+    </div>
+  </form>
+
+  <!-- Table -->
+  <ag-grid-angular
+    authorization
+    [roleValue]="role"
+    [authName]="authCanView"
+    roleCss="block"
+    id="myGrid"
+    class="ag-theme-alpine grid"
+    [columnDefs]="columnDefs"
+    [rowData]="rowData"
+    [rowClass]="'ag-cell-custom'"
+    [enableRtl]="true"
+    (gridReady)="onGridReady($event)"
+    [gridOptions]="gridOptions"></ag-grid-angular>
+  <!-- Pagination -->
+  <ag-pagination
+    [pageSize]="paginationOptions.pageSize"
+    [lengthData]="paginationOptions.totalCount"
+    (pageChanged)="onSetPage($event)"></ag-pagination>
+</div>

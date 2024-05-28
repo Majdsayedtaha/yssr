@@ -1,0 +1,38 @@
+<form class="form-section" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- Acceptance -->
+  <div class="section-card">
+    <div class="row-flex-division">
+      <!-- OfficeName -->
+      <mat-custom-field controlName="OfficeName" label="field.file.OfficeName" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- WorkerName -->
+      <mat-custom-field controlName="WorkerName" label="field.file.WorkerName" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- PassportNo -->
+      <mat-custom-field controlName="PassportNo" label="field.file.PassportNo" type="text" [group]="form">
+      </mat-custom-field>
+    </div>
+    <div class="row-flex-division">
+      <!-- EmployerName -->
+      <mat-custom-field controlName="EmployerName" label="field.file.EmployerName" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- DateValue -->
+      <mat-custom-field controlName="DateValue" label="field.file.DateValue" type="date" [group]="form">
+      </mat-custom-field>
+
+      <!-- ReceiverName -->
+      <mat-custom-field controlName="ReceiverName" label="field.file.ReceiverName" type="text" [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+</form>
+
+<div class="text-left">
+  <button mat-raised-button color="primary" class="ml-2 w-10" (click)="submit()" [disabled]="form.invalid || loading">
+    {{ 'buttons.save' | translate }}
+    <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+  </button>
+</div>

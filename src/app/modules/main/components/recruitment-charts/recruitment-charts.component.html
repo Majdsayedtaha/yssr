@@ -1,0 +1,194 @@
+<div style="margin-top: 25px" class="text-center">
+  <mat-form-field appearance="fill" [dir]="direction.getDirection()">
+    <mat-label>{{ 'from_date' | translate }}</mat-label>
+    <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="from" />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker>
+      <mat-datepicker-actions>
+        <button mat-button matDatepickerCancel>{{ 'buttons.cancel' | translate }}</button>
+        <button mat-raised-button color="primary" matDatepickerApply>{{ 'buttons.apply' | translate }}</button>
+      </mat-datepicker-actions>
+    </mat-datepicker>
+  </mat-form-field>
+  &nbsp;&nbsp;
+  <mat-form-field appearance="fill" [dir]="direction.getDirection()">
+    <mat-label>{{ 'to_date' | translate }}</mat-label>
+    <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="toMonth" />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker>
+      <mat-datepicker-actions>
+        <button mat-button matDatepickerCancel>{{ 'buttons.cancel' | translate }}</button>
+        <button mat-raised-button color="primary" matDatepickerApply>{{ 'buttons.apply' | translate }}</button>
+      </mat-datepicker-actions>
+    </mat-datepicker>
+  </mat-form-field>
+</div>
+<div style="margin-top: 25px" class="text-center">
+  <button mat-stroked-button color="primary" style="width: 15%" (click)="applyDateFilter()">
+    {{ 'apply_date_filter' | translate }}
+  </button>
+</div>
+<h2 class="title-char">{{ 'recruitment' | translate }}</h2>
+<div class="cards">
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="note"></mat-icon>
+        </div>
+        <h6>{{ 'total_number_contracts_recruitment' | translate }}</h6>
+      </div>
+      <span>{{ recruitmentTotalCount.total }}</span>
+    </div>
+  </div>
+</div>
+<!-- Cards -->
+<div class="card shadow">
+  <div class="card-header border-0">
+    <h4>{{ 'number_contracts_according_latest_procedure_recruitment' | translate }}</h4>
+  </div>
+  <p class="mb-1" *ngIf="latestProcedureRecruitment.length == 0">
+    {{ 'no_contracts_according_latest_procedure_waiver' | translate }}
+  </p>
+</div>
+<div class="cards-procedure" *ngIf="latestProcedureRecruitment.length != 0">
+  <div class="card" *ngFor="let item of latestProcedureRecruitment">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="note"></mat-icon>
+        </div>
+        <h6>{{ item.name }}</h6>
+      </div>
+      <span>{{ item.count }}</span>
+    </div>
+  </div>
+</div>
+<div class="tables d-flex">
+  <div class="table">
+    <div class="card shadow">
+      <div class="card-header border-0">
+        <h4>{{ 'contracts_nearing_expiration_recruitment' | translate }}</h4>
+      </div>
+    </div>
+    <!-- Ag Grid -->
+    <ag-grid-angular
+      id="myGrid"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefsExpirationRecruitment"
+      [rowData]="rowDataExpirationRecruitment"
+      [enableRtl]="(direction.direction$ | async) === 'rtl' ? true : false"
+      (gridReady)="onGridReadyExpirationRecruitment($event)"
+      [gridOptions]="gridOptions"></ag-grid-angular>
+    <ag-pagination
+      (pageChanged)="onSetPageExpirationRecruitment($event)"
+      [pageSize]="paginationOptionsExpirationRecruitment.pageSize"
+      [lengthData]="paginationOptionsExpirationRecruitment.totalCount"></ag-pagination>
+  </div>
+  <div class="table">
+    <div class="card shadow">
+      <div class="card-header border-0">
+        <h4>{{ 'contracts_approaching_end_trial_period_recruitment' | translate }}</h4>
+      </div>
+    </div>
+    <!-- Ag Grid -->
+    <ag-grid-angular
+      id="myGrid"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefsTrialPeriodRecruitment"
+      [rowData]="rowDataTrialPeriodRecruitment"
+      [enableRtl]="(direction.direction$ | async) === 'rtl' ? true : false"
+      (gridReady)="onGridReadyTrialPeriodRecruitment($event)"
+      [gridOptions]="gridOptions"></ag-grid-angular>
+    <ag-pagination
+      (pageChanged)="onSetPageTrialPeriodRecruitment($event)"
+      [pageSize]="paginationOptionsTrialPeriodRecruitment.pageSize"
+      [lengthData]="paginationOptionsTrialPeriodRecruitment.totalCount"></ag-pagination>
+  </div>
+
+  <div class="table">
+    <div class="card shadow">
+      <div class="card-header border-0">
+        <h4>{{ 'number_recruitment' | translate }}</h4>
+      </div>
+    </div>
+    <!-- Ag Grid -->
+    <ag-grid-angular
+      id="myGrid"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefRecruitment"
+      [enableRtl]="true"
+      (gridReady)="onGridReady($event)"
+      [gridOptions]="gridOptions"></ag-grid-angular>
+
+    <!-- Pagination -->
+    <ag-pagination
+      (pageChanged)="onSetPage($event)"
+      [pageSize]="paginationOptions.pageSize"
+      [lengthData]="paginationOptions.totalCount">
+    </ag-pagination>
+  </div>
+</div>
+
+<section id="recruitment-section">
+  <div class="chart-container">
+    <div class="d-flex flex-column">
+      <div class="card-header border-0">
+        <h4>{{ 'number_contracts_according_countries' | translate }}</h4>
+      </div>
+      <div style="height: 240px">
+        <canvas #barChart></canvas>
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="card-header border-0">
+        <h4>{{ 'number_recruitment_contracts_year' | translate }}</h4>
+      </div>
+      <div style="height: 240px">
+        <canvas #lineChart></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="recruitment-section">
+  <div class="chart-container">
+    <div class="d-flex flex-column">
+      <div class="card-header border-0">
+        <h4>{{ 'number_contracts_according_months' | translate }}</h4>
+      </div>
+      <div style="height: 240px; margin-top: 45px">
+        <canvas #barchartTowMonth></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- <section id="recruitment-section">
+    <div class="chart-container">
+
+  <div class="d-flex flex-column">
+    <div class="card-header border-0">
+      <h4>{{ 'number_recruitment_for_employee_contracts_year' | translate }}</h4>
+    </div>
+    <div style="height: 240px">
+      <canvas #barchartWorkerTowMonth></canvas>
+    </div>
+    <div style="margin-top: 25px;">
+      <p>{{'label.employee.employees_title'|translate}} :&nbsp;</p>
+
+      <mat-form-field appearance="fill">
+        <mat-select >
+          <mat-option *ngFor="let w of workers" value="{{w.name}}">{{w.name}}</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+
+    </div>
+  </div>
+  </div>
+
+</section> -->

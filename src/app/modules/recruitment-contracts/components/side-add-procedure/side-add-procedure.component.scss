@@ -1,0 +1,22 @@
+:host {
+  position: fixed;
+  z-index: 10;
+}
+
+.side-nav-container {
+  position: relative;
+
+  .side-nav {
+    background-color: var(--background-color);
+
+    .add-procedure {
+      width: 140px;
+      margin: 0 78%;
+    }
+  }
+}
+
+
+span.legend {
+  text-wrap: nowrap;
+}

@@ -1,0 +1,55 @@
+<ng-container *ngIf="control && control.errors && (control.dirty || control.touched)">
+  <ng-container [ngSwitch]="true">
+    <ng-container *ngSwitchCase="!!control.errors.required">
+      {{ 'fields_validation.field-required' | translate }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.pattern">
+      {{ 'fields_validation.field-invalid' | translate }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.email">
+      {{ 'fields_validation.email-invalid' | translate }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.textNotArabic">
+      {{ 'fields_validation.enter-just-arabic' | translate }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.textNotEnglish">
+      {{ 'fields_validation.enter-just-english' | translate }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.min">
+      {{ 'fields_validation.min-number' | translate : { min: control.errors.min.min } }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.max">
+      {{ 'fields_validation.max-number' | translate : { max: control.errors.max.max } }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.maxlength && !control.errors.invalidTelephone">
+      {{
+        'fields_validation.password-max-invalid' | translate : { maxLength: control.errors.maxlength.requiredLength }
+      }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.minlength">
+      {{
+        'fields_validation.password-min-invalid' | translate : { minLength: control.errors.minlength.requiredLength }
+      }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.invalidTelephone">
+      {{
+        'fields_validation.enter_valid_telephone_number'
+          | translate : { numberOfDigits: control.errors.invalidTelephone }
+      }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.invalidPhoneNumber">
+      {{ 'fields_validation.enter_valid_phone_number' | translate }}
+    </ng-container>
+    <ng-container *ngSwitchCase="!!control.errors.anotherFieldRequired">
+      {{
+        'fields_validation.another-field-required'
+          | translate : { label: control.errors.anotherFieldRequired.label | translate }
+      }}
+    </ng-container>
+
+    <!-- Important to view the comping validation server errors from backend -->
+    <!-- <ng-container *ngIf="control.errors?.serverError">
+      {{ control.errors.serverError }}
+    </ng-container> -->
+  </ng-container>
+</ng-container>

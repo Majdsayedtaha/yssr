@@ -1,0 +1,55 @@
+<form class="form-section" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- Acceptance -->
+  <div class="section-card">
+    <div class="row-flex-division">
+      <!-- DateValue -->
+      <mat-custom-field controlName="DateValue" label="field.file.DateValue" type="date" [group]="form">
+      </mat-custom-field>
+
+      <!-- ObjectiveTitle -->
+      <mat-custom-field controlName="ObjectiveTitle" type="text" label="field.file.ObjectiveTitle" [group]="form">
+      </mat-custom-field>
+
+      <!-- SubjectValue -->
+      <mat-custom-field controlName="SubjectValue" type="text" label="field.file.SubjectValue" [group]="form">
+      </mat-custom-field>
+    </div>
+    <div class="row-flex-division">
+      <!-- SenderName -->
+      <mat-custom-field controlName="SenderName" label="field.file.SenderName" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- WriterName -->
+      <mat-custom-field controlName="WriterName" type="text" label="field.file.WriterName" [group]="form">
+      </mat-custom-field>
+
+      <!-- WriterRole -->
+      <mat-custom-field controlName="WriterRole" type="text" label="field.file.WriterRole" [group]="form">
+      </mat-custom-field>
+    </div>
+    <div class="row-flex-division">
+      <!-- MinimumYearExperience -->
+      <mat-custom-field
+        controlName="MinimumYearExperience"
+        label="field.file.MinimumYearExperience"
+        type="number"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- MinimumSalary -->
+      <mat-custom-field controlName="MinimumSalary" label="field.file.MinimumSalary" type="number" [group]="form">
+      </mat-custom-field>
+
+      <!-- CompanyName -->
+      <mat-custom-field controlName="CompanyName" type="text" label="field.file.CompanyName" [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+</form>
+
+<div class="text-left">
+  <button mat-raised-button color="primary" class="ml-2 w-10" (click)="submit()" [disabled]="form.invalid || loading">
+    {{ 'buttons.save' | translate }}
+    <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+  </button>
+</div>

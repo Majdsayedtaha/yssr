@@ -1,0 +1,230 @@
+<mat-sidenav-container class="side-nav-container" (backdropClick)="close()">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb [child]="update ? 'label.order.update_procedure' : 'label.order.add_procedure'"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon svgIcon="close" class="c-pointer" (click)="close()"></mat-icon>
+    </div>
+    <!-- Body -->
+    <div class="details">
+      <form novalidate [formGroup]="addProcedureForm">
+        <div class="section">
+          <div class="form-section">
+            <div class="section-card">
+              <div class="title mb-1">
+                <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+                <span>{{ 'refund.procedure.details_retrospective_labor_procedures' | translate }}</span>
+              </div>
+              <div class="row-flex-division">
+                <mat-custom-field
+                  controlName="date"
+                  label="refund.procedure.procedure_date"
+                  type="date"
+                  [group]="addProcedureForm">
+                </mat-custom-field>
+              </div>
+              <div class="row-flex-division">
+                <mat-custom-field
+                  [apiEndpoint]="'Worker/GetWorkersSelect'"
+                  label="refund.order.employment_name"
+                  controlName="workerReturnRequestId"
+                  [selectValueAsObject]="false"
+                  [readonly]="true"
+                  type="searchableSelect"
+                  [group]="addProcedureForm">
+                </mat-custom-field>
+
+                <div class="w-100">
+                  <mat-custom-field
+                    type="select"
+                    style="width: 100%"
+                    controlName="procedureId"
+                    [group]="addProcedureForm"
+                    [selectValueAsObject]="true"
+                    label="refund.procedure.procedure"
+                    [callApiFunction]="fetchReturnProceduresFun">
+                  </mat-custom-field>
+                </div>
+              </div>
+            </div>
+
+            <!-- Experiment -->
+            <div class="section-card" *ngIf="selectedProcedure?.value === procedureType.InExperiment">
+              <div class="title mb-1">
+                <mat-icon class="icon-title" svgIcon="experiment"></mat-icon>
+                <span>{{ 'refund.procedure.experiment' | translate }}</span>
+              </div>
+
+              <div class="row-flex-division">
+                <!-- <mat-custom-field
+                  apiEndpoint="Customer/GetCustomersSelect"
+                  controlName="customerId"
+                  label="customer_name"
+                  type="searchableSelect"
+                  [selectValueAsObject]="true"
+                  [group]="getFormGroup('experiment')">
+                </mat-custom-field> -->
+
+                <mat-custom-field
+                  controlName="testPeriodDays"
+                  label="refund.procedure.trial_period_days"
+                  type="number"
+                  textSuffix="day"
+                  [group]="getFormGroup('experiment')">
+                </mat-custom-field>
+
+                <mat-custom-field
+                  controlName="testCostDaily"
+                  label="refund.procedure.employment_salary_period"
+                  type="number"
+                  textSuffix="label.suffixes.rial_sa"
+                  [group]="getFormGroup('experiment')">
+                </mat-custom-field>
+              </div>
+
+              <div class="row-flex-division">
+                <mat-custom-field
+                  controlName="testWorkerSalary"
+                  label="refund.procedure.experimental_day_price"
+                  type="number"
+                  textSuffix="label.suffixes.rial_sa"
+                  [group]="getFormGroup('experiment')">
+                </mat-custom-field>
+
+                <mat-custom-field
+                  controlName="testOfficeAmount"
+                  label="refund.procedure.amount_owed_office"
+                  type="number"
+                  textSuffix="label.suffixes.rial_sa"
+                  [group]="getFormGroup('experiment')">
+                </mat-custom-field>
+              </div>
+              <div class="row-flex-division">
+                <mat-custom-field
+                  controlName="includingAccomodationAndTransferFees"
+                  label="refund.procedure.includes_transportation_and_accommodation_fees"
+                  type="checkbox"
+                  [group]="getFormGroup('experiment')">
+                </mat-custom-field>
+              </div>
+            </div>
+
+            <!-- Final Escape -->
+            <div class="section-card" *ngIf="selectedProcedure?.value === procedureType.FinalExit">
+              <div class="title mb-1">
+                <mat-icon class="icon-title" svgIcon="out"></mat-icon>
+                <span>{{ 'refund.procedure.final_exit' | translate }}</span>
+              </div>
+              <mat-custom-field
+                controlName="finalExitReasonNote"
+                label="refund.procedure.exit_cause"
+                type="textarea"
+                [group]="getFormGroup('finalExit')">
+              </mat-custom-field>
+            </div>
+
+            <!-- Worker Escape -->
+            <div class="section-card" *ngIf="selectedProcedure?.value === procedureType.WorkerEscaped">
+              <div class="title mb-1">
+                <mat-icon class="icon-title" svgIcon="out"></mat-icon>
+                <span>{{ 'refund.procedure.employment_escape' | translate }}</span>
+              </div>
+              <div class="row-flex-division">
+                <mat-custom-field
+                  controlName="escapeWorkerTypeId"
+                  label="refund.procedure.escape_type"
+                  type="searchableSelect"
+                  apiEndpoint="Enum/GetEscapeTypes"
+                  [group]="getFormGroup('escaped')">
+                </mat-custom-field>
+              </div>
+              <mat-custom-field
+                controlName="escapeWorkerReason"
+                label="refund.procedure.reason_escape"
+                type="textarea"
+                [group]="getFormGroup('escaped')">
+              </mat-custom-field>
+            </div>
+
+            <!-- !Refused From Experiment -->
+            <div class="section-card" *ngIf="selectedProcedure?.value === procedureType.RefuseFromExperiment">
+              <div class="title mb-1">
+                <mat-icon class="icon-title" svgIcon="out"></mat-icon>
+                <span>{{ 'refund.procedure.refused_from_experiment' | translate }}</span>
+              </div>
+              <div class="row-flex-division">
+                <mat-custom-field
+                  controlName="refuseTestDays"
+                  label="refund.procedure.days_spent_experiment"
+                  type="number"
+                  textSuffix="day"
+                  [group]="getFormGroup('refused')">
+                </mat-custom-field>
+                <mat-custom-field
+                  controlName="refuseWorkerAmount"
+                  label="refund.procedure.employment_salary_calculation"
+                  type="number"
+                  textSuffix="label.suffixes.rial_sa"
+                  [group]="getFormGroup('refused')">
+                </mat-custom-field>
+              </div>
+              <div class="row-flex-division">
+                <mat-custom-field
+                  controlName="externalOfficeAmount"
+                  label="refund.procedure.amount_owed_office"
+                  type="number"
+                  textSuffix="label.suffixes.rial_sa"
+                  [group]="getFormGroup('refused')">
+                </mat-custom-field>
+                <mat-custom-field
+                  controlName="refuseCustomerAmount"
+                  label="refund.procedure.amount_refunded_customer"
+                  type="number"
+                  textSuffix="label.suffixes.rial_sa"
+                  [group]="getFormGroup('refused')">
+                </mat-custom-field>
+              </div>
+              <mat-custom-field
+                controlName="refuseTypeWorker"
+                label="refund.procedure.reason_refuse"
+                type="textarea"
+                [group]="getFormGroup('refused')">
+              </mat-custom-field>
+            </div>
+
+            <!-- Accept -->
+            <div class="section-card" *ngIf="selectedProcedure?.value === procedureType.Accept">
+              <div class="title mb-1">
+                <mat-icon class="icon-title" svgIcon="accept"></mat-icon>
+                <span>{{ 'refund.procedure.employment_accept' | translate }}</span>
+              </div>
+              <mat-custom-field
+                controlName="note"
+                label="refund.procedure.comments"
+                type="textarea"
+                [group]="getFormGroup('accept')">
+              </mat-custom-field>
+            </div>
+          </div>
+        </div>
+        <div class="stepper-actions">
+          <button
+            mat-raised-button
+            color="primary"
+            class="mt-3"
+            [disabled]="addProcedureForm.invalid || isLoading"
+            type="submit"
+            (click)="submit()">
+            <span>
+              {{ 'buttons.save' | translate }}
+            </span>
+            <mat-spinner color="primary" [diameter]="30" *ngIf="isLoading"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

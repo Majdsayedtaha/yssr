@@ -1,0 +1,36 @@
+<mat-dialog-content class="toast">
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <div class="toast-container">
+      <!-- Header -->
+      <div class="toast-header bg-white p-2">
+        <nav-breadcrumb [child]="editData.update ? 'table.network.update' : 'table.network.add'"></nav-breadcrumb>
+        <mat-icon svgIcon="close" class="c-pointer" (click)="closeDialog(null)"> </mat-icon>
+      </div>
+      <div class="bg-body p-3">
+        <div class="contant bg-white p-2">
+          <!-- Body -->
+          <div class="toast-content">
+            <div class="row-flex-division">
+              <mat-custom-field controlName="nameEn" label="table.network.name_network_en" type="text" [group]="form">
+              </mat-custom-field>
+              <mat-custom-field controlName="nameAr" label="table.network.name_network_ar" type="text" [group]="form">
+              </mat-custom-field>
+            </div>
+          </div>
+          <!-- Footer -->
+          <div class="toast-footer d-flex align-center gap-1">
+            <!-- Submit -->
+            <button [disabled]="!form.valid" mat-raised-button color="primary" class="mt-3 p-3" type="submit">
+              {{ 'buttons.save' | translate }}
+            </button>
+
+            <!-- cancel -->
+            <button mat-stroked-button color="primary" class="mt-3 p-3" type="button" (click)="closeDialog(null)">
+              {{ 'buttons.cancel' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

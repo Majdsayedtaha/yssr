@@ -1,0 +1,16 @@
+<!-- Ag Grid -->
+<ag-grid-angular
+  id="myGrid"
+  style="height: 70vh"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="rowData"
+  [enableRtl]="true"
+  (gridReady)="onGridReady($event)"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+<!-- Pagination -->
+<ag-pagination
+  (pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount">
+</ag-pagination>

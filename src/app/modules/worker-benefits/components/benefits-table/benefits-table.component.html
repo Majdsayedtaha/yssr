@@ -1,0 +1,18 @@
+<worker-benefits-side-info></worker-benefits-side-info>
+  <mat-form-field [dir]="getDirection()" class=" input-table">
+    <mat-icon matSuffix class="icon" [svgIcon]="getDirection() === 'rtl' ? 'search-right' : 'search-left'"></mat-icon>
+    <input matInput (input)="getDeepWithFilter($event)" [placeholder]="'search_for_order' | translate" />
+  </mat-form-field>
+
+<ag-grid-angular
+  id="myGrid"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="listData"
+  [enableRtl]="true"
+  (gridReady)="onGridReady($event)"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+<ag-pagination
+  (pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount"></ag-pagination>

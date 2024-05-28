@@ -1,0 +1,32 @@
+<h2 class="title-char">{{ 'waiver' | translate }}</h2>
+<h4 *ngIf="lastProcedureCount.length != 0">{{ 'number_contracts_according_latest_procedure_waiver' | translate }}</h4>
+<div class="d-flex align-center gap-1">
+  <ng-container *ngIf="lastProcedureCount.length != 0">
+    <div class="cards" *ngFor="let procedureCount of lastProcedureCount">
+      <div class="card">
+        <div class="card-body">
+          <div class="title">
+            <div class="icon icon-shape">
+              <mat-icon svgIcon="note"></mat-icon>
+            </div>
+            <h6>{{ procedureCount.name }}</h6>
+          </div>
+          <span>{{ procedureCount.count }}</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<p *ngIf="lastProcedureCount.length == 0">{{ 'no_contracts_according_latest_procedure_waiver' | translate }}</p>
+<section id="waiver-section">
+  <div class="chart-container">
+    <div class="d-flex flex-column">
+      <div class="card-header border-0">
+        <h4>{{ 'number_requests_types' | translate }}</h4>
+      </div>
+      <div class="chart">
+        <canvas #pieChartTypeWaiver></canvas>
+      </div>
+    </div>
+  </div>
+</section>

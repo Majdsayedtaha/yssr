@@ -1,0 +1,46 @@
+<mat-dialog-content class="toast">
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <div class="toast-container">
+      <!-- Header -->
+      <div class="toast-header bg-white p-2">
+        <nav-breadcrumb [child]="editMode ? 'edit_position' : 'add_position'"></nav-breadcrumb>
+        <mat-icon svgIcon="close" class="c-pointer" (click)="closeDialog('')"> </mat-icon>
+      </div>
+      <div class="bg-body p-2">
+        <mat-spinner color="primary" diameter="40" class="center-element" *ngIf="isGettingData"></mat-spinner>
+        <div class="contant bg-white p-2" *ngIf="!isGettingData">
+          <!-- Body -->
+          <div class="toast-content">
+            <div class="d-flex gap-1">
+              <!-- name English -->
+              <mat-custom-field controlName="nameEn" label="setting.fields.name_en" type="text" [group]="form">
+              </mat-custom-field>
+              <!-- name Arabic -->
+              <mat-custom-field controlName="nameAr" label="setting.fields.name_ar" type="text" [group]="form">
+              </mat-custom-field>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="toast-footer d-flex align-center gap-1">
+            <!-- Submit -->
+            <button
+              mat-raised-button
+              color="primary"
+              class="mt-3 p-3"
+              type="submit"
+              [disabled]="form.invalid || loading">
+              {{ 'buttons.save' | translate }}
+              <mat-spinner [diameter]="30" *ngIf="loading" class="mx-1"></mat-spinner>
+            </button>
+
+            <!-- Add -->
+            <button mat-stroked-button color="primary" class="mt-3 p-3" type="button" (click)="closeDialog('')">
+              {{ 'buttons.cancel' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

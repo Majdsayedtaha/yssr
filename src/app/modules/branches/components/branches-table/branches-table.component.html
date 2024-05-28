@@ -1,0 +1,27 @@
+<!-- SideBar -->
+<side-branch-details></side-branch-details>
+
+<!-- Search -->
+<mat-form-field [dir]="getDirection()" class="input-table">
+  <input matInput (input)="getDeepWithFilter($event)" placeholder="{{ 'search_for_specific_branch' | translate }}" />
+  <mat-icon
+    matSuffix
+    class="icon"
+    [svgIcon]="getDirection() === 'rtl' ? 'search-right' : 'search-left'"></mat-icon>
+</mat-form-field>
+
+<!-- Ag Grid -->
+<ag-grid-angular
+  id="myGrid"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="rowData"
+  [enableRtl]="(direction.direction$ | async) === 'rtl' ? true : false"
+  (gridReady)="onGridReady($event)"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+<!-- Pagination -->
+<ag-pagination
+  (pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount">
+</ag-pagination>

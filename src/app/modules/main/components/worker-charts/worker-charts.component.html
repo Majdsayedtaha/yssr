@@ -1,0 +1,107 @@
+<div style="margin-top: 25px" class="text-center">
+  <mat-form-field appearance="fill" [dir]="direction.getDirection()">
+    <mat-label>{{ 'from_date' | translate }}</mat-label>
+    <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="from" />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker>
+      <mat-datepicker-actions>
+        <button mat-button matDatepickerCancel>{{ 'buttons.cancel' | translate }}</button>
+        <button mat-raised-button color="primary" matDatepickerApply>{{ 'buttons.apply' | translate }}</button>
+      </mat-datepicker-actions>
+    </mat-datepicker>
+  </mat-form-field>
+  &nbsp;&nbsp;
+  <mat-form-field appearance="fill" [dir]="direction.getDirection()">
+    <mat-label>{{ 'to_date' | translate }}</mat-label>
+    <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="toMonth" />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker>
+      <mat-datepicker-actions>
+        <button mat-button matDatepickerCancel>{{ 'buttons.cancel' | translate }}</button>
+        <button mat-raised-button color="primary" matDatepickerApply>{{ 'buttons.apply' | translate }}</button>
+      </mat-datepicker-actions>
+    </mat-datepicker>
+  </mat-form-field>
+</div>
+<div style="margin-top: 25px" class="text-center">
+  <button mat-stroked-button color="primary" style="width: 15%" (click)="applyDateFilter()">
+    {{ 'apply_date_filter' | translate }}
+  </button>
+</div>
+<h2 class="title-char">{{ 'cv_charts' | translate }}</h2>
+<div class="cards">
+  <div class="card fit-card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="cv"></mat-icon>
+        </div>
+        <h6>{{ 'total_number_worker' | translate }}</h6>
+      </div>
+      <span>{{ workerData ? workerData.total.data : 0 }}</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="cv"></mat-icon>
+        </div>
+        <h6>{{ 'number_worker_link' | translate }}</h6>
+      </div>
+      <span>{{ workerData ? workerData.linkedCount.data : 0 }}</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="cv"></mat-icon>
+        </div>
+        <h6>{{ 'number_worker_unlink' | translate }}</h6>
+      </div>
+      <span>{{ workerData ? workerData.unLinkedCount.data : 0 }}</span>
+    </div>
+  </div>
+</div>
+
+<section id="worker-section">
+  <div class="chart-container">
+    <div class="pie d-flex flex-column">
+      <div class="card-header border-0">
+        <h4>{{ 'number_worker_types' | translate }}</h4>
+      </div>
+      <div class="chart">
+        <canvas #pieChartType></canvas>
+      </div>
+    </div>
+    <div class="pie d-flex flex-column">
+      <div class="card-header border-0">
+        <h4>{{ 'number_worker_careers' | translate }}</h4>
+      </div>
+
+      <div class="chart">
+        <canvas #pieChartCareers></canvas>
+      </div>
+    </div>
+    <div class="pie d-flex flex-column">
+      <div class="card-header border-0">
+        <h4>{{ 'number_worker_nationalities' | translate }}</h4>
+      </div>
+      <div class="chart">
+        <canvas #pieChartNationality></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="bar d-flex flex-column">
+  <div class="card-header border-0 text-center">
+    <h4>{{ 'number_worker_types_date' | translate }}</h4>
+  </div>
+  <div class="chart" style="height: 240px">
+    <canvas #barTotalWorker></canvas>
+  </div>
+</div>

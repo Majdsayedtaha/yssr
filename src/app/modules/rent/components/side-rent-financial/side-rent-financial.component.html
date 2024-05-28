@@ -1,0 +1,65 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="financial_data"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon svgIcon="close" class="c-pointer" (click)="closeSideNav()"></mat-icon>
+    </div>
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div class="section">
+        <div class="row mb-2 d-flex">
+          <!-- rentDaysPeriod -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.rentDaysPeriod' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData?.rentDaysPeriod }}</span>
+          </div>
+
+          <!-- rentAmountWithoutTax -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.rentAmountWithoutTax' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData?.rentAmountWithoutTax | number }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- taxType -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.taxType' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData?.taxType?.name }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- taxAmount -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.taxAmount' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData?.taxAmount | number }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- rentAmountWithTax -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.rentAmountWithTax' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData?.rentAmountWithTax | number }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- rentAmount -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.rentAmount' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData?.rentAmount | number }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

@@ -1,0 +1,335 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="label.contract.action" *ngIf="!data?.rentInfo?.id"></nav-breadcrumb>
+      <nav-breadcrumb child="label.contract.update" *ngIf="data?.rentInfo?.id"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon svgIcon="close" class="c-pointer" (click)="close()"></mat-icon>
+    </div>
+
+    <!-- Body -->
+    <div class="section">
+      <header class="d-flex header">
+        <mat-icon class="icon" svgIcon="rent"></mat-icon>
+        <span>{{ 'procedure_data' | translate }}</span>
+      </header>
+      <div class="row mb-2 mt-2 d-flex">
+        <div class="col d-flex flex-column flex-1">
+          <mat-label class="label f-size-12">{{ 'field.rent.worker' | translate }}</mat-label>
+          <span class="mt-1">
+            {{ rentData?.workerName }}
+          </span>
+        </div>
+      </div>
+      <div class="row mb-2 mt-2 d-flex">
+        <div class="col d-flex flex-column flex-1">
+          <mat-label class="label f-size-12">{{ 'field.rent.rentRequest' | translate }}</mat-label>
+          <span class="mt-1">
+            {{ rentData?.requestNumber }}
+          </span>
+        </div>
+      </div>
+      <form novalidate [formGroup]="form">
+        <!-- procedure -->
+        <mat-custom-field
+          controlName="procedureId"
+          label="field.rent.procedure"
+          type="select"
+          [callApiFunction]="fetchRequestProceduresSelect"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- date -->
+        <mat-custom-field controlName="date" label="field.rent.date" type="date" [group]="form"> </mat-custom-field>
+
+        <!-- Retrieve Worker -->
+        <div class="section-card" *ngIf="procedureValue == 5">
+          <!-- <div class="title mb-1">
+            <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+            <span>{{ 'retrieve_worker_data' | translate }}</span>
+          </div> -->
+
+          <!-- Row 1 -->
+          <div class="row-flex-division-2">
+            <!-- retrieveDate-->
+            <mat-custom-field controlName="retrieveDate" label="field.rent.retrieveDate" type="date" [group]="form">
+            </mat-custom-field>
+
+            <!-- realCustomerContractPeriod -->
+            <mat-custom-field
+              controlName="realCustomerContractPeriod"
+              label="field.rent.realCustomerContractPeriod"
+              type="number"
+              [disabled]="true"
+              textSuffix="label.suffixes.day"
+              [group]="form">
+            </mat-custom-field>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="row-flex-division-2">
+            <!-- fine -->
+            <mat-custom-field
+              controlName="fine"
+              label="field.rent.fine"
+              type="number"
+              textSuffix="label.suffixes.rial_sa"
+              [group]="form">
+            </mat-custom-field>
+
+            <!-- workerSalary -->
+            <mat-custom-field
+              controlName="workerSalary"
+              label="field.rent.workerSalary"
+              type="number"
+              [disabled]="true"
+              textSuffix="label.suffixes.rial_sa"
+              [group]="form">
+            </mat-custom-field>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="row-flex-division-2">
+            <!-- officeAmount -->
+            <mat-custom-field
+              controlName="officeAmount"
+              label="field.rent.officeAmount"
+              [disabled]="true"
+              type="number"
+              textSuffix="label.suffixes.rial_sa"
+              [group]="form">
+            </mat-custom-field>
+
+            <!-- returnCustomerAmount -->
+            <mat-custom-field
+              controlName="returnCustomerAmount"
+              label="field.rent.returnCustomerAmount"
+              [disabled]="true"
+              type="number"
+              textSuffix="label.suffixes.rial_sa"
+              [group]="form">
+            </mat-custom-field>
+          </div>
+          <div class="row-flex-division-2">
+            <!-- rentPeriod -->
+            <mat-custom-field
+              controlName="rentPeriod"
+              label="field.rent.rentDaysPeriod"
+              type="number"
+              textSuffix="label.suffixes.day"
+              [group]="form">
+            </mat-custom-field>
+
+            <!-- restPeriod -->
+            <mat-custom-field
+              controlName="restPeriod"
+              label="field.rent.restPeriod"
+              [disabled]="true"
+              type="number"
+              textSuffix="label.suffixes.day"
+              [group]="form">
+            </mat-custom-field>
+          </div>
+
+          <div class="row-flex-division-2">
+            <!-- totalPeriod -->
+            <mat-custom-field
+              controlName="totalPeriod"
+              label="field.rent.totalPeriod"
+              type="number"
+              textSuffix="label.suffixes.day"
+              [group]="form">
+            </mat-custom-field>
+
+            <!-- returnRefuseReason -->
+            <mat-custom-field
+              controlName="returnRefuseReason"
+              label="field.rent.returnRefuseReason"
+              type="text"
+              [group]="form">
+            </mat-custom-field>
+          </div>
+        </div>
+
+        <!--Extension -->
+        <div class="section-card" *ngIf="procedureValue === 4">
+          <!-- <div class="title mb-1">
+            <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+            <span>{{ 'extension' | translate }}</span>
+          </div> -->
+
+          <!-- Row 1 -->
+          <mat-custom-field
+            controlName="rentTypeId"
+            label="field.rent.rentType"
+            type="select"
+            [callApiFunction]="fetchRentTypes"
+            [group]="form">
+          </mat-custom-field>
+
+          <ng-container *ngIf="rentValue && rentValue === 3; then thenTemplate; else elseTemplate"></ng-container>
+
+          <!-- Time -->
+          <ng-template #thenTemplate>
+            <ng-container *ngIf="form.get('rentTypeId')?.value">
+              <div class="row-flex-division-2">
+                <mat-custom-field
+                  controlName="fromDateMilady"
+                  label="field.rent.fromTime"
+                  [hijriFormat]="false"
+                  type="time_range"
+                  [group]="form">
+                </mat-custom-field>
+
+                <!-- rentDaysPeriod -->
+                <mat-custom-field
+                  type="number"
+                  [group]="form"
+                  [disabled]="true"
+                  controlName="rentPeriod"
+                  textSuffix="label.suffixes.day"
+                  label="field.rent.rentDaysPeriod">
+                </mat-custom-field>
+              </div>
+
+              <!-- toTime -->
+              <mat-custom-field
+                controlName="toDateMilady"
+                [disabled]="true"
+                label="field.rent.toTime"
+                type="time_range"
+                [group]="form">
+              </mat-custom-field>
+            </ng-container>
+          </ng-template>
+
+          <!-- Date -->
+
+          <ng-template #elseTemplate>
+            <ng-container *ngIf="form.get('rentTypeId')?.value">
+              <div class="row-flex-division-2">
+                <!-- fromDateMilady -->
+                <mat-custom-field
+                  controlName="fromDateMilady"
+                  label="field.rent.fromDateMilady"
+                  type="date"
+                  [group]="form">
+                </mat-custom-field>
+
+                <!-- rentDaysPeriod -->
+                <mat-custom-field
+                  controlName="rentPeriod"
+                  label="field.rent.rentDaysPeriod"
+                  type="number"
+                  [textSuffix]="'label.suffixes.' + rentPeriodUnit"
+                  [group]="form">
+                </mat-custom-field>
+              </div>
+
+              <!-- toDateMilady -->
+              <mat-custom-field
+                controlName="toDateMilady"
+                [disabled]="true"
+                label="field.rent.toDateMilady"
+                type="date"
+                [group]="form">
+              </mat-custom-field>
+            </ng-container>
+          </ng-template>
+
+          <ng-container *ngIf="form.get('toDateMilady')?.value">
+            <!-- Row 2 -->
+            <div class="row-flex-division-2">
+              <!-- taxTypeId -->
+              <mat-custom-field
+                controlName="taxTypeId"
+                label="field.rent.taxType"
+                type="select"
+                [callApiFunction]="fetchTaxTypes"
+                [group]="form">
+              </mat-custom-field>
+
+              <!-- rentAmount -->
+              <mat-custom-field
+                controlName="rentAmount"
+                label="field.rent.rentAmount"
+                type="number"
+                [minNumberValue]="0"
+                textSuffix="label.suffixes.rial_sa"
+                [group]="form">
+              </mat-custom-field>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="row-flex-division-2">
+              <!-- taxAmount -->
+              <mat-custom-field
+                controlName="taxAmount"
+                label="field.rent.taxAmount"
+                type="number"
+                [minNumberValue]="0"
+                [disabled]="true"
+                textSuffix="label.suffixes.rial_sa"
+                [group]="form">
+              </mat-custom-field>
+
+              <!-- rentAmountWithoutTax -->
+              <mat-custom-field
+                controlName="rentAmountWithoutTax"
+                label="field.rent.rentAmountWithoutTax"
+                type="number"
+                [minNumberValue]="0"
+                [disabled]="true"
+                textSuffix="label.suffixes.rial_sa"
+                [group]="form">
+              </mat-custom-field>
+            </div>
+
+            <!-- rentAmountWithTax -->
+            <mat-custom-field
+              controlName="rentAmountWithTax"
+              label="field.rent.rentAmountWithTax"
+              type="number"
+              [minNumberValue]="0"
+              [disabled]="true"
+              textSuffix="label.suffixes.rial_sa"
+              [group]="form">
+            </mat-custom-field>
+          </ng-container>
+        </div>
+
+        <!-- Finish -->
+        <div class="section-card" *ngIf="procedureValue === 8 || procedureValue === 7">
+          <!-- <div class="title mb-1">
+            <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+            <span>{{ 'finish' | translate }}</span>
+          </div> -->
+
+          <!-- Row 3 -->
+          <mat-custom-field controlName="note" label="field.rent.note" type="textarea" [group]="form">
+          </mat-custom-field>
+        </div>
+
+        <div class="d-flex add-procedure">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            (click)="update == true ? updateProcedure() : addProcedure()"
+            *ngIf="!isLoading">
+            <mat-spinner [diameter]="30" *ngIf="isLoading" color="primary"></mat-spinner>
+            <span>
+              {{ update == true ? ('update_procedure' | translate) : ('add_procedure' | translate) }}
+            </span>
+          </button>
+          <button mat-stroked-button color="primary" disabled *ngIf="isLoading">
+            <mat-spinner [diameter]="30" color="accent"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

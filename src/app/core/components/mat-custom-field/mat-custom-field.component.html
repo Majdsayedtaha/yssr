@@ -1,0 +1,414 @@
+<div [ngClass]="{ 'd-grid': showGrid, 'd-c-flex': !showGrid }" style="width: 100%">
+  <mat-label
+    *ngIf="label && type != 'file' && type != 'checkbox'"
+    class="f-size-14 f-weight-700 accent-color label"
+    [ngClass]="{ 'mb-1': type !== 'radio' && !showGrid }"
+    [dir]="getDirection()">
+    {{ label | translate }}
+    <!-- TODO for displaying star sign for required fields -->
+    <!-- <span style="font-size: 20px; line-height: 1">{{ fieldIsRequired ? '*' : '' }}</span> -->
+  </mat-label>
+
+  <ng-container [formGroup]="group">
+    <!-- Text & Number -->
+    <mat-form-field
+      *ngIf="
+        type !== 'checkbox' &&
+        type !== 'radio' &&
+        type !== 'select' &&
+        type !== 'date' &&
+        type !== 'tel' &&
+        type !== 'textarea' &&
+        type !== 'searchableSelect' &&
+        type !== 'file' &&
+        type !== 'editor' &&
+        type !== 'time_range'
+      "
+      appearance="outline"
+      [dir]="getDirection()">
+      <input
+        autocomplete="off"
+        matInput
+        [type]="type"
+        [formControlName]="controlName"
+        [placeholder]="placeholder"
+        [readonly]="readonly"
+        [min]="type === 'number' ? minNumberValue : null"
+        [max]="type === 'number' ? maxNumberValue : null"
+        [maxlength]="maxLengthValue ? maxLengthValue : null" />
+      <!-- TODO for displaying how many letter or number you can enter -->
+      <!-- <span>{{ group.get(controlName)?.value.length + 1 }}/10</span> -->
+      <mat-error>
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+        <validation-fields [control]="group.get(controlName)"></validation-fields>
+      </mat-error>
+      <mat-icon
+        *ngIf="suffix"
+        matSuffix
+        [svgIcon]="suffix"
+        [ngClass]="{ 'c-pointer': cursorStatus }"
+        (click)="onSuffixCLick()"></mat-icon>
+      <mat-icon *ngIf="prefix" matPrefix [svgIcon]="prefix" [ngClass]="{ 'c-pointer': cursorStatus }"></mat-icon>
+      <span *ngIf="textSuffix" matSuffix class="with-text">{{ textSuffix | translate }}</span>
+      <span *ngIf="textSuffixNT" matSuffix class="with-text">{{ textSuffixNT }}</span>
+      <span *ngIf="textPrefix" matPrefix class="with-text">{{ textPrefix | translate }}</span>
+    </mat-form-field>
+    <p *ngIf="hintMessage">{{ hintMessage }}</p>
+
+    <!-- Select -->
+    <mat-form-field
+      appearance="outline"
+      *ngIf="type === 'select' && !multiple"
+      [dir]="getDirection()"
+      (click)="readonly || disabled || getStaticOptions ? '' : getOptions()"
+      (keyup.enter)="readonly || disabled || getStaticOptions ? '' : getOptions()">
+      <mat-select #matSelect [formControlName]="controlName">
+        <mat-option color="primary" *ngFor="let option of options" [value]="selectValueAsObject ? option : option.id">
+          <ng-container *ngIf="translateOptions">{{ option.name | translate }}</ng-container>
+          <ng-container *ngIf="!translateOptions">{{ option.name }}</ng-container>
+        </mat-option>
+      </mat-select>
+      <mat-spinner *ngIf="isLoading && callApiFunction" matPrefix [diameter]="20"></mat-spinner>
+      <mat-error>
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+        <validation-fields [control]="group.get(controlName)"></validation-fields>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Searchable Select -->
+    <!-- <mat-form-field
+      appearance="outline"
+      [dir]="getDirection()"
+      (click)="!readonly ? getAllOptionsList() : ''"
+      (keyup.enter)="!readonly ? getAllOptionsList() : ''">
+      <input
+        autocomplete="off"
+        #searchableField
+        matInput
+        type="text"
+        [placeholder]="'type-to-search' | translate"
+        [readonly]="readonly"
+        [matAutocomplete]="matAutocomplete"
+        [formControl]="control"
+        (input)="onTyping($event)" />
+      <mat-spinner matSuffix [diameter]="20" color="primary" *ngIf="isLoading"></mat-spinner>
+      <mat-autocomplete
+        #matAutocomplete="matAutocomplete"
+        autoActiveFirstOption
+        [displayWith]="displayOption"
+        (optionSelected)="optionSelected($event)">
+        <div infiniteScroll (scrollPosition)="onScroll($event)" class="scrollable-list">
+          <mat-option *ngFor="let list of filteredList" [value]="list">
+            <span>{{ list?.name }}</span>
+          </mat-option>
+          <mat-spinner
+            class="list-spinner"
+            [style.visibility]="isScrolling ? 'visible' : 'hidden'"
+            [diameter]="20"></mat-spinner>
+        </div>
+      </mat-autocomplete>
+    </mat-form-field> -->
+    <mat-searchable-select
+      *ngIf="type === 'searchableSelect'"
+      [callApiFunction]="callApiFunction ? callApiFunction : getList"
+      [readonly]="readonly || disabled"
+      [controlName]="controlName"
+      [selectValueAsObject]="selectValueAsObject"
+      [group]="group"
+      (selectionChange)="optionSelectedSearchable($event)"></mat-searchable-select>
+
+    <!-- MatChips Multiple -->
+    <mat-form-field
+      class="mat-chips-grid"
+      appearance="outline"
+      *ngIf="type === 'select' && multiple"
+      [dir]="getDirection()"
+      (click)="getAllOptionsList()"
+      (keyup.enter)="getAllOptionsList()">
+      <mat-chip-grid #chipGrid>
+        <mat-chip-row *ngFor="let item of formControlArray?.controls" (removed)="removeSelectMatChips(item.value.id)">
+          {{ item.value.name }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      </mat-chip-grid>
+      <input
+        autocomplete="off"
+        #searchableChipsField
+        [placeholder]="placeholder"
+        [matChipInputFor]="chipGrid"
+        [matAutocomplete]="matAutoCompleteMatChips"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" />
+      <div style="display: flex; align-items: center; justify-content: end">
+        <mat-spinner *ngIf="isLoadingChips" [diameter]="20"></mat-spinner>
+      </div>
+      <mat-spinner *ngIf="isLoading && callApiFunction" matPrefix [diameter]="20"></mat-spinner>
+      <mat-autocomplete
+        #matAutoCompleteMatChips="matAutocomplete"
+        autoActiveFirstOption
+        [displayWith]="displayOption"
+        (optionSelected)="optionSelectedMatChips($event)">
+        <div infiniteScroll (scrollPosition)="onScroll($event)" class="scrollable-list">
+          <mat-option *ngFor="let list of filteredList" [value]="list">
+            <span>{{ list.name }}</span>
+          </mat-option>
+          <mat-spinner
+            class="list-spinner"
+            [style.visibility]="isScrolling ? 'visible' : 'hidden'"
+            [diameter]="20"></mat-spinner>
+        </div>
+      </mat-autocomplete>
+      <!-- <mat-error class="error-message">
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+        <validation-fields [control]="group.get(controlName)"></validation-fields>
+      </mat-error> -->
+      <mat-hint class="hint-message" *ngIf="filteredListCopyForHint?.length === 0">
+        <mat-icon class="validation-warning-icon" svgIcon="warning-alert"></mat-icon>
+        <span>{{ 'no_data_display' | translate }}</span>
+      </mat-hint>
+    </mat-form-field>
+
+    <!-- Date -->
+    <!-- <mat-form-field
+      appearance="outline"
+      *ngIf="type === 'date'"
+      [ngClass]="{ 'span-grid': showGrid }"
+      [dir]="getDirection()">
+      <input
+        autocomplete="off"
+        [readonly]="readonly ? true : false"
+        matInput
+        [matDatepicker]="picker"
+        [formControlName]="controlName"
+        (dateChange)="dateChanged()"
+        (dateInput)="dateChanged()"
+        (blur)="dateChanged()" />
+      <mat-datepicker-toggle [disabled]="readonly ? true : false" matIconSuffix [for]="picker">
+        <mat-icon class="date-picker" matDatepickerToggleIcon [svgIcon]="'date'"></mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker touchUi #picker></mat-datepicker>
+      <mat-error>
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+        <validation-fields [control]="group.get(controlName)"></validation-fields>
+      </mat-error>
+    </mat-form-field> -->
+
+    <div class="date-container" *ngIf="type === 'date'" [formGroup]="dateForm">
+      <div class="d-flex date-section">
+        <mat-form-field
+          appearance="outline"
+          [dir]="getDirection()"
+          style="min-width: 90px !important"
+          class="field"
+          floatLabel="always">
+          <mat-label class="f-size-14 f-weight-700 accent-color" [dir]="getDirection()">
+            {{ 'year' | translate }}
+          </mat-label>
+          <mat-select (opened)="onYearPanelOpened()" formControlName="year" (valueChange)="onYearChange($event)">
+            <ng-container *ngIf="!hijriFormat">
+              <mat-option [id]="year.toString()" color="primary" *ngFor="let year of miladyYears" [value]="year">
+                {{ year }}
+              </mat-option>
+            </ng-container>
+            <ng-container *ngIf="hijriFormat">
+              <mat-option [id]="year.toString()" color="primary" *ngFor="let year of hijriYears" [value]="year">
+                {{ year }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          style="min-width: 94px !important"
+          class="field"
+          [dir]="getDirection()"
+          floatLabel="always">
+          <mat-label class="f-size-14 f-weight-700 accent-color" [dir]="getDirection()">
+            {{ 'month' | translate }}
+          </mat-label>
+          <mat-select formControlName="month" (valueChange)="onMonthChange($event)">
+            <ng-container *ngIf="hijriFormat">
+              <mat-option color="primary" *ngFor="let month of hijriMonths; let dayIndex = index" [value]="dayIndex">
+                <ng-container>{{ 'month_names.' + month | translate }}</ng-container>
+              </mat-option>
+            </ng-container>
+            <ng-container *ngIf="!hijriFormat">
+              <mat-option color="primary" *ngFor="let month of miladyMonths; let dayIndex = index" [value]="dayIndex">
+                <ng-container>{{ 'month_names.' + month.name | translate }}</ng-container>
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field
+          appearance="outline"
+          style="min-width: 84px !important"
+          class="field"
+          [dir]="getDirection()"
+          floatLabel="always">
+          <mat-label class="f-size-14 f-weight-700 accent-color" [dir]="getDirection()">
+            {{ 'day' | translate }}
+          </mat-label>
+          <mat-select formControlName="day" (valueChange)="onDayChange($event)">
+            <mat-option color="primary" *ngFor="let day of days" [value]="day">
+              <ng-container>{{ day }}</ng-container>
+            </mat-option>
+          </mat-select>
+          <mat-spinner matPrefix [diameter]="20" color="primary" *ngIf="isLoading"></mat-spinner>
+        </mat-form-field>
+      </div>
+      <mat-error class="error-message" *ngIf="!isSmaller && !isGreater && dateForm.invalid && dateForm.touched">
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+        {{ 'fields_validation.field-required' | translate }}
+      </mat-error>
+      <mat-error class="error-message" *ngIf="(isSmaller || isGreater) && !compareFailed && dateForm.touched">
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+        {{ 'fields_validation.invalid-date' | translate }}
+      </mat-error>
+      <mat-error class="error-message" *ngIf="compareFailed && dateForm.valid">
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert" style="width: 20px !important"></mat-icon>
+        {{ 'fields_validation.small-date' | translate : { compare: compareLabel | translate } }}
+      </mat-error>
+    </div>
+
+    <!-- Time -->
+    <mat-form-field
+      appearance="outline"
+      [ngClass]="{ 'span-grid': showGrid }"
+      [dir]="getDirection()"
+      *ngIf="type === 'time_range'">
+      <input autocomplete="off" matInput [ngxTimepicker]="timePicker" [formControlName]="controlName" />
+      <ngx-material-timepicker-toggle matSuffix [for]="timePicker"></ngx-material-timepicker-toggle>
+      <ngx-material-timepicker
+        #timePicker
+        [theme]="primaryTheme"
+        [format]="24"
+        [minutesGap]="5"
+        class="my-timepicker-class">
+      </ngx-material-timepicker>
+      <mat-error>
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+        <validation-fields [control]="group.get(controlName)"></validation-fields>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Checkbox -->
+    <mat-checkbox
+      [dir]="getDirection()"
+      *ngIf="type === 'checkbox' && !options"
+      class="f-weight-700 f-size-12"
+      [formControlName]="controlName"
+      color="primary">
+      {{ label | translate }}
+    </mat-checkbox>
+
+    <!-- Multiple Checkbox -->
+    <div
+      *ngIf="type === 'checkbox' && options && options.length > 0"
+      style="display: grid; grid-template-columns: repeat(5, 1fr)">
+      <mat-checkbox
+        [dir]="getDirection()"
+        class="f-weight-700 f-size-12"
+        color="primary"
+        [value]="option.id.toString()"
+        (change)="toggleCheckBoxes($event)"
+        [checked]="checkExistInArray(option.id.toString())"
+        *ngFor="let option of options">
+        {{ option.name }}
+      </mat-checkbox>
+    </div>
+
+    <!-- Radio -->
+    <mat-radio-group *ngIf="type === 'radio'" [formControlName]="controlName" [dir]="getDirection()">
+      <mat-radio-button color="primary" [value]="option.id" *ngFor="let option of options">
+        <ng-container *ngIf="translateOptions">{{ option.name | translate }}</ng-container>
+        <ng-container *ngIf="!translateOptions">{{ option.name }}</ng-container>
+      </mat-radio-button>
+    </mat-radio-group>
+
+    <!-- TextArea -->
+    <mat-form-field class="textarea" appearance="outline" *ngIf="type === 'textarea'" [dir]="getDirection()">
+      <textarea [readonly]="readonly ? true : false" [rows]="rows" matInput [formControlName]="controlName"></textarea>
+      <mat-error>
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+        <validation-fields [control]="group.get(controlName)"></validation-fields>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- File -->
+    <div *ngIf="type == 'file'" class="row-flex-column">
+      <div class="row-flex-division">
+        <input
+          autocomplete="off"
+          type="file"
+          [accept]="fileAccept === 'image' ? 'image/*' : '*/*'"
+          hidden
+          #file
+          (change)="setFile($event)" />
+        <mat-icon svgIcon="link" (click)="file.click()" class="w-25 cursor-pointer"></mat-icon>
+        <mat-label
+          [title]="fileName || (label | translate)"
+          class="f-size-14 f-weight-700 mb-1 accent-color label w-75 cursor-pointer attachment-label"
+          [dir]="getDirection()"
+          (click)="file.click()">
+          {{ fileName || (label | translate) }}
+        </mat-label>
+        <span class="img-container" [class.border-dashed]="customUrl == null && fileName == null">
+          <ng-container *ngIf="customUrl || fileName">
+            <span class="remove-img cursor-pointer" (click)="file.value = ''; removeFile()">
+              <mat-icon svgIcon="delete-row"></mat-icon>
+            </span>
+            <img
+              class="attachment-img"
+              [src]="previewSelectedFile()"
+              (click)="customUrl ? downloadLink(customUrl, label) : ''" />
+          </ng-container>
+        </span>
+      </div>
+      <mat-error *ngIf="group.get(controlName)?.invalid && group.get(controlName)?.touched">
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+        <validation-fields [control]="group.get(controlName)"></validation-fields>
+      </mat-error>
+    </div>
+  </ng-container>
+
+  <!-- Telephone -->
+  <ng-container [formGroup]="telParentFormGroup" *ngIf="type === 'tel'">
+    <mat-form-field class="tel-mat-form-field" appearance="outline">
+      <input
+        autocomplete="off"
+        [readonly]="readonly ? true : false"
+        matInput
+        ng2TelInput
+        [ng2TelInputOptions]="{
+          initialCountry: 'sa',
+          separateDialCode: true,
+        }"
+        [type]="type"
+        placeholder=" "
+        formControlName="telControlField"
+        [maxlength]="validNumberOfDigits"
+        (intlTelInputObject)="telInputObject($event)"
+        (countryChange)="onCountryChange($event)"
+        (blur)="onTelInputBlur($event)" />
+      <mat-error>
+        <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+        <validation-fields [control]="telParentFormGroup.get('telControlField')"></validation-fields>
+      </mat-error>
+      <!-- <span matSuffix [dir]="'ltr'">({{ countrySuffix }})</span> -->
+    </mat-form-field>
+  </ng-container>
+
+  <!-- Editor -->
+  <ng-container *ngIf="type === 'editor'" [formGroup]="group">
+    <ckeditor #myEditor [editor]="editor" [config]="editorConfig" [formControlName]="controlName"></ckeditor>
+    <ng-container *ngIf="group.get(controlName) as control">
+      <mat-error [dir]="getDirection()" *ngIf="control && control.errors && (control.dirty || control.touched)">
+        <span class="editor-error">
+          <mat-icon class="validation-warning-icon" svgIcon="red-alert"></mat-icon>
+          {{ 'fields_validation.msg-editor-empty-please-fill' | translate }}
+        </span>
+      </mat-error>
+    </ng-container>
+  </ng-container>
+</div>

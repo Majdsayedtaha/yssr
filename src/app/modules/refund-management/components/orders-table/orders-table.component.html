@@ -1,0 +1,57 @@
+<!-- Sidebar Row Details -->
+<side-display-details></side-display-details>
+<!-- Sidebar Add Procedure -->
+<side-add-procedure></side-add-procedure>
+<!-- Sidebar Log Procedures -->
+<side-procedures></side-procedures>
+
+<!-- Statistics -->
+<div class="d-flex-header">
+  <div class="statistics">
+    <div class="item">
+      <mat-icon svgIcon="customers-rounded-blue"></mat-icon>
+      <span class="title">{{ 'refund.all_orders' | translate }}</span>
+      <span class="f-weight-500" *ngIf="orderStatistics">{{ orderStatistics.totalCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="switch-rounded"></mat-icon>
+      <span class="title">{{ 'refund.switch_requests' | translate }}</span>
+      <span class="f-weight-500" *ngIf="orderStatistics">{{ orderStatistics.returnCount }}</span>
+    </div>
+    <div class="item">
+      <div class="refund-rounded">
+        <mat-icon class="icon" svgIcon="refund"></mat-icon>
+      </div>
+      <span class="title">{{ 'refund.refund_requests' | translate }}</span>
+      <span class="f-weight-500" *ngIf="orderStatistics">{{ orderStatistics.replacementCount }}</span>
+    </div>
+  </div>
+  <mat-form-field class="input-table" [dir]="getDirection()">
+    <input
+      matInput
+      placeholder="{{ 'refund.search_for_specific_order' | translate }}"
+      (input)="getDeepWithFilter($event)" />
+    <mat-icon
+      matSuffix
+      class="icon"
+      [svgIcon]="getDirection() === 'rtl' ? 'search-right' : 'search-left'"></mat-icon>
+  </mat-form-field>
+</div>
+
+<!-- Ag Grid -->
+<ag-grid-angular
+  id="myGrid"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="orderListData"
+  [enableRtl]="true"
+  (gridReady)="onGridReady($event)"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+
+<!-- Pagination -->
+
+<ag-pagination
+  (pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount">
+</ag-pagination>

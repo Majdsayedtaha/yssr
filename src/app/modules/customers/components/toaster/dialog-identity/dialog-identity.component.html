@@ -1,0 +1,81 @@
+<mat-dialog-content class="toast">
+  <form novalidate [formGroup]="form" (ngSubmit)="confirm()">
+    <div class="toast-container">
+      <!-- Header -->
+      <div class="toast-header bg-white p-2">
+        <ul class="breadcrumb d-flex flex-row-reverse align-center list-none">
+          <span [translate]="'label.customer.add'" class="second"></span>
+          <span class="second">&#160;&gt;&#160;</span>
+          <span [translate]="'label.customer.id_confirm'" class="second"></span>
+          <span class="splitter second">|</span>
+          <span [translate]="'label.customer.title'" class="active title"></span>
+          <mat-icon svgIcon="customers" class="title-icon"></mat-icon>
+        </ul>
+        <mat-icon svgIcon="close" class="c-pointer" (click)="closedDialog()"> </mat-icon>
+      </div>
+      <div class="bg-body p-3">
+        <div class="contant bg-white p-2">
+          <!-- Body -->
+          <div class="toast-content">
+            <!-- Id Type -->
+            <mat-custom-field
+              controlName="identificationTypeId"
+              label="id_type"
+              type="select"
+              [selectValueAsObject]="true"
+              [callApiFunction]="getIdentificationTypes"
+              [group]="form">
+            </mat-custom-field>
+
+            <!-- Id Number -->
+            <mat-custom-field
+              controlName="identificationNumber"
+              label="id_number"
+              type="text"
+              [group]="form"
+              [textSuffix]="startWithNumber"
+              [maxLengthValue]="9">
+            </mat-custom-field>
+          </div>
+
+          <!-- Footer -->
+          <div class="toast-footer d-flex align-center flex-column">
+            <!-- <ng-container *ngIf="customer != undefined"> -->
+            <ng-container *ngIf="!loading && fetchedBefore">
+              <ng-container *ngIf="customer; else elseNotFound">
+                <span class="fw-bold text-success">{{ 'fields_validation.data_found' | translate }}</span>
+              </ng-container>
+              <ng-template #elseNotFound>
+                <span class="mt-1 fw-bold text-danger">{{ 'fields_validation.data_not_found' | translate }}</span>
+              </ng-template>
+            </ng-container>
+
+            <!-- </ng-container> -->
+
+            <!-- Submit -->
+            <button
+              mat-raised-button
+              color="primary"
+              class="mt-3 p-3"
+              type="submit"
+              [disabled]="form.invalid || loading || customer">
+              {{ 'verification' | translate }}
+              <mat-spinner [diameter]="30" *ngIf="loading" class="mx-1"></mat-spinner>
+            </button>
+
+            <!-- Add -->
+            <button
+              mat-stroked-button
+              color="primary"
+              class="mt-2 p-3"
+              type="button"
+              (click)="closedDialog()"
+              [disabled]="isExist">
+              {{ 'buttons.add' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

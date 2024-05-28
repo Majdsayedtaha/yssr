@@ -1,0 +1,15 @@
+:host,
+.form-section {
+  height: 100%;
+  flex: 1;
+
+}
+
+.grid {
+  height: 40%;
+
+  &::ng-deep .ag-rtl .ag-cell {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+  }
+}

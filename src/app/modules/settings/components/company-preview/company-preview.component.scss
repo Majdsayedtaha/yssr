@@ -1,0 +1,51 @@
+.form-section {
+  position: relative;
+}
+
+.loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.section {
+  border-radius: 5px;
+  height: fit-content;
+  overflow-y: hidden !important;
+}
+
+mat-label+span {
+  background-color: #f8f8f8;
+  padding: 8px 11px 8px 25px;
+  border-radius: 5px;
+  color: var(--text-color);
+  font-size: 12px;
+  min-height: 32px;
+  margin-left: 1rem;
+}
+
+span.img-container,
+.attachment-img {
+  max-width: 100px;
+  max-height: 100px;
+  min-width: 100px;
+  min-height: 100px;
+  height: 100px;
+  width: 100px;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.img-dashed {
+  border: 1px #777 dashed;
+}
+
+.attachment-label {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+}

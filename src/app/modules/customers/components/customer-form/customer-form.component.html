@@ -1,0 +1,89 @@
+<app-loader-data *ngIf="loading"></app-loader-data>
+
+<mat-stepper
+  *ngIf="customerId || !customerId"
+  #stepper
+  [linear]="isLinearStepper"
+  (selectionChange)="stepSelectionChange($event, stepper)"
+  (click)="preventTriggerValidationStepper(stepper)">
+  <mat-step [label]="'personal_data' | translate" [stepControl]="getFormGroup('personalData')">
+    <app-personal-data
+      (hideStep2)="hideStep2 = $event.valueOf()"
+      [personalDataGroup]="getFormGroup('personalData')"
+      [startWithNumber]="startWithNumber"></app-personal-data>
+    <div class="stepper-actions">
+      <button mat-raised-button color="primary" matStepperNext class="mt-3">{{ 'buttons.next' | translate }}</button>
+    </div>
+  </mat-step>
+  <mat-step *ngIf="!hideStep2" [label]="'business_case' | translate" [stepControl]="getFormGroup('businessArr')">
+    <app-business-case [business]="business" [businessCaseGroup]="getFormGroup('business')"></app-business-case>
+    <div class="stepper-actions">
+      <button mat-stroked-button color="primary" matStepperPrevious class="mt-3">
+        {{ 'buttons.cancel' | translate }}
+      </button>
+      <button mat-raised-button color="primary" matStepperNext class="mt-3">{{ 'buttons.next' | translate }}</button>
+    </div>
+  </mat-step>
+  <mat-step [stepControl]="getFormGroup('nationalAddress')" [label]="'national_address' | translate">
+    <app-national-address [nationalAddressGroup]="getFormGroup('nationalAddress')"></app-national-address>
+    <div class="stepper-actions">
+      <button mat-stroked-button color="primary" matStepperPrevious class="mt-3">
+        {{ 'buttons.cancel' | translate }}
+      </button>
+      <button mat-raised-button color="primary" matStepperNext class="mt-3">{{ 'buttons.next' | translate }}</button>
+    </div>
+  </mat-step>
+  <mat-step [stepControl]="getFormGroup('customerData')" [label]="'work_data' | translate">
+    <app-work-data [workDataGroup]="getFormGroup('customerData')"></app-work-data>
+    <div class="stepper-actions">
+      <button mat-stroked-button color="primary" matStepperPrevious class="mt-3">
+        {{ 'buttons.cancel' | translate }}
+      </button>
+      <ng-container *ngIf="postLoading; then strokedButton; else raisedButton"></ng-container>
+      <ng-template #raisedButton>
+        <button
+          mat-raised-button
+          color="primary"
+          matStepperNext
+          class="mt-3"
+          [disabled]="!customerForm.valid"
+          *ngIf="customerId"
+          (click)="customerId ? updateCustomerForm() : ''">
+          {{ 'buttons.update' | translate }}
+        </button>
+        <button
+          [matMenuTriggerFor]="quickAccessMenu"
+          mat-raised-button
+          color="primary"
+          matStepperNext
+          class="mt-3"
+          *ngIf="!customerId"
+          [disabled]="!customerForm.valid">
+          {{ 'buttons.add' | translate }}
+        </button>
+      </ng-template>
+      <ng-template #strokedButton>
+        <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+          <mat-spinner [diameter]="30"></mat-spinner>
+        </button>
+      </ng-template>
+    </div>
+    <mat-menu #quickAccessMenu="matMenu">
+      <button mat-menu-item (click)="quickAccess('table')">
+        {{ 'go_to_table_customer' | translate }}
+      </button>
+      <button mat-menu-item (click)="quickAccess('recruitment')">
+        {{ 'go_to_recruitment' | translate }}
+      </button>
+      <button mat-menu-item (click)="quickAccess('rent')">
+        {{ 'go_to_rent' | translate }}
+      </button>
+      <button mat-menu-item (click)="quickAccess('suretyTransfer')">
+        {{ 'go_to_suretyTransfer' | translate }}
+      </button>
+      <button mat-menu-item (click)="quickAccess('bill')">
+        {{ 'go_to_bill' | translate }}
+      </button>
+    </mat-menu>
+  </mat-step>
+</mat-stepper>

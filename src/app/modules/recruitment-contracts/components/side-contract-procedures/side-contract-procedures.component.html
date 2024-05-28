@@ -1,0 +1,51 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="procedures_contracts"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon svgIcon="close" class="c-pointer" (click)="close()"></mat-icon>
+    </div>
+
+    <!-- Body -->
+    <div class="details">
+      <p class="text-center" *ngIf="contractProcedures && contractProcedures.length === 0">
+        {{ 'no_procedure_yet' | translate }}
+      </p>
+      <div class="procedure-card" *ngFor="let procedure of contractProcedures">
+        <mat-icon
+          class="icon c-pointer"
+          [ngClass]="getDirection() === 'rtl' ? 'icon-rtl' : 'icon-ltr'"
+          [matTooltip]="'tooltip.edit_procedure' | translate"
+          svgIcon="edit-row"
+          (click)="edit(procedure)"></mat-icon>
+        <div class="grid-2-column row">
+          <span> {{ 'procedure' | translate }} </span>
+          <span> {{ procedure.procedure.name }}</span>
+        </div>
+        <div class="grid-2-column row">
+          <span>{{ 'procedure_status' | translate }}</span>
+          <span
+            class="status"
+            [ngClass]="
+              procedure.status.name === (getDirection() == 'rtl' ? 'إيجابي' : 'Positive') ? 'positive' : 'negative'
+            ">
+            {{ procedure.status.name }}</span
+          >
+        </div>
+        <div class="grid-2-column row">
+          <span>{{ 'procedure_date' | translate }}</span>
+          <span>{{ procedure.procedureDate }}</span>
+        </div>
+        <div class="grid-2-column row">
+          <span>{{ 'comments' | translate }}</span>
+          <span class="procedure-notes" [matTooltip]="procedure.note" [matTooltipShowDelay]="1000">
+            {{ procedure.note || ('nothing_added' | translate) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

@@ -1,0 +1,47 @@
+<h1 class="text-center">{{ 'welcome_login' | translate }}</h1>
+
+<p class="mb-2">{{ 'login_to_continue' | translate }}</p>
+
+<form novalidate [formGroup]="loginForm" (ngSubmit)="onLogin()">
+  <mat-custom-field controlName="userNameOrEmail" label="user_name" type="text" [group]="loginForm"> </mat-custom-field>
+
+  <mat-custom-field
+    controlName="password"
+    [type]="showPasswordStatus ? 'text' : 'password'"
+    label="password"
+    [group]="loginForm"
+    [suffix]="showPasswordStatus ? 'eye-open' : 'eye-close'"
+    [cursorStatus]="true"
+    (onSuffixCLicked)="showPassword($event)">
+  </mat-custom-field>
+
+  <a class="forget-password mt-2" [routerLink]="['../forget-password']">
+    {{ 'forget_password' | translate }}
+  </a>
+
+  <ng-container *ngIf="loading; then strokedButton; else raisedButton"></ng-container>
+  <!-- <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p> -->
+
+  <ng-template #raisedButton>
+    <button
+      [disabled]="!loginForm.valid"
+      mat-raised-button
+      color="primary"
+      class="submit-btn f-size-14 f-weight-500"
+      type="submit">
+      <span>{{ 'login' | translate }}</span>
+    </button>
+  </ng-template>
+
+  <ng-template #strokedButton>
+    <button
+      [disabled]="!loginForm.valid"
+      mat-stroked-button
+      color="primary"
+      class="submit-btn f-size-14 f-weight-500"
+      disabled
+      type="button">
+      <mat-spinner [diameter]="30"></mat-spinner>
+    </button>
+  </ng-template>
+</form>

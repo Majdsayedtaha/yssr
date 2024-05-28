@@ -1,0 +1,155 @@
+<form class="form-section" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- Acceptance -->
+  <div class="section-card">
+    <!-- Agency -->
+    <div class="row-flex-division-4">
+      <!-- ForeignAgencyName -->
+      <mat-custom-field controlName="ForeignAgencyName" label="field.file.ForeignAgencyName" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- ExecutiveManagerName -->
+      <mat-custom-field
+        controlName="ExecutiveManagerName"
+        type="text"
+        label="field.file.ExecutiveManagerName"
+        [group]="form">
+      </mat-custom-field>
+      <!-- OfficeAddress -->
+      <mat-custom-field controlName="OfficeAddress" type="text" label="field.file.OfficeAddress" [group]="form">
+      </mat-custom-field>
+
+      <!-- OfficeMobileNo -->
+      <mat-custom-field controlName="OfficeMobileNo" type="tel" label="field.file.OfficeMobileNo" [group]="form">
+      </mat-custom-field>
+
+      <!-- FaxNo -->
+      <mat-custom-field controlName="FaxNo" type="number" label="field.file.FaxNo" [group]="form"> </mat-custom-field>
+    </div>
+
+    <!-- License -->
+    <div class="row-flex-division-4">
+      <!-- LicenseNo -->
+      <mat-custom-field controlName="LicenseNo" type="text" label="field.file.LicenseNo" [group]="form">
+      </mat-custom-field>
+
+      <!-- LicenseDateIssuedStartDateGeorgian -->
+      <mat-custom-field
+        controlName="LicenseDateIssuedStartDateGeorgian"
+        type="date"
+        otherControlName="LicenseDateIssuedStartDateHijri"
+        label="field.file.LicenseDateIssuedStartDateGeorgian"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- LicenseDateIssuedStartDateHijri -->
+      <mat-custom-field
+        controlName="LicenseDateIssuedStartDateHijri"
+        type="date"
+        [hijriFormat]="true"
+        otherControlName="LicenseDateIssuedStartDateGeorgian"
+        label="field.file.LicenseDateIssuedStartDateHijri"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+
+    <!-- License -->
+    <div class="row-flex-division-4">
+      <!-- LicenseDateIssuedEndDateGeorgian -->
+      <mat-custom-field
+        controlName="LicenseDateIssuedEndDateGeorgian"
+        type="date"
+        otherControlName="LicenseDateIssuedEndDateHijri"
+        label="field.file.LicenseDateIssuedEndDateGeorgian"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- LicenseDateIssuedEndDateHijri -->
+      <mat-custom-field
+        controlName="LicenseDateIssuedEndDateHijri"
+        type="date"
+        [hijriFormat]="true"
+        otherControlName="LicenseDateIssuedEndDateGeorgian"
+        label="field.file.LicenseDateIssuedEndDateHijri"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+
+    <!-- CR -->
+    <div class="row-flex-division-4">
+      <!-- CRNo -->
+      <mat-custom-field controlName="CRNo" type="text" label="field.file.CRNo" [group]="form"> </mat-custom-field>
+
+      <!-- CRDateIssuedStartDateGeorgian -->
+      <mat-custom-field
+        controlName="CRDateIssuedStartDateGeorgian"
+        type="date"
+        label="field.file.CRDateIssuedStartDateGeorgian"
+        otherControlName="CRDateIssuedStartDateHijri"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- CRDateIssuedStartDateHijri -->
+      <mat-custom-field
+        controlName="CRDateIssuedStartDateHijri"
+        type="date"
+        [hijriFormat]="true"
+        label="field.file.CRDateIssuedStartDateHijri"
+        otherControlName="CRDateIssuedStartDateGeorgian"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+    <div class="row-flex-division-4">
+      <!-- CRDateIssuedEndDateGeorgian -->
+      <mat-custom-field
+        controlName="CRDateIssuedEndDateGeorgian"
+        type="date"
+        label="field.file.CRDateIssuedEndDateGeorgian"
+        otherControlName="CRDateIssuedEndDateHijri"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- CRDateIssuedEndDateHijri -->
+      <mat-custom-field
+        controlName="CRDateIssuedEndDateHijri"
+        type="date"
+        [hijriFormat]="true"
+        label="field.file.CRDateIssuedEndDateHijri"
+        otherControlName="CRDateIssuedEndDateGeorgian"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+    <!-- PHILIPPINES -->
+    <div class="row-flex-division-4">
+      <!-- PHILIPPINESAgencyName -->
+      <mat-custom-field
+        controlName="PHILIPPINESAgencyName"
+        type="text"
+        label="field.file.PHILIPPINESAgencyName"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- PHILIPPINESAgencyManagerName -->
+      <mat-custom-field
+        controlName="PHILIPPINESAgencyManagerName"
+        type="text"
+        label="field.file.PHILIPPINESAgencyManagerName"
+        [group]="form">
+      </mat-custom-field>
+
+      <!-- PHILIPPINESAgencyAddress -->
+      <mat-custom-field
+        controlName="PHILIPPINESAgencyAddress"
+        type="text"
+        label="field.file.PHILIPPINESAgencyAddress"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+</form>
+
+<div class="text-left">
+  <button mat-raised-button color="primary" class="ml-2 w-10" (click)="submit()" [disabled]="form.invalid || loading">
+    {{ 'buttons.save' | translate }}
+    <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+  </button>
+</div>

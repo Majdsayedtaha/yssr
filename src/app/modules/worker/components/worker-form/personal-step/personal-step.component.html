@@ -1,0 +1,127 @@
+<div class="form-section">
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+      <span>{{ 'personal_data' | translate }}</span>
+    </div>
+    <form novalidate [formGroup]="form">
+      <div class="row-flex-division">
+        <!-- Name En -->
+        <mat-custom-field controlName="NameEn" label="field.worker.name" type="text" [group]="form">
+        </mat-custom-field>
+
+        <mat-searchable-select
+          controlName="CountryId"
+          label="field.worker.nationality"
+          [callApiFunction]="fetchCountries"
+          [group]="form"></mat-searchable-select>
+
+        <!-- Gender -->
+        <mat-custom-field
+          class="radio"
+          controlName="GenderId"
+          label="field.worker.type"
+          type="radio"
+          [options]="genderList"
+          [group]="form">
+        </mat-custom-field>
+      </div>
+
+      <div class="row-flex-division">
+        <!-- Birth Date -->
+        <mat-custom-field
+          controlName="BirthDate"
+          label="field.worker.birthDate"
+          type="date"
+          [group]="form"
+          [maxDate]="acceptableAge">
+        </mat-custom-field>
+
+        <!-- Birth Place -->
+        <mat-custom-field controlName="PlaceOfBirth" label="field.worker.placeOfBirth" type="text" [group]="form">
+        </mat-custom-field>
+
+        <!-- First Mobile Phone -->
+        <mat-custom-field controlName="CVMobileFirst" label="field.worker.cVMobileFirst" type="tel" [group]="form">
+        </mat-custom-field>
+
+        <!-- Second Mobile Phone -->
+        <mat-custom-field controlName="CVMobileSecond" label="field.worker.cVMobileSecond" type="tel" [group]="form">
+        </mat-custom-field>
+      </div>
+
+      <div class="row-flex-division">
+        <!-- Email -->
+        <mat-custom-field controlName="Email" label="field.worker.email" type="email" [group]="form">
+        </mat-custom-field>
+
+        <!-- Religion -->
+        <mat-custom-field
+          controlName="ReligionId"
+          label="field.worker.religion"
+          type="select"
+          [callApiFunction]="fetchReligions"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Job -->
+        <!-- <mat-custom-field
+          controlName="JobId"
+          label="field.worker.job"
+          type="select"
+          [callApiFunction]="fetchAllJobsSearchableSelect"
+          [group]="form">
+        </mat-custom-field> -->
+
+        <mat-searchable-select
+          controlName="JobId"
+          label="field.worker.job"
+          [callApiFunction]="fetchAllJobsSearchableSelect"
+          [group]="form"></mat-searchable-select>
+
+        <!-- Social Status -->
+        <mat-custom-field
+          controlName="MaritalStatusId"
+          label="field.worker.maritalStatus"
+          type="select"
+          [callApiFunction]="fetchMaritalStatuses"
+          [group]="form">
+        </mat-custom-field>
+      </div>
+
+      <div class="row-flex-division">
+        <!-- Number Of Children -->
+        <mat-custom-field
+          controlName="NumberOfChildren"
+          label="field.worker.numberOfChildren"
+          type="number"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Weight -->
+        <mat-custom-field controlName="Weight" label="field.worker.weight" type="number" [group]="form">
+        </mat-custom-field>
+
+        <!-- Tall -->
+        <mat-custom-field controlName="Tall" label="field.worker.tall" type="number" [group]="form"> </mat-custom-field>
+
+        <!-- CV Type -->
+        <mat-custom-field
+          controlName="CVTypeId"
+          label="field.worker.cvType"
+          type="select"
+          [callApiFunction]="fetchCVTypes"
+          [group]="form">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="cvTypeValue == 3 || cvTypeValue == 4"
+          controlName="cvTypeCheckedData"
+          label="data_iqama_exist"
+          type="checkbox"
+          [group]="form">
+        </mat-custom-field>
+      </div>
+    </form>
+  </div>
+</div>

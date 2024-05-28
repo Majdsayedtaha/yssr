@@ -1,0 +1,65 @@
+<div class="form-section">
+  <form novalidate [formGroup]="airportForm">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+        <span>{{ 'label.setting.airport' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-searchable-select controlName="region" label="region" [callApiFunction]="getRegions" [group]="airportForm">
+        </mat-searchable-select>
+
+        <mat-searchable-select
+          controlName="cityId"
+          label="city"
+          [group]="airportForm"
+          [callApiFunction]="getRegionCitiesSettings">
+        </mat-searchable-select>
+
+        <mat-custom-field controlName="nameEn" label="setting.fields.airport_en" type="text" [group]="airportForm">
+        </mat-custom-field>
+        <mat-custom-field controlName="nameAr" label="setting.fields.airport_ar" type="text" [group]="airportForm">
+        </mat-custom-field>
+        <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+        <ng-template #raisedButton>
+          <button
+            mat-raised-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            type="submit"
+            [disabled]="!airportForm.valid"
+            (click)="!update ? arrivalStationRow('add') : arrivalStationRow('update')">
+            <ng-container *ngIf="update">
+              {{ 'buttons.update' | translate }}
+            </ng-container>
+            <ng-container *ngIf="!update">
+              {{ 'buttons.add' | translate }}
+            </ng-container>
+          </button>
+        </ng-template>
+
+        <ng-template #strokedButton>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            disabled>
+            <mat-spinner [diameter]="30"></mat-spinner>
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </form>
+  <ag-grid-angular
+    id="myGrid"
+    class="ag-theme-alpine grid"
+    [columnDefs]="columnDefs"
+    [enableRtl]="true"
+    (gridReady)="onGridReady($event)"
+    [rowData]="arrivalStationDataList"
+    [gridOptions]="gridOptions"></ag-grid-angular>
+  <ag-pagination
+    [pageSize]="paginationOptions.pageSize"
+    [lengthData]="paginationOptions.totalCount"
+    (pageChanged)="onSetPage($event)"></ag-pagination>
+</div>

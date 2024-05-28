@@ -1,0 +1,66 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<mat-stepper
+  #stepper
+  [linear]="isLinearStepper"
+  (selectionChange)="stepSelectionChange($event, stepper)"
+  (click)="preventTriggerValidationStepper(stepper)">
+  <!-- Personal Step -->
+  <mat-step [label]="'personal_data' | translate" [stepControl]="getFormGroup('personalFrom')">
+    <personal-step [form]="getFormGroup('personalFrom')"></personal-step>
+    <!-- Actions -->
+    <div class="stepper-actions">
+      <button mat-raised-button color="primary" matStepperNext class="mt-3">
+        {{ 'buttons.next' | translate }}
+      </button>
+    </div>
+  </mat-step>
+
+  <!-- Passport Step -->
+  <mat-step [label]="'passport_data' | translate" [stepControl]="getFormGroup('passportForm')">
+    <passport-step [form]="getFormGroup('passportForm')"></passport-step>
+    <!-- Actions -->
+    <div class="stepper-actions">
+      <button mat-stroked-button color="primary" matStepperPrevious class="mt-3">
+        {{ 'buttons.cancel' | translate }}
+      </button>
+      <button mat-raised-button color="primary" matStepperNext class="mt-3">
+        {{ 'buttons.next' | translate }}
+      </button>
+    </div>
+  </mat-step>
+
+  <!-- Experience Step -->
+  <mat-step [label]="'experience_section_data' | translate" [stepControl]="getFormGroup('experienceForm')">
+    <experience-step [form]="getFormGroup('experienceForm')"></experience-step>
+    <!-- Actions -->
+    <div class="stepper-actions">
+      <button mat-stroked-button color="primary" matStepperPrevious class="mt-3">
+        {{ 'buttons.cancel' | translate }}
+      </button>
+      <button mat-raised-button color="primary" matStepperNext class="mt-3">
+        {{ 'buttons.next' | translate }}
+      </button>
+    </div>
+  </mat-step>
+
+  <!-- Extra Info -->
+  <mat-step [label]="'extra_section_data' | translate" [stepControl]="getFormGroup('extraDetailsForm')">
+    <extra-details-step [form]="getFormGroup('extraDetailsForm')"></extra-details-step>
+    <!-- Actions -->
+    <div class="stepper-actions">
+      <button mat-stroked-button color="primary" matStepperPrevious class="mt-3">
+        {{ 'buttons.cancel' | translate }}
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        matStepperNext
+        class="mt-3"
+        (click)="submit()"
+        [disabled]="!form.valid || loading">
+        <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+        {{ 'buttons.save' | translate }}
+      </button>
+    </div>
+  </mat-step>
+</mat-stepper>

@@ -1,0 +1,26 @@
+<div class="plans d-flex flex-column gap-1" [formGroup]="filterDashboardFormGroup">
+  <div class="row-flex-division">
+    <mat-custom-field
+      type="select"
+      [options]="options"
+      [translateOptions]="true"
+      controlName="dateFilter"
+      [group]="filterDashboardFormGroup"
+      [getStaticOptions]="true"></mat-custom-field>
+    <mat-custom-field
+      type="select"
+      [options]="department"
+      [translateOptions]="true"
+      controlName="department"
+      [group]="filterDashboardFormGroup"
+      [getStaticOptions]="true"></mat-custom-field>
+  </div>
+  <app-recruitment-charts *ngIf="departmentValue === '1'"></app-recruitment-charts>
+  <app-worker-charts *ngIf="departmentValue === '2'"></app-worker-charts>
+  <app-customers-charts *ngIf="departmentValue === '3'"></app-customers-charts>
+  <app-refund-charts *ngIf="departmentValue === '4'"></app-refund-charts>
+  <app-waiver-charts *ngIf="departmentValue === '5'"></app-waiver-charts>
+  <app-surety-transfer-charts *ngIf="departmentValue === '6'"></app-surety-transfer-charts>
+  <app-rent-charts *ngIf="departmentValue === '7'"></app-rent-charts>
+  <app-complaints-charts *ngIf="departmentValue === '8'"></app-complaints-charts>
+</div>

@@ -1,0 +1,121 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="contract_details"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon svgIcon="close" class="c-pointer" (click)="closeSideNav()"></mat-icon>
+    </div>
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div class="section" *ngIf="!isLoading && rentData">
+        <div class="row mb-2 d-flex">
+          <!-- requestDateMilady -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.requestDateMilady' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.requestDateMilady | timezoneToDate }}</span>
+          </div>
+
+          <!-- customer -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.customer' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.customer?.name }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- worker -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.worker' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.worker?.name }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <!-- rentDaysPeriod -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.rentDaysPeriod' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.rentDaysPeriod }}</span>
+          </div>
+
+          <!-- rentType -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.rentType' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.rentType?.name }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- fromDateMilady -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.fromDateMilady' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.fromDateMilady | timezoneToDate }}</span>
+          </div>
+
+          <!-- toDateMilady -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.toDateMilady' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.toDateMilady | timezoneToDate }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- receivingType -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.receivingType' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.receivingType?.name }}</span>
+          </div>
+
+          <!-- receivingSuggestedTime -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.receivingSuggestedTime' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.receivingSuggestedTime | time : '12' }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- rentAmountWithoutTax -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.rentAmountWithoutTax' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.rentAmountWithoutTax }}</span>
+          </div>
+          <!-- taxType -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.taxType' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.taxType?.name }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- taxAmount -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.taxAmount' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.taxAmount | number }}</span>
+          </div>
+          <!-- rentAmountWithTax -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.rentAmount' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.rentAmount }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.rentAmountWithTax' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.rentAmountWithTax }}</span>
+          </div>
+          <!-- rentAmount -->
+          <!-- financialStatus -->
+          <!-- <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.rent.financialStatus' | translate }}</mat-label>
+            <span class="mt-1">{{ rentData.financialStatus?.name }}</span>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

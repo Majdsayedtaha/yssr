@@ -1,0 +1,115 @@
+<div class="form-section">
+  <form novalidate [formGroup]="contractData">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'contract_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="contractDateMilady"
+          otherControlName="contractDateHijri"
+          label="contract_date_milady"
+          type="date"
+          [group]="contractData"></mat-custom-field>
+        <mat-custom-field
+          controlName="contractDateHijri"
+          otherControlName="contractDateMilady"
+          [hijriFormat]="true"
+          label="contract_date_hijri"
+          type="date"
+          [group]="contractData"></mat-custom-field>
+        <mat-custom-field
+          apiEndpoint="Customer/GetCustomersSelect"
+          [selectValueAsObject]="true"
+          [readonly]="contractId ? false : true"
+          controlName="customerId"
+          label="customer_name"
+          type="searchableSelect"
+          [group]="contractData">
+        </mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'visa_details' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="visaNo"
+          [maxLengthValue]="10"
+          label="visa_number"
+          type="text"
+          [group]="contractData"></mat-custom-field>
+        <mat-custom-field
+          controlName="visaTypeId"
+          label="visa_type"
+          type="select"
+          [callApiFunction]="fetchVisaTypes"
+          [group]="contractData"></mat-custom-field>
+        <mat-custom-field
+          controlName="visaDateMilady"
+          otherControlName="visaDateHijri"
+          label="date_visa_milady"
+          type="date"
+          [group]="contractData"></mat-custom-field>
+        <mat-custom-field
+          controlName="visaDateHijri"
+          otherControlName="visaDateMilady"
+          [hijriFormat]="true"
+          label="date_visa_hijri"
+          type="date"
+          [group]="contractData"></mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+        <span>{{ 'customer_requirements' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="religionId"
+          label="religion"
+          type="select"
+          [callApiFunction]="fetchReligions"
+          [group]="contractData">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="ageId"
+          label="age"
+          type="select"
+          [callApiFunction]="fetchAges"
+          [group]="contractData"></mat-custom-field>
+
+        <mat-searchable-select
+          controlName="jobId"
+          label="occupation"
+          [callApiFunction]="fetchAllJobsSearchableSelect"
+          [group]="contractData"></mat-searchable-select>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="experienceTypeId"
+          label="type_experience"
+          type="select"
+          [callApiFunction]="fetchExperienceTypes"
+          [group]="contractData"></mat-custom-field>
+        <!-- <mat-custom-field
+          controlName="countryId"
+          label="country"
+          type="select"
+          [callApiFunction]="fetchCountries"
+          [group]="contractData"></mat-custom-field> -->
+        <mat-searchable-select
+          controlName="countryId"
+          label="country"
+          [searchType]="'front'"
+          [callApiFunction]="fetchCountries"
+          [group]="contractData"></mat-searchable-select>
+        <div></div>
+      </div>
+    </div>
+  </form>
+</div>

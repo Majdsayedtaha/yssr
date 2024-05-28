@@ -1,0 +1,113 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<form novalidate [formGroup]="billsMovementFrom">
+  <div class="form-section">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+        <span>{{
+          !billsMovementId
+            ? ('label.financial.add_movement' | translate)
+            : ('label.financial.update_movement' | translate)
+        }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="date"
+          label="field.financial_management.history_movement"
+          type="date"
+          [group]="billsMovementFrom">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="typeId"
+          label="field.financial_management.movement_type"
+          type="select"
+          [selectValueAsObject]="true"
+          [callApiFunction]="fetchMovementTransaction"
+          [group]="billsMovementFrom">
+        </mat-custom-field>
+        <ng-container *ngIf="billTypeValue === 3">
+          <div class="d-c-flex type-movement">
+            <mat-label class="f-size-14 f-weight-700 accent-color label mb-1" [dir]="getDirection()">
+              {{ 'field.financial_management.type_transaction' | translate }}
+            </mat-label>
+            <mat-form-field appearance="outline" [dir]="getDirection()" [ngStyle]="{ width: '100%' }">
+              <mat-select #matSelect [(ngModel)]="typeMovement" [ngModelOptions]="{ standalone: true }">
+                <mat-option color="primary" [value]="1">
+                  <ng-container>{{ 'field.financial_management.fromBank_toBank' | translate }}</ng-container>
+                </mat-option>
+                <mat-option color="primary" [value]="2">
+                  <ng-container>{{ 'field.financial_management.fromStore_toStore' | translate }}</ng-container>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </ng-container>
+
+        <mat-custom-field
+          controlName="amount"
+          label="field.financial_management.amount"
+          type="number"
+          [group]="billsMovementFrom">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          *ngIf="billTypeValue === 1 || (billTypeValue === 3 && typeMovement === 2)"
+          controlName="fromStoreId"
+          label="field.financial_management.from_name_store"
+          type = 'searchableSelect'
+          apiEndpoint = 'Store/GetStoreSelect'
+          [group]="billsMovementFrom">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="fromBankId"
+          label="field.financial_management.from_name_bank"
+          type="searchableSelect"
+          *ngIf="billTypeValue === 2 || (billTypeValue === 3 && typeMovement === 1)"
+          apiEndpoint="Bank/GetBanksSelect"
+          [group]="billsMovementFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          *ngIf="billTypeValue === 1 || (billTypeValue === 3 && typeMovement === 1)"
+          controlName="toBankId"
+          label="field.financial_management.to_name_bank"
+          type="searchableSelect"
+          apiEndpoint="Bank/GetBanksSelect"
+          [group]="billsMovementFrom">
+        </mat-custom-field>
+        <mat-custom-field
+          *ngIf="billTypeValue === 2 || (billTypeValue === 3 && typeMovement === 2)"
+          controlName="toStoreId"
+          label="field.financial_management.to_name_store"
+          type = 'searchableSelect'
+          apiEndpoint = 'Store/GetStoreSelect'
+          [group]="billsMovementFrom">
+        </mat-custom-field>
+      </div>
+    </div>
+  </div>
+  <div class="stepper-actions">
+    <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+    <ng-template #raisedButton>
+      <!-- [disabled]="!billsMovementFrom.valid" -->
+      <button
+        mat-raised-button
+        color="primary"
+        class="mt-3"
+        (click)="billsMovementId ? updateBillsMovement() : addBillsMovement()">
+        <span *ngIf="!billsMovementId">
+          {{ 'buttons.add' | translate }}
+        </span>
+        <span *ngIf="billsMovementId">
+          {{ 'buttons.update' | translate }}
+        </span>
+      </button>
+    </ng-template>
+    <ng-template #strokedButton>
+      <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </button>
+    </ng-template>
+  </div>
+</form>

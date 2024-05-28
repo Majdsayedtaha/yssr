@@ -1,0 +1,78 @@
+<h2 class="title-char">{{ 'rent' | translate }}</h2>
+<div class="cards">
+  
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="note"></mat-icon>
+        </div>
+        <h6>{{ 'fees_collected' | translate }}</h6>
+      </div>
+      <span>4</span>
+      <!-- <span>{{ rentData ? rentData.totalCount.data : 0 }}</span> -->
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="note"></mat-icon>
+        </div>
+        <h6>{{ 'total_number_contracts_rent' | translate }}</h6>
+      </div>
+      <span>{{ rentData ? rentData.totalCount.data : 0 }}</span>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-body">
+      <div class="title">
+        <div class="icon icon-shape">
+          <mat-icon svgIcon="note"></mat-icon>
+        </div>
+        <h6>{{ 'uncollected_fees' | translate }}</h6>
+      </div>
+      <span>8</span>
+      <!-- <span>{{ rentData ? rentData.totalCount.data : 0 }}</span> -->
+    </div>
+  </div>
+</div>
+<div class="d-flex">
+  <div class="tables">
+    <div class="table">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h4>{{ 'contracts_nearing_expiration_rent' | translate }}</h4>
+        </div>
+        <!-- Ag Grid -->
+        <ag-grid-angular
+          id="myGrid"
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefs"
+          [rowData]="rowData"
+          [enableRtl]="(direction.direction$ | async) === 'rtl' ? true : false"
+          (gridReady)="onGridReady($event)"
+          [gridOptions]="gridOptions"></ag-grid-angular>
+        <ag-pagination
+          (pageChanged)="onSetPage($event)"
+          [pageSize]="paginationOptions.pageSize"
+          [lengthData]="paginationOptions.totalCount"></ag-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+<section id="rent-section mt-2">
+  <div class="chart-container">
+    <!-- <div class="d-flex flex-column">
+      <div class="card-header border-0">
+        <h4>{{ 'number_contracts_lease_type' | translate }}</h4>
+      </div> -->
+    <div class="chart">
+      <canvas #pieChartTypeRent></canvas>
+    </div>
+    <!-- </div> -->
+  </div>
+</section>

@@ -1,0 +1,62 @@
+<form novalidate [formGroup]="workDataGroup">
+  <div class="form-section">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="work-data"></mat-icon>
+        <span>{{ 'work_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="customerJob"
+          label="workplace"
+          type="text"
+          [group]="workDataGroup"></mat-custom-field>
+        <mat-custom-field
+          controlName="customerPosition"
+          label="career"
+          type="text"
+          [group]="workDataGroup"></mat-custom-field>
+        <mat-custom-field
+          controlName="workTel"
+          label="work_phone"
+          type="tel"
+          [group]="workDataGroup"></mat-custom-field>
+        <mat-custom-field
+          controlName="monthlyIncome"
+          label="monthly_income"
+          type="number"
+          textSuffix="label.suffixes.rial_sa"
+          [group]="workDataGroup"></mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="additional-data"></mat-icon>
+        <span>{{ 'additional_data' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="relativeName"
+          label="relative_name"
+          type="text"
+          [group]="workDataGroup"></mat-custom-field>
+        <mat-custom-field
+          controlName="relativeType"
+          label="relative_relation"
+          type="text"
+          [group]="workDataGroup"></mat-custom-field>
+        <mat-custom-field
+          controlName="relativePhone"
+          label="relative_mobile"
+          type="tel"
+          [group]="workDataGroup"></mat-custom-field>
+        <!-- <mat-custom-field
+          controlName="vatProcessId"
+          label="vat_process"
+          type="select"
+          [callApiFunction]="getVATProcesses"
+          [group]="workDataGroup"></mat-custom-field> -->
+      </div>
+    </div>
+  </div>
+</form>

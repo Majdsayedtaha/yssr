@@ -1,0 +1,79 @@
+<div class="form-section">
+  <form novalidate [formGroup]="form">
+    <div class="section-card">
+      <!-- <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+        <span>{{ 'label.setting.experience' | translate }}</span>
+      </div> -->
+      <div class="row-flex-division">
+        <!-- Main Service -->
+        <mat-custom-field
+          [selectValueAsObject]="true"
+          controlName="serviceMain"
+          label="service_main"
+          [callApiFunction]="getMainServices"
+          type="select"
+          [group]="form">
+        </mat-custom-field>
+
+        <!-- Name Ar -->
+        <mat-custom-field controlName="nameAr" label="setting.fields.sub_services_ar" type="text" [group]="form">
+        </mat-custom-field>
+
+        <!-- Name En -->
+        <mat-custom-field controlName="nameEn" label="setting.fields.sub_services_en" type="text" [group]="form">
+        </mat-custom-field>
+
+        <!-- TODO ADD CallBackFun or Endpoint -->
+        <!-- Account Number -->
+        <mat-custom-field
+          controlName="accountId"
+          label="setting.fields.account_number"
+          type="searchableSelect"
+          [group]="form">
+        </mat-custom-field>
+
+        <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+
+        <ng-template #raisedButton>
+          <button
+            mat-raised-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            type="submit"
+            [disabled]="!form.valid"
+            (click)="!update ? serviceRow('add') : serviceRow('update')">
+            <ng-container *ngIf="update">
+              {{ 'buttons.update' | translate }}
+            </ng-container>
+            <ng-container *ngIf="!update">
+              {{ 'buttons.add' | translate }}
+            </ng-container>
+          </button>
+        </ng-template>
+
+        <ng-template #strokedButton>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            disabled>
+            <mat-spinner [diameter]="30"></mat-spinner>
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </form>
+  <ag-grid-angular
+    id="myGrid"
+    class="ag-theme-alpine grid"
+    [columnDefs]="columnDefs"
+    [enableRtl]="true"
+    (gridReady)="onGridReady($event)"
+    [rowData]="listData"
+    [gridOptions]="gridOptions"></ag-grid-angular>
+  <ag-pagination
+    [pageSize]="paginationOptions.pageSize"
+    [lengthData]="paginationOptions.totalCount"
+    (pageChanged)="onSetPage($event)"></ag-pagination>
+</div>

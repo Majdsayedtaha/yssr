@@ -1,0 +1,40 @@
+.auth {
+  display: flex;
+  min-height: 100vh;
+
+  flex-direction: row-reverse;
+
+  &:dir(ltr) {
+    flex-direction: row;
+  }
+
+  .part1 {
+    flex: 1;
+    background-color: var(--light-primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .part2 {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .yssr-logo {
+      margin-top: 1rem;
+      align-self: center;
+      width: 100%;
+      height: 104px;
+    }
+  }
+}
+
+.mat-icon.auth-svg {
+  width: 100%;
+  height: 40%;
+}
+
+.mx-auto {
+  margin-inline: auto;
+}

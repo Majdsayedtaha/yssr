@@ -1,0 +1,37 @@
+<div class="form-section">
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+      <span>{{ 'identify_customer' | translate }}</span>
+    </div>
+    <form novalidate [formGroup]="customer">
+      <div class="search-bar-with-btn">
+        <mat-custom-field
+          class="search-bar-field"
+          [placeholder]="'search_for_specific_customer' | translate"
+          [group]="customer"
+          controlName="searchCustomer">
+        </mat-custom-field>
+        <button
+          mat-raised-button
+          color="primary"
+          class="search-bar-btn"
+          [disabled]="!customer.get('searchCustomer')?.value || isLoading"
+          (click)="searchOnCustomer()">
+          <mat-spinner [diameter]="30" *ngIf="isLoading" color="primary"></mat-spinner>
+          <span *ngIf="!isLoading"> {{ 'buttons.search' | translate }}</span>
+        </button>
+      </div>
+      <ag-grid-angular
+        id="myGrid"
+        style="height: 40vh"
+        class="ag-theme-alpine"
+        [columnDefs]="columnDefs"
+        [enableRtl]="true"
+        [rowData]="[]"
+        (selectionChanged)="onSelectionChanged($event)"
+        [gridOptions]="gridOptions"></ag-grid-angular>
+      <!-- <ag-pagination [pageSize]="10" [lengthData]="100" (pageChanged)="onSetPage($event)"></ag-pagination> -->
+    </form>
+  </div>
+</div>

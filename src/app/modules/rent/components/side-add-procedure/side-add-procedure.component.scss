@@ -1,0 +1,21 @@
+:host {
+  position: fixed;
+  z-index: 10;
+}
+.side-nav-container {
+  position: relative;
+  .loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .side-nav {
+    border-radius: 0.5rem;
+    background-color: var(--background-color);
+    .add-procedure{
+      width: 140px;
+      margin: 0 78%;
+    }
+  }
+}

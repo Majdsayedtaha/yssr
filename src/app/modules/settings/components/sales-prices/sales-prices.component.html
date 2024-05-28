@@ -1,0 +1,80 @@
+<div class="form-section">
+  <form novalidate [formGroup]="salesPriceForm">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+        <span>{{ 'label.setting.sales_prices' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          (validitySearchableOptionHandler)="watchIfDataNeedToClear($event)"
+          apiEndpoint="Country/GetCountries"
+          controlName="countryId"
+          label="setting.fields.country"
+          type="searchableSelect"
+          [selectValueAsObject]="false"
+          [group]="formGroup('mainData')">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="recruitmentPeriod"
+          label="setting.fields.recruitment_period"
+          type="number"
+          textSuffix="day"
+          [minNumberValue]="0"
+          [group]="formGroup('mainData')">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="recruitmentSalary"
+          label="setting.fields.recruitment_price"
+          type="number"
+          textSuffix="label.suffixes.rial_sa"
+          [group]="formGroup('mainData')">
+        </mat-custom-field>
+
+        <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+        <ng-template #raisedButton>
+          <button
+            mat-raised-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            type="submit"
+            [disabled]="!salesPriceForm.get('mainData')?.valid"
+            (click)="saveSalePrice()">
+            {{ 'buttons.save' | translate }}
+          </button>
+        </ng-template>
+
+        <ng-template #strokedButton>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="f-size-14 f-weight-500 btn-field-stander add-button"
+            disabled>
+            <mat-spinner [diameter]="30"></mat-spinner>
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </form>
+  <ag-grid-angular
+    id="myGrid"
+    class="ag-theme-alpine grid"
+    [columnDefs]="columnDefs"
+    [enableRtl]="true"
+    (gridReady)="onGridReady($event)"
+    [rowData]="salePriceCountry?.prices"
+    [gridOptions]="gridOptions"></ag-grid-angular>
+  <ag-pagination
+    [pageSize]="paginationOptions.pageSize"
+    [lengthData]="paginationOptions.totalCount"
+    (pageChanged)="onSetPage($event)"></ag-pagination>
+</div>
+<button
+  [disabled]="!salesPriceForm.get('mainData')?.get('countryId')?.valid"
+  mat-stroked-button
+  color="primary"
+  class="f-size-14 f-weight-500 btn-field-stander"
+  type="submit"
+  (click)="addRecord()">
+  {{ 'buttons.record' | translate }}
+</button>

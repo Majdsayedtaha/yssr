@@ -1,0 +1,179 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<div class="form-section">
+  <form
+    novalidate
+    [formGroup]="employeeForm"
+    authorization
+    [roleValue]="role"
+    [authName]="[authCanAdd, authCanUpdate]"
+    roleCss="block">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+        <span>{{
+          employeeId ? ('label.employee.update_employee' | translate) : ('label.employee.add_employee' | translate)
+        }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field controlName="nameAr" label="setting.fields.employee_ar" type="text" [group]="employeeForm">
+        </mat-custom-field>
+        <mat-custom-field controlName="nameEn" label="setting.fields.employee_en" type="text" [group]="employeeForm">
+        </mat-custom-field>
+        <mat-custom-field controlName="phone1" label="setting.fields.first_mobile" type="tel" [group]="employeeForm">
+        </mat-custom-field>
+        <mat-custom-field controlName="phone2" label="setting.fields.second_mobile" type="tel" [group]="employeeForm">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field controlName="email1" label="setting.fields.first_email" type="email" [group]="employeeForm">
+        </mat-custom-field>
+        <mat-custom-field controlName="email2" label="setting.fields.second_email" type="email" [group]="employeeForm">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="employeeTypeId"
+          label="setting.fields.employee_type"
+          type="select"
+          [selectValueAsObject]="true"
+          [group]="employeeForm"
+          [callApiFunction]="fetchEmployeeTypes">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="withCommission"
+          label="setting.fields.has_commission"
+          type="checkbox"
+          [group]="employeeForm">
+        </mat-custom-field>
+      </div>
+    </div>
+
+    <div class="section-card" *ngIf="f['withCommission'].value">
+      <div class="title mb-2">
+        <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+        <span>{{ 'label.employee.commission_details' | translate }}</span>
+      </div>
+      <div class="row-flex-division mb-2" formGroupName="commissionSectionRow">
+        <mat-custom-field
+          controlName="commissionTypeId"
+          type="select"
+          [selectValueAsObject]="true"
+          label="setting.fields.commission_type"
+          [callApiFunction]="fetchCommissionTypes"
+          [group]="getFomGroup('commissionSectionRow')">
+        </mat-custom-field>
+        <mat-custom-field
+          *ngIf="commissionType === 1"
+          controlName="commissionAmount"
+          [label]="'setting.fields.commission'"
+          type="number"
+          [minNumberValue]="0"
+          [maxNumberValue]="100"
+          [textSuffix]="'SAR'"
+          [group]="getFomGroup('commissionSectionRow')">
+        </mat-custom-field>
+        <mat-custom-field
+          *ngIf="commissionType === 2"
+          controlName="commissionAmount"
+          [label]="'setting.fields.rate'"
+          type="number"
+          [minNumberValue]="0"
+          [textSuffix]="'%'"
+          [group]="getFomGroup('commissionSectionRow')">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="countryId"
+          [label]="'setting.fields.country'"
+          type="select"
+          [selectValueAsObject]="true"
+          [callApiFunction]="fetchCountries"
+          [group]="getFomGroup('commissionSectionRow')">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="sectionId"
+          type="select"
+          [selectValueAsObject]="true"
+          label="setting.fields.section"
+          [callApiFunction]="fetchCommissionSections"
+          [group]="getFomGroup('commissionSectionRow')">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="contractsCount"
+          label="setting.fields.contracts_count"
+          type="number"
+          [minNumberValue]="0"
+          [group]="getFomGroup('commissionSectionRow')">
+        </mat-custom-field>
+        <button
+          *ngIf="!updateRow"
+          authorization
+          [roleValue]="role"
+          [authName]="authCanAdd"
+          mat-raised-button
+          [disabled]="!areAllControlsFilled(getFomGroup('commissionSectionRow'))"
+          color="primary"
+          class="f-size-14 f-weight-500 btn-field-stander add-button"
+          type="button"
+          (click)="pushToCommissionArray('add')">
+          {{ 'buttons.add' | translate }}
+        </button>
+        <button
+          *ngIf="updateRow"
+          authorization
+          [roleValue]="role"
+          [authName]="authCanUpdate"
+          mat-raised-button
+          [disabled]="!areAllControlsFilled(getFomGroup('commissionSectionRow'))"
+          color="primary"
+          class="f-size-14 f-weight-500 btn-field-stander add-button"
+          type="submit"
+          (click)="pushToCommissionArray('update')">
+          {{ 'buttons.update' | translate }}
+        </button>
+      </div>
+      <ag-grid-angular
+        id="myGrid"
+        style="width: 100%; height: 50vh; min-height: 50vh"
+        class="ag-theme-alpine"
+        [columnDefs]="columnDefs"
+        [rowData]="commissionSectionsArray || []"
+        (gridReady)="onGridReady($event)"
+        [enableRtl]="true"
+        [gridOptions]="gridOptions"></ag-grid-angular>
+    </div>
+
+    <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+    <ng-template #raisedButton>
+      <button
+        *ngIf="!employeeId"
+        authorization
+        [roleValue]="role"
+        [authName]="authCanAdd"
+        mat-raised-button
+        [disabled]="!employeeForm.valid"
+        color="primary"
+        class="f-size-14 f-weight-500 btn-field-stander add-button"
+        type="submit"
+        (click)="saveEmployeeData('add')">
+        {{ 'buttons.save' | translate }}
+      </button>
+      <button
+        *ngIf="employeeId"
+        authorization
+        [roleValue]="role"
+        [authName]="authCanAdd"
+        mat-raised-button
+        [disabled]="!employeeForm.valid"
+        color="primary"
+        class="f-size-14 f-weight-500 btn-field-stander add-button"
+        type="submit"
+        (click)="saveEmployeeData('update')">
+        {{ 'buttons.update' | translate }}
+      </button>
+    </ng-template>
+
+    <ng-template #strokedButton>
+      <button mat-stroked-button color="primary" class="f-size-14 f-weight-500 btn-field-stander add-button" disabled>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </button>
+    </ng-template>
+  </form>
+</div>

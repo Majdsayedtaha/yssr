@@ -1,0 +1,110 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="setting.fields.housing_details"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon svgIcon="close" class="c-pointer" (click)="closeSideNav()"></mat-icon>
+    </div>
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div class="section" *ngIf="!isLoading && housingData">
+        <div class="row mb-2 d-flex">
+          <!-- name -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.housing.name' | translate }}</mat-label>
+            <span class="mt-1">{{ housingData.name }}</span>
+          </div>
+
+          <!-- street -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.housing.street' | translate }}</mat-label>
+            <span class="mt-1">{{ housingData.street }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- district -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.housing.district' | translate }}</mat-label>
+            <span class="mt-1">{{ housingData.district }}</span>
+          </div>
+
+          <!-- postalCode -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.housing.postalCode' | translate }}</mat-label>
+            <span class="mt-1">{{ housingData.postalCode }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- additionalCode -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.housing.additionalCode' | translate }}</mat-label>
+            <span class="mt-1">{{ housingData.additionalCode }}</span>
+          </div>
+
+          <!-- unitNumber -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.housing.unitNumber' | translate }}</mat-label>
+            <span class="mt-1">{{ housingData.unitNumber }}</span>
+          </div>
+        </div>
+
+        <div class="row mb-2 d-flex">
+          <!-- buildingNumber -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.housing.buildingNumber' | translate }}</mat-label>
+            <span class="mt-1">{{ housingData.buildingNumber }}</span>
+          </div>
+
+          <!-- location -->
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'field.housing.location' | translate }}</mat-label>
+            <span class="mt-1">{{ housingData.location }}</span>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="!isLoading && housingData">
+        <div class="section" *ngFor="let apartment of housingData.apartments">
+          <div class="row mb-2 d-flex">
+            <!-- unitNumber -->
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.housing.apartment.unitNumber' | translate }}</mat-label>
+              <span class="mt-1">{{ apartment.unitNumber }}</span>
+            </div>
+
+            <!-- workerCapacity -->
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.housing.apartment.workerCapacity' | translate }}</mat-label>
+              <span class="mt-1">{{ apartment.workerCapacity }}</span>
+            </div>
+
+            <!-- roomsCount -->
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'field.housing.apartment.roomsCount' | translate }}</mat-label>
+              <span class="mt-1">{{ apartment.roomsCount }}</span>
+            </div>
+          </div>
+
+          <div class="row mb-2 d-flex">
+            <!-- Supervisor -->
+            <div
+              class="col d-flex flex-column flex-1"
+              *ngFor="let supervisor of apartment.supervisors; index as supervisorIdx">
+              <mat-label class="label f-size-12"
+                >{{ 'field.housing.apartment.supervisor' | translate }} {{ supervisorIdx + 1 }}</mat-label
+              >
+              <span class="mt-1">{{ supervisor.name }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

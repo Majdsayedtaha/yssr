@@ -1,0 +1,66 @@
+:host {
+  position: fixed;
+  z-index: 10;
+}
+.side-nav-container {
+  position: relative;
+  .side-nav {
+    min-width: 600px;
+    background-color: var(--background-color);
+    .icon {
+      width: 16px;
+      height: 16px;
+    }
+    .title {
+      // padding: 1rem;
+      background-color: var(--white);
+    }
+    .details {
+      background-color: var(--white);
+      border-radius: var(--button-radius);
+      padding: 1.125rem;
+      margin: 1rem;
+      .procedure-card {
+        position: relative;
+        background-color: var(--background-color);
+        border-radius: var(--button-radius);
+        margin-bottom: 1rem;
+        padding: 1rem;
+        .icon {
+          position: absolute;
+          top: 1rem;
+          &.icon-rtl {
+            left: 1rem;
+          }
+          &.icon-ltr {
+            right: 1rem;
+          }
+        }
+        .row {
+          margin-bottom: 0.75rem;
+          > span {
+            width: fit-content;
+          }
+          .status {
+            padding: 0.5rem;
+            border-radius: var(--button-radius);
+            &.positive {
+              color: var(--success-color);
+              background-color: rgba(21, 215, 161, 0.12);
+            }
+            &.negative {
+              color: var(--red-status);
+              background-color: rgba(234, 84, 85, 0.12);
+            }
+          }
+        }
+      }
+      .procedure-notes {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}

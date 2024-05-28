@@ -1,0 +1,279 @@
+<form novalidate [formGroup]="addProcedureForm">
+  <div class="form-section">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+        <span>{{ 'refund.procedure.details_retrospective_labor_procedures' | translate }}</span>
+      </div>
+      <div class="row-flex-division mb-2">
+        <mat-custom-field
+          controlName="date"
+          label="refund.procedure.procedure_date"
+          type="date"
+          [group]="addProcedureForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          apiEndpoint="ReturnRequest/GetReturnRequestsSelect"
+          [selectValueAsObject]="false"
+          controlName="workerReturnRequestId"
+          label="setting.fields.request_number"
+          type="searchableSelect"
+          [group]="addProcedureForm">
+        </mat-custom-field>
+        <div class="w-100">
+          <mat-custom-field
+            style="width: 100%"
+            controlName="procedureId"
+            label="refund.procedure.procedure"
+            type="select"
+            [selectValueAsObject]="true"
+            [callApiFunction]="fetchReturnProceduresFun"
+            [group]="addProcedureForm"
+            [disabled]="returnRequest?.id ? false : true"
+            [matTooltip]="returnRequest?.id ? '' : ('enter-request-number' | translate)">
+          </mat-custom-field>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="f['procedureId'].value">
+      <!-- Contract Details Period -->
+      <div class="section-card" *ngIf="returnRequest">
+        <div class="title mb-1">
+          <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+          <span>{{ 'contract_detail_period' | translate }}</span>
+        </div>
+        <div class="section">
+          <div class="row mb-2 d-flex gap-1">
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'rent_span.customer_name' | translate }}</mat-label>
+              <span class="mt-1" flipDirection>{{ returnRequest.customer.name }}</span>
+            </div>
+            <div class="col d-flex flex-column flex-1">
+              <mat-label class="label f-size-12">{{ 'rent_span.worker_name' | translate }}</mat-label>
+              <span class="mt-1" flipDirection>{{ returnRequest.worker.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experiment -->
+      <div class="section-card" *ngIf="selectedProcedure?.value === procedureType.InExperiment">
+        <div class="title mb-1">
+          <mat-icon class="icon-title" svgIcon="experiment"></mat-icon>
+          <span>{{ 'refund.procedure.experiment' | translate }}</span>
+        </div>
+        <div class="row-flex-division">
+          <!-- <mat-custom-field
+            apiEndpoint="Customer/GetCustomersSelect"
+            controlName="customerId"
+            label="customer_name"
+            [disabled]="true"
+            type="searchableSelect"
+            [selectValueAsObject]="true"
+            [group]="getFormGroup('experiment')">
+          </mat-custom-field> -->
+
+          <mat-custom-field
+            controlName="testPeriodDays"
+            label="refund.procedure.trial_period_days"
+            type="number"
+            textSuffix="day"
+            [group]="getFormGroup('experiment')">
+          </mat-custom-field>
+
+          <mat-custom-field
+            controlName="testCostDaily"
+            label="refund.procedure.experimental_day_price"
+            type="number"
+            textSuffix="label.suffixes.rial_sa"
+            [group]="getFormGroup('experiment')">
+          </mat-custom-field>
+        </div>
+        <div class="row-flex-division">
+          <mat-custom-field
+            controlName="testWorkerSalary"
+            label="refund.procedure.employment_salary_period"
+            type="number"
+            textSuffix="label.suffixes.rial_sa"
+            [group]="getFormGroup('experiment')">
+          </mat-custom-field>
+
+          <mat-custom-field
+            controlName="testOfficeAmount"
+            label="refund.procedure.amount_owed_office"
+            type="number"
+            textSuffix="label.suffixes.rial_sa"
+            [group]="getFormGroup('experiment')">
+          </mat-custom-field>
+
+          <mat-custom-field
+            controlName="includingAccomodationAndTransferFees"
+            label="refund.procedure.includes_transportation_and_accommodation_fees"
+            type="checkbox"
+            [group]="getFormGroup('experiment')">
+          </mat-custom-field>
+        </div>
+      </div>
+
+      <!-- Final Escape -->
+      <div class="section-card" *ngIf="selectedProcedure?.value === procedureType.FinalExit">
+        <div class="title mb-1">
+          <mat-icon class="icon-title" svgIcon="out"></mat-icon>
+          <span>{{ 'refund.procedure.final_exit' | translate }}</span>
+        </div>
+        <mat-custom-field
+          controlName="finalExitReasonNote"
+          label="refund.procedure.exit_cause"
+          type="textarea"
+          [group]="getFormGroup('finalExit')">
+        </mat-custom-field>
+      </div>
+
+      <!-- Worker Escape -->
+      <div class="section-card" *ngIf="selectedProcedure?.value === procedureType.WorkerEscaped">
+        <div class="title mb-1">
+          <mat-icon class="icon-title" svgIcon="out"></mat-icon>
+          <span>{{ 'refund.procedure.employment_escape' | translate }}</span>
+        </div>
+        <div class="row-flex-division">
+          <mat-custom-field
+            controlName="escapeWorkerTypeId"
+            label="refund.procedure.escape_type"
+            type="searchableSelect"
+            apiEndpoint="Enum/GetEscapeTypes"
+            [group]="getFormGroup('escaped')">
+          </mat-custom-field>
+          <span></span>
+        </div>
+        <mat-custom-field
+          controlName="escapeWorkerReason"
+          label="refund.procedure.reason_escape"
+          type="textarea"
+          [group]="getFormGroup('escaped')">
+        </mat-custom-field>
+      </div>
+
+      <!-- !Refused From Experiment -->
+      <div class="section-card" *ngIf="selectedProcedure?.value === procedureType.RefuseFromExperiment">
+        <div class="title mb-1">
+          <mat-icon class="icon-title" svgIcon="out"></mat-icon>
+          <span>{{ 'refund.procedure.refused_from_experiment' | translate }}</span>
+        </div>
+        <div class="row-flex-division">
+          <mat-custom-field
+            controlName="refuseTestDays"
+            label="refund.procedure.days_spent_experiment"
+            type="number"
+            textSuffix="day"
+            [group]="getFormGroup('refused')">
+          </mat-custom-field>
+          <mat-custom-field
+            controlName="refuseWorkerAmount"
+            label="refund.procedure.employment_salary_calculation"
+            type="number"
+            textSuffix="label.suffixes.rial_sa"
+            [group]="getFormGroup('refused')">
+          </mat-custom-field>
+          <mat-custom-field
+            controlName="externalOfficeAmount"
+            label="refund.procedure.amount_owed_office"
+            type="number"
+            textSuffix="label.suffixes.rial_sa"
+            [group]="getFormGroup('refused')">
+          </mat-custom-field>
+        </div>
+        <div class="row-flex-division">
+          <mat-custom-field
+            class="single-field-width"
+            controlName="refuseCustomerAmount"
+            label="refund.procedure.amount_refunded_customer"
+            type="number"
+            textSuffix="label.suffixes.rial_sa"
+            [group]="getFormGroup('refused')">
+          </mat-custom-field>
+        </div>
+        <mat-custom-field
+          controlName="refuseTypeWorker"
+          label="refund.procedure.reason_refuse"
+          type="textarea"
+          [group]="getFormGroup('refused')">
+        </mat-custom-field>
+      </div>
+
+      <!-- Accept -->
+      <div class="section-card" *ngIf="selectedProcedure?.value === procedureType.Accept">
+        <div class="title mb-1">
+          <mat-icon class="icon-title" svgIcon="accept"></mat-icon>
+          <span>{{
+            selectedProcedure?.value === procedureType.Accept
+              ? ('refund.procedure.employment_accept' | translate)
+              : ('refund.procedure.return' | translate)
+          }}</span>
+        </div>
+        <mat-custom-field
+          controlName="note"
+          label="refund.procedure.comments"
+          type="textarea"
+          [group]="getFormGroup('accept')">
+        </mat-custom-field>
+      </div>
+    </ng-container>
+
+    <!-- Last Procedures -->
+    <div class="section-card mt-3">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="oclock"></mat-icon>
+        <span>{{ 'refund.procedure.previous_procedures' | translate }}</span>
+      </div>
+      <p *ngIf="f['workerReturnRequestId'].value == null">
+        {{ 'choose_worker_to_view_procedures' | translate }}
+      </p>
+      <p *ngIf="lastProcedures && lastProcedures.length === 0">
+        {{ 'no_procedures_yet' | translate }}
+      </p>
+      <ng-container *ngIf="lastProcedures && lastProcedures.length > 0">
+        <hr class="v-line" />
+        <div class="history-timeline">
+          <span class="point" *ngFor="let procedure of lastProcedures; even as isEven">
+            <span class="tick bottom-tick" *ngIf="isEven">
+              <span class="legend">{{ procedure.procedureName }}</span>
+              <span class="date">{{ procedure.procedureDate | timezoneToDate }}</span>
+            </span>
+            <span class="tick top-tick" *ngIf="!isEven">
+              <span class="legend">{{ procedure.procedureName }}</span>
+              <span class="date">{{ procedure.procedureDate | timezoneToDate }}</span>
+            </span>
+          </span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="stepper-actions">
+    <button mat-stroked-button color="primary" class="mt-3">
+      {{ 'buttons.cancel' | translate }}
+    </button>
+    <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+    <ng-template #raisedButton>
+      <button
+        *ngIf="!isLoading"
+        mat-raised-button
+        color="primary"
+        class="mt-3"
+        [disabled]="addProcedureForm.invalid"
+        (click)="addProcedure()">
+        <span>
+          {{ 'buttons.add' | translate }}
+        </span>
+      </button>
+    </ng-template>
+
+    <ng-template #strokedButton>
+      <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </button>
+    </ng-template>
+  </div>
+</form>

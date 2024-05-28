@@ -1,0 +1,46 @@
+<form class="form-section" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- Acceptance -->
+  <div class="section-card">
+    <div class="row-flex-division">
+      <!-- SenderName -->
+      <mat-custom-field controlName="SenderName" label="field.file.SenderName" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- CompanyName -->
+      <mat-custom-field controlName="CompanyName" label="field.file.CompanyName" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- CompanyBusinessAddress -->
+      <mat-custom-field
+        controlName="CompanyBusinessAddress"
+        label="field.file.CompanyBusinessAddress"
+        type="text"
+        [group]="form">
+      </mat-custom-field>
+    </div>
+
+    <div class="row-flex-division">
+      <!-- POBox -->
+      <mat-custom-field controlName="POBox" label="field.file.POBox" type="text" [group]="form"> </mat-custom-field>
+
+      <!-- PostalCode -->
+      <mat-custom-field controlName="PostalCode" label="field.file.PostalCode" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- TelValue -->
+      <mat-custom-field controlName="TelValue" label="field.file.TelValue" type="text" [group]="form">
+      </mat-custom-field>
+
+      <!-- AgencyName -->
+      <mat-custom-field controlName="AgencyName" label="field.file.AgencyName" type="text" [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+</form>
+
+<div class="text-left">
+  <button mat-raised-button color="primary" class="ml-2 w-10" (click)="submit()" [disabled]="form.invalid || loading">
+    {{ 'buttons.save' | translate }}
+    <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+  </button>
+</div>

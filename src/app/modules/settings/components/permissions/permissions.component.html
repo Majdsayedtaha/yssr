@@ -1,0 +1,29 @@
+<div class="form-section">
+  <form novalidate [formGroup]="form">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+        <span>{{ 'label.setting.permissions' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-searchable-select
+          controlName="roleId"
+          label="role_position"
+          searchType="front"
+          [callApiFunction]="fetchRoles"
+          [group]="form">
+        </mat-searchable-select>
+        <button
+          mat-raised-button
+          color="primary"
+          class="f-size-14 f-weight-500 btn-field-stander add-button"
+          (click)="submit()"
+          [disabled]="form.invalid || loadingChanges">
+          {{ 'buttons.save' | translate }}
+          <mat-spinner [diameter]="30" *ngIf="loadingChanges"></mat-spinner>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+<permission-table class="permissions-table" [rowData]="rowData" (newData)="rowData = $event"></permission-table>

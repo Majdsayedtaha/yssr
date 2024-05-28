@@ -1,0 +1,84 @@
+<mat-drawer-container  class="example-container" autosize [style.display]="drawer.opened ? 'block' : 'none'">
+  <mat-drawer #drawer class="example-sidenav" mode="side" [opened]="true">
+    <app-lookup-search (changes)="filter($event)" [title]="'search-for-section' | translate"></app-lookup-search>
+    <mat-nav-list>
+      <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl" class="section-tree" [dir]="getDirection()">
+        <mat-tree-node
+          *matTreeNodeDef="let node"
+          (click)="onNodeClicked($event, node)"
+          matTreeNodePadding
+          matTreeNodePaddingIndent="20"
+          authorization
+          [roleName]="'mat-tree-node ' + node.name"
+          [roleValue]="node.value"
+          [authName]="node.roleAuth"
+          roleCss="block"
+          [roleShownAlways]="node.roleShownAlways"
+          [isAdmin]="node.isAdmin"
+          matTreeNodeToggle
+          [class.section-part-active]="node.route === urlWithOutSlash">
+          <a
+            mat-list-item
+            class="section-part"
+            [routerLink]="node.route"
+            [queryParams]="node.queryParams"
+            [ngClass]="{
+              border: node.level && activeNode != node && getDirection() === 'rtl',
+              'border-rtl ': node.level && activeNode != node && getDirection() === 'ltr',
+              'section-part-active': activeNode == node
+            }">
+            <div class="custom-node" [class.main]="node.parent">
+              <mat-icon class="icon-custom" *ngIf="node.parent && node.svg" [svgIcon]="node.svg"></mat-icon>
+              <span
+                class="node-name"
+                [matTooltip]="node.name | translate"
+                [matTooltipShowDelay]="1000"
+                [innerHTML]="node.name | translate | highlight : text">
+              </span>
+            </div>
+          </a>
+        </mat-tree-node>
+
+        <mat-tree-node
+          *matTreeNodeDef="let node; when: hasChild"
+          matTreeNodePadding
+          matTreeNodePaddingIndent="20"
+          authorization
+          [roleName]="'mat-nested-tree-node ' + node.name"
+          [roleValue]="node.value"
+          [authName]="node.roleAuth"
+          [roleShownAlways]="node.roleShownAlways"
+          [isAdmin]="node.isAdmin"
+          roleCss="block">
+          <a
+            mat-list-item
+            [ngClass]="{
+              border: node.level && activeNode != node && getDirection() === 'rtl',
+              'border-rtl ': node.level && activeNode != node && getDirection() === 'ltr'
+            }">
+            <div
+              class="custom-node"
+              [class.section-title-active]="treeControl.isExpanded(node)"
+              (click)="todoLeafItemSelectionToggle(node)">
+              <div class="section-title">
+                <mat-icon class="icon-custom" *ngIf="node.svg" [svgIcon]="node.svg"></mat-icon>
+                <span [innerHTML]="node.name | translate | highlight : text"></span>
+              </div>
+              <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name" #buttonIcon>
+                <mat-icon>
+                  {{
+                    treeControl.isExpanded(node)
+                      ? 'expand_more'
+                      : getDirection() === 'rtl'
+                      ? 'chevron_left'
+                      : 'chevron_right'
+                  }}
+                </mat-icon>
+              </button>
+            </div>
+          </a>
+        </mat-tree-node>
+      </mat-tree>
+    </mat-nav-list>
+  </mat-drawer>
+</mat-drawer-container>

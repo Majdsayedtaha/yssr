@@ -1,0 +1,120 @@
+<app-side-details></app-side-details>
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<form novalidate [formGroup]="salesReboundFrom">
+  <div class="form-section">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="rent"></mat-icon>
+        <span>{{
+          !salesReboundId ? ('label.financial.add_bill' | translate) : ('label.financial.update_bill' | translate)
+        }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="billNumber"
+          label="field.financial_management.billNumber"
+          type="number"
+          [disabled]="true"
+          [group]="salesReboundFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="date"
+          label="field.financial_management.date"
+          type="date"
+          [group]="salesReboundFrom">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="returnedBillTypeId"
+          [callApiFunction]="getReturnedBillsTypes"
+          label="field.financial_management.sales_rebound_Type"
+          type="select"
+          [selectValueAsObject]="true"
+          [group]="salesReboundFrom">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          *ngIf="returnRequest === 2"
+          controlName="returnRequestId"
+          label="field.financial_management.billNumber_return"
+          apiEndpoint="ReturnRequest/GetReturnRequestsSelect"
+          type="searchableSelect"
+          [group]="salesReboundFrom">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="mainBillId"
+          label="field.financial_management.billNumber_sales"
+          apiEndpoint="Bill/GetMainBillsSelect"
+          [selectValueAsObject]="true"
+          type="searchableSelect"
+          [group]="salesReboundFrom">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="typeId"
+          [callApiFunction]="getBillTypes"
+          label="field.financial_management.billType"
+          type="select"
+          [group]="salesReboundFrom">
+        </mat-custom-field>
+
+        <!-- <mat-custom-field
+          controlName="dueDate"
+          label="field.financial_management.dateBenefits"
+          type="date"
+          [group]="salesReboundFrom">
+        </mat-custom-field> -->
+      </div>
+      <!-- <mat-custom-field [disabled]="true" controlName="customerId" label="customer_name" [group]="salesReboundFrom">
+      </mat-custom-field> -->
+    </div>
+    <div class="stepper-actions" style="margin-bottom: 12px">
+      <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+      <ng-template #raisedButton>
+        <button
+          mat-raised-button
+          color="primary"
+          class="mt-3"
+          [disabled]="!salesReboundFrom.valid"
+          (click)="!salesReboundId ? addSalesRebound() : updateSalesRebound()">
+          <span *ngIf="!salesReboundId">
+            {{ 'buttons.save' | translate }}
+          </span>
+          <span *ngIf="salesReboundId">
+            {{ 'buttons.update' | translate }}
+          </span>
+        </button>
+      </ng-template>
+
+      <ng-template #strokedButton>
+        <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+          <mat-spinner [diameter]="30"></mat-spinner>
+        </button>
+      </ng-template>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <span>{{ 'field.financial_management.services_table' | translate }}</span>
+      </div>
+
+      <!-- Ag Grid -->
+      <ag-grid-angular
+        id="myGrid"
+        style="height: 50vh"
+        class="ag-theme-alpine"
+        [columnDefs]="columnDefs"
+        [rowData]="rowData"
+        rowSelection='multiple'
+        [enableRtl]="true"
+        (gridReady)="onGridReady($event)"
+        [gridOptions]="gridOptions"></ag-grid-angular>
+      <!-- Pagination -->
+      <ag-pagination
+        (pageChanged)="onSetPage($event)"
+        [pageSize]="paginationOptions.pageSize"
+        [lengthData]="paginationOptions.totalCount">
+      </ag-pagination>
+    </div>
+  </div>
+</form>

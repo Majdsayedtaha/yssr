@@ -1,0 +1,125 @@
+<mat-dialog-content class="toast">
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <div class="toast-container">
+      <!-- Header -->
+      <div class="toast-header bg-white p-2">
+        <nav-breadcrumb
+          [child]="
+            editMode ? 'label.financial.update_billExchange' : 'label.financial.add_billExchange'
+          "></nav-breadcrumb>
+        <mat-icon svgIcon="close" class="c-pointer" (click)="closeDialog()"> </mat-icon>
+      </div>
+      <div class="bg-body p-3">
+        <div class="contant bg-white p-2">
+          <!-- Body -->
+          <div class="toast-content">
+            <div class="row-flex-division">
+              <!-- side -->
+              <mat-custom-field
+                controlName="sideTypeId"
+                label="field.financial_management.side"
+                [selectValueAsObject]="true"
+                [callApiFunction]="getSideTypes"
+                type="select"
+                [group]="form">
+              </mat-custom-field>
+
+              <mat-custom-field
+                *ngIf="typeSideDisplay === 1"
+                controlName="customerId"
+                apiEndpoint="Customer/GetCustomersSelect"
+                label="field.financial_management.customer_name"
+                type="searchableSelect"
+                [group]="form">
+              </mat-custom-field>
+
+              <mat-custom-field
+                *ngIf="typeSideDisplay === 2"
+                controlName="employeeId"
+                apiEndpoint="Employee/GetEmployeesSelect"
+                label="field.financial_management.employee_name"
+                type="searchableSelect"
+                [group]="form">
+              </mat-custom-field>
+
+              <mat-custom-field
+                *ngIf="typeSideDisplay === 3"
+                controlName="officeId"
+                apiEndpoint="ExternalOffice/GetExternalOffices"
+                label="field.financial_management.office_name"
+                type="searchableSelect"
+                [group]="form">
+              </mat-custom-field>
+              <!-- TODO ADD CallBackFun or Endpoint -->
+              <mat-custom-field
+                *ngIf="typeSideDisplay === 4"
+                controlName="accountId"
+                label="table.banks.account_number"
+                type="searchableSelect"
+                [group]="form">
+              </mat-custom-field>
+            </div>
+            <div class="row-flex-division">
+              <mat-searchable-select
+                [readonly]="!form.controls['officeId'].value"
+                *ngIf="typeSideDisplay === 3"
+                controlName="contractId"
+                label="table.purchases.contract_number"
+                [callApiFunction]="getOfficeContract"
+                [group]="form">
+              </mat-searchable-select>
+
+              <!-- expense type -->
+              <mat-custom-field
+                controlName="expenseTypeId"
+                label="field.financial_management.expense_type"
+                [selectValueAsObject]="true"
+                [callApiFunction]="getExpensesTypesSelect"
+                type="select"
+                [group]="form">
+              </mat-custom-field>
+            </div>
+            <div class="row-flex-division">
+              <!-- tax type -->
+              <mat-custom-field
+                [selectValueAsObject]="true"
+                controlName="taxTypeId"
+                label="field.financial_management.tax_type"
+                [callApiFunction]="fetchTaxTypes"
+                type="select"
+                [group]="form">
+              </mat-custom-field>
+              <!-- amount -->
+              <mat-custom-field
+                controlName="amount"
+                label="field.financial_management.amount"
+                type="number"
+                [group]="form">
+              </mat-custom-field>
+            </div>
+
+            <!-- Description -->
+            <mat-custom-field
+              controlName="description"
+              label="field.financial_management.description"
+              type="textarea"
+              [group]="form">
+            </mat-custom-field>
+          </div>
+          <!-- Footer -->
+          <div class="toast-footer d-flex align-center gap-1">
+            <!-- Submit -->
+            <button [disabled]="!form.valid" mat-raised-button color="primary" class="mt-3 p-3" type="submit">
+              {{ 'buttons.save' | translate }}
+            </button>
+
+            <!-- Add -->
+            <button mat-stroked-button color="primary" class="mt-3 p-3" type="button" (click)="closeDialog()">
+              {{ 'buttons.cancel' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>

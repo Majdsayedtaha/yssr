@@ -1,0 +1,65 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <div class="title mb-1 d-flex justify-between">
+      <nav-breadcrumb child="label.waiver.info"></nav-breadcrumb>
+      <mat-icon svgIcon="close" class="c-pointer" (click)="closeSideNav()"></mat-icon>
+    </div>
+
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <div class="section" *ngIf="!isLoading && waiverData">
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'order_date' | translate }}</mat-label>
+            <span class="mt-1">{{ waiverData.requestDate | timezoneToDate }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'order_number' | translate }}</mat-label>
+            <span class="mt-1">{{ waiverData.requestNumber }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'age' | translate }}</mat-label>
+            <span class="mt-1">{{ waiverData.age?.name }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.religion' | translate }}</mat-label>
+            <span class="mt-1">{{ waiverData.religion?.name }}</span>
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'job' | translate }}</mat-label>
+            <span class="mt-1">{{ waiverData.job?.name }}</span>
+          </div>
+          <div class="col d-flex flex-column flex-1">
+            <mat-label class="label f-size-12">{{ 'setting.fields.country' | translate }}</mat-label>
+            <span class="mt-1">{{ waiverData.country?.name }}</span>
+          </div>
+        </div>
+        <!-- Worker Skills -->
+        <div class="row mb-2 d-flex flex-column" *ngIf="allSkills.length ?? 0 > 0">
+          <mat-label class="label f-size-12">{{ 'worker_section_skills' | translate }}</mat-label>
+          <div class="d-flex flex-1 w-100">
+            <mat-chip class="view-chip mr-1 ml-1" *ngFor="let item of waiverData.skillsIds">
+              {{ findArrayName(allSkills, item) }}
+            </mat-chip>
+            <!-- <span class="d-flex align-center checkbox w-50" *ngFor="let item of waiverData.skillsIds">
+              <mat-icon class="icon-disabled" svgIcon="checkbox"></mat-icon>
+              <span class="checkbox-title">{{ findArrayName(allSkills, item) }}</span>
+            </span> -->
+          </div>
+        </div>
+        <div class="row mb-2 d-flex">
+          <div class="col d-flex flex-column" style="width: 100%">
+            <mat-label class="label f-size-12">{{ 'comments' | translate }}</mat-label>
+            <span class="mt-1">{{ waiverData.note }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

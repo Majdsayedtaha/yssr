@@ -1,0 +1,19 @@
+<ng-container *ngIf="!isPrinting">
+  <!-- Navbar -->
+  <app-navbar [matDrawer]="matDrawer"></app-navbar>
+  <div class="d-flex">
+    <!-- SideNav -->
+    <app-sidenav (matDrawer)="catchDrawer($event)"></app-sidenav>
+    <div class="d-flex flex-column flex-1 parent-section">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb></nav-breadcrumb>
+      <!-- Main -->
+      <div class="main-section">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="isPrinting">
+  <router-outlet></router-outlet>
+</div>

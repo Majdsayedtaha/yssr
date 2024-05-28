@@ -1,0 +1,61 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<mat-stepper
+  #stepper
+  [linear]="isLinearStepper"
+  (selectionChange)="stepSelectionChange($event, stepper)"
+  (click)="preventTriggerValidationStepper(stepper)">
+  <mat-step [label]="'setting.fields.basic_information' | translate" [stepControl]="getFormGroup('basicInformation')">
+    <app-basic-information [basicInformationGroup]="getFormGroup('basicInformation')"></app-basic-information>
+    <div class="stepper-actions">
+      <button mat-raised-button color="primary" matStepperNext class="mt-3">{{ 'buttons.next' | translate }}</button>
+    </div>
+  </mat-step>
+  <mat-step [label]="'setting.fields.responsible_manager_info' | translate" [stepControl]="getFormGroup('managerInfo')">
+    <app-responsible-manager-info [managerInfoGroup]="getFormGroup('managerInfo')"></app-responsible-manager-info>
+    <div class="stepper-actions" style="margin-top: 10rem">
+      <button mat-stroked-button color="primary" matStepperPrevious class="mt-3">
+        {{ 'buttons.cancel' | translate }}
+      </button>
+      <button mat-raised-button color="primary" matStepperNext>
+        {{ 'buttons.next' | translate }}
+      </button>
+    </div>
+  </mat-step>
+
+  <mat-step [stepControl]="getFormGroup('nationalAddress')" [label]="'setting.fields.national_address' | translate">
+    <app-national-address [nationalAddressGroup]="getFormGroup('nationalAddress')"></app-national-address>
+    <div class="stepper-actions" style="margin-top: 10rem">
+      <button mat-stroked-button color="primary" matStepperPrevious>
+        {{ 'buttons.cancel' | translate }}
+      </button>
+      <button mat-raised-button color="primary" matStepperNext class="mt-3">{{ 'buttons.next' | translate }}</button>
+    </div>
+  </mat-step>
+
+  <mat-step [stepControl]="getFormGroup('additionalDetails')" [label]="'setting.fields.additional_details' | translate">
+    <app-additional-details [additionalDetailsGroup]="getFormGroup('additionalDetails')"></app-additional-details>
+    <div class="stepper-actions">
+      <button mat-stroked-button color="primary" matStepperPrevious class="mt-3">
+        {{ 'buttons.cancel' | translate }}
+      </button>
+      <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+      <ng-template #raisedButton>
+        <button
+          mat-raised-button
+          [disabled]="!companyInfo.valid"
+          color="primary"
+          matStepperNext
+          class="mt-3"
+          (click)="updateCompanyInfo()">
+          <span> {{ 'buttons.save' | translate }}</span>
+        </button>
+      </ng-template>
+
+      <ng-template #strokedButton>
+        <button type="button" mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+          <mat-spinner [diameter]="30"></mat-spinner>
+        </button>
+      </ng-template>
+    </div>
+  </mat-step>
+</mat-stepper>

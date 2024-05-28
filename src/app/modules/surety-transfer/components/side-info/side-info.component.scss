@@ -1,0 +1,7 @@
+:host {
+  nav-breadcrumb::ng-deep ul li:first-child a {
+    font-size: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+}

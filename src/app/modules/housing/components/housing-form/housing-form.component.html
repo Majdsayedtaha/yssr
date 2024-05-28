@@ -1,0 +1,159 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<form class="form-section" [formGroup]="form" (ngSubmit)="submit()">
+  <!-- National Address -->
+  <div class="section-card" aria-label="National Address">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+      <span>{{ 'national_section' | translate }}</span>
+    </div>
+    <div class="row-flex-division">
+      <!-- region -->
+      <!-- <mat-custom-field controlName="region" label="region" type="select" [callApiFunction]="getRegions" [group]="form">
+      </mat-custom-field> -->
+
+      <mat-searchable-select controlName="region" label="region" [callApiFunction]="getRegions" [group]="form">
+      </mat-searchable-select>
+      <!-- city -->
+      <!-- <mat-custom-field
+        controlName="cityId"
+        label="field.housing.city"
+        type="select"
+        [callApiFunction]="getRegionCitiesSettings"
+        [group]="form">
+      </mat-custom-field> -->
+
+      <mat-searchable-select
+        [readonly]="!!form.controls['region'].invalid"
+        controlName="cityId"
+        label="field.housing.city"
+        [callApiFunction]="getRegionCitiesSettings"
+        [group]="form">
+      </mat-searchable-select>
+
+      <!-- district -->
+      <mat-custom-field controlName="district" label="field.housing.district" type="text" [group]="form">
+      </mat-custom-field>
+      <!-- district En -->
+      <mat-custom-field controlName="districtEn" label="field.housing.district_en" type="text" [group]="form">
+      </mat-custom-field>
+    </div>
+
+    <div class="row-flex-division">
+      <!-- street -->
+      <mat-custom-field controlName="street" label="field.housing.street" type="text" [group]="form">
+      </mat-custom-field>
+      <!-- street En -->
+      <mat-custom-field controlName="streetEn" label="field.housing.street_en" type="text" [group]="form">
+      </mat-custom-field>
+      <!-- name -->
+      <mat-custom-field controlName="name" label="field.housing.name" type="text" [group]="form"> </mat-custom-field>
+      <!-- postalCode -->
+      <mat-custom-field controlName="postalCode" label="field.housing.postalCode" type="text" [group]="form">
+      </mat-custom-field>
+    </div>
+    <div class="row-flex-division">
+      <!-- additionalCode -->
+      <mat-custom-field controlName="additionalCode" label="field.housing.additionalCode" type="text" [group]="form">
+      </mat-custom-field>
+      <!-- unitNumber -->
+      <mat-custom-field controlName="unitNumber" label="field.housing.unitNumber" type="text" [group]="form">
+      </mat-custom-field>
+      <!-- buildingNumber -->
+      <mat-custom-field controlName="buildingNumber" label="field.housing.buildingNumber" type="text" [group]="form">
+      </mat-custom-field>
+      <!-- location -->
+      <mat-custom-field controlName="location" label="field.housing.location" type="text" [group]="form">
+      </mat-custom-field>
+    </div>
+  </div>
+
+  <!-- Apartment Data -->
+  <div class="section-card h-100" aria-label="National Address">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="external-site"></mat-icon>
+      <span>{{ 'apartment_section_data' | translate }}</span>
+    </div>
+    <div class="row-flex-division">
+      <!-- unitNumber -->
+      <mat-custom-field
+        controlName="unitNumber"
+        label="field.housing.apartment.unitNumber"
+        type="text"
+        [group]="apartmentForm">
+      </mat-custom-field>
+
+      <!-- Rooms Count -->
+      <mat-custom-field
+        controlName="roomsCount"
+        label="field.housing.apartment.roomsCount"
+        textSuffix="label.suffixes.room"
+        type="number"
+        [group]="apartmentForm">
+      </mat-custom-field>
+
+      <!-- Rooms Count -->
+      <mat-custom-field
+        controlName="workerCapacity"
+        label="field.housing.apartment.workerCapacity"
+        textSuffix="label.suffixes.worker"
+        type="number"
+        [group]="apartmentForm">
+      </mat-custom-field>
+    </div>
+
+    <div class="row-flex-division">
+      <!-- supervisors -->
+      <mat-custom-field
+        class="chips"
+        apiEndpoint="Employee/GetEmployeesSelect"
+        controlName="supervisorsIds"
+        label="field.housing.apartment.supervisors"
+        type="select"
+        [multiple]="true"
+        [queryParamWithEndpoint]="{ name: 'role', value: 9 }"
+        [group]="apartmentForm">
+      </mat-custom-field>
+
+      <button
+        mat-raised-button
+        [disabled]="apartmentForm.invalid || apartmentForm.controls['supervisorsIds'].value.length == 0"
+        color="primary"
+        class="f-size-14 f-weight-500 btn-field-stander add-button"
+        type="button"
+        (click)="submitApartment()">
+        <ng-container *ngIf="isUpdatedApartment">
+          {{ 'buttons.update' | translate }}
+        </ng-container>
+        <ng-container *ngIf="!isUpdatedApartment">
+          {{ 'buttons.add' | translate }}
+        </ng-container>
+      </button>
+    </div>
+
+    <!-- Table -->
+    <ag-grid-angular
+      id="myGrid"
+      class="ag-theme-alpine grid"
+      [columnDefs]="columnDefs"
+      [rowData]="apartmentList"
+      [enableRtl]="true"
+      (gridReady)="onGridReady($event)"
+      [gridOptions]="gridOptions"></ag-grid-angular>
+  </div>
+  <!-- Footer Actions -->
+  <div class="text-left">
+    <button mat-stroked-button color="primary" type="button" class="ml-2 w-10" (click)="location.back()">
+      {{ 'buttons.cancel' | translate }}
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="ml-2 w-10"
+      type="submit"
+      (click)="submit()"
+      [disabled]="form.invalid || apartmentList.length == 0 || loading">
+      {{ 'buttons.save' | translate }}
+      <mat-spinner [diameter]="30" *ngIf="loading"></mat-spinner>
+    </button>
+  </div>
+</form>

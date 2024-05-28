@@ -1,0 +1,59 @@
+<!-- Financial Sidebar -->
+<side-rent-financial></side-rent-financial>
+<!-- Info Rent Sidebar -->
+<side-info-rent></side-info-rent>
+<!-- Side Add Procedure -->
+<side-add-procedure></side-add-procedure>
+<!-- Side Rent Procedure -->
+<side-rent-procedures></side-rent-procedures>
+
+<!-- Statistics -->
+<div class="d-flex-header">
+  <div class="statistics surety-transfer-completed-orders-table">
+    <div class="item">
+      <mat-icon svgIcon="statistics-all"></mat-icon>
+      <span class="title">{{ 'all_contracts' | translate }}</span>
+      <span class="f-weight-500" *ngIf="statistics">{{ statistics.totalCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="statistics-inprogress"></mat-icon>
+      <span class="title">{{ 'onprogress_contracts' | translate }}</span>
+      <span class="f-weight-500" *ngIf="statistics"> {{ statistics.inProgressCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="statistics-closed"></mat-icon>
+      <span class="title">{{ 'finished_contracts' | translate }}</span>
+      <span class="f-weight-500" *ngIf="statistics"> {{ statistics.endedCount }}</span>
+    </div>
+    <div class="item">
+      <mat-icon svgIcon="statistics-cancelled"></mat-icon>
+      <span class="title">{{ 'canceled_contracts' | translate }}</span>
+      <span class="f-weight-500" *ngIf="statistics"> {{ statistics.aboutToEndCount }}</span>
+    </div>
+  </div>
+  <!-- Search -->
+  <mat-form-field [dir]="getDirection()" class="input-table">
+    <input
+      matInput
+      (input)="getDeepWithFilter($event)"
+      placeholder="{{ 'search_for_specific_contract' | translate }}" />
+    <mat-icon matSuffix class="icon"  [svgIcon]="getDirection() === 'rtl' ? 'search-right' : 'search-left'"></mat-icon>
+  </mat-form-field>
+</div>
+
+<!-- Ag Grid -->
+<ag-grid-angular
+  id="myGrid"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="rowData"
+  [enableRtl]="true"
+  (gridReady)="onGridReady($event)"
+  [gridOptions]="gridOptions"></ag-grid-angular>
+
+<!-- Pagination -->
+<ag-pagination
+  (pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount">
+</ag-pagination>

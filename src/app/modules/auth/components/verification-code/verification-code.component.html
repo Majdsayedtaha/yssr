@@ -1,0 +1,39 @@
+<h1 class="text-center">{{ 'password_recovery' | translate }}</h1>
+<p>{{ 'code_input' | translate }}</p>
+
+<form novalidate [formGroup]="verificationCodeForm" (ngSubmit)="verificationCode()">
+  <mat-custom-field class="code" [label]="'code'" controlName="code" type="number" [group]="verificationCodeForm">
+  </mat-custom-field>
+  <p class="hint f-weight-500 f-size-10" flipDirection>
+    <span class="text-black f-weight-500">
+      {{ 'did_not_receive_code' | translate }}
+    </span>
+    <span class="c-pointer">{{ 'try_again' | translate }}</span>
+  </p>
+  <ng-container *ngIf="loading; then strokedButton; else raisedButton"></ng-container>
+
+  <ng-template #raisedButton>
+    <button
+      mat-raised-button
+      color="primary"
+      class="f-size-14 f-weight-500"
+      type="submit"
+      [disabled]="!verificationCodeForm.valid">
+      <span> {{ 'verification' | translate }}</span>
+    </button>
+  </ng-template>
+
+  <ng-template #strokedButton>
+    <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+      <mat-spinner [diameter]="30"></mat-spinner>
+      <span> {{ 'verification' | translate }}</span>
+    </button>
+  </ng-template>
+</form>
+
+<div class="mt-3 text-center f-size-10">
+  <a class="f-weight-700" [routerLink]="['../login']">
+    <span class="text-black f-weight-500"> {{ 'back_to' | translate }}</span>
+    {{ 'login' | translate }}
+  </a>
+</div>

@@ -1,0 +1,49 @@
+<div class="form-section">
+  <div class="section-card">
+    <div class="title mb-1">
+      <mat-icon class="icon-title" svgIcon="personal-data"></mat-icon>
+      <span>{{ 'setting.fields.responsible_manager_info' | translate }}</span>
+    </div>
+    <form novalidate [formGroup]="managerInfoGroup">
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="managerNameAr"
+          label="setting.fields.Name_responsible_manager_Arabic"
+          type="text"
+          [group]="managerInfoGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="managerNameEn"
+          label="setting.fields.Name_responsible_manager_English"
+          type="text"
+          [group]="managerInfoGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="managerUserName"
+          label="setting.fields.username"
+          type="text"
+          [group]="managerInfoGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="managerPassword"
+          label="setting.fields.password"
+          [type]="showPasswordStatus ? 'text' : 'password'"
+          [suffix]="showPasswordStatus ? 'eye-open' : 'eye-close'"
+          [cursorStatus]="true"
+          (onSuffixCLicked)="showPassword($event)"
+          [group]="managerInfoGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="managerPhoneNumber"
+          label="setting.fields.mobile_responsible_manager"
+          type="tel"
+          [group]="managerInfoGroup">
+        </mat-custom-field>
+        <mat-custom-field controlName="managerRole" label="setting.fields.as" type="text" [group]="managerInfoGroup">
+        </mat-custom-field>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,405 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="label.worker.info"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon svgIcon="close" class="c-pointer" (click)="closeSideNav()"></mat-icon>
+    </div>
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+      <mat-tab-group *ngIf="!isLoading && workerData">
+        <!-- Personal Section -->
+        <mat-tab [label]="'personal_data' | translate">
+          <div class="section">
+            <div class="row mb-2 d-flex">
+              <!-- Name Ar -->
+              <!-- <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.nameAr' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.nameAr }}</span>
+              </div> -->
+
+              <!-- Name En -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.name' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.nameEn }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Nationality -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.nationality' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.country?.name }}</span>
+              </div>
+
+              <!-- Gender -->
+              <div class="col d-flex flex-1 align-center">
+                <mat-label class="label f-size-12">{{ 'field.worker.type' | translate }}</mat-label>
+                <span class="d-flex align-center radio">
+                  <mat-icon class="icon-disabled" svgIcon="radio"></mat-icon>
+                  <span>{{ workerData.gender?.name }}</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Birth Date -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.birthDate' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.birthDate | timezoneToDate }}</span>
+              </div>
+
+              <!-- Birth Place -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.placeOfBirth' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.placeOfBirth }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- First Mobile Phone -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.cVMobileFirst' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.cvMobileFirst }}</span>
+              </div>
+
+              <!-- Second Mobile Phone -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.cVMobileSecond' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.cvMobileSecond }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Email -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.email' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.email }}</span>
+              </div>
+
+              <!-- Religion -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.religion' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.religion?.name }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Job -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.job' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.job?.name }}</span>
+              </div>
+
+              <!-- Social Status -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.maritalStatus' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.maritalStatus?.name }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Passport Section -->
+        <mat-tab [label]="'passport_data' | translate">
+          <div class="section">
+            <div class="row mb-2 d-flex">
+              <!-- Passport Number -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.passportNo' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.passportNo }}</span>
+              </div>
+
+              <!-- Passport Place Of Issue -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.passportPlaceOfIssue' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.passportPlaceOfIssue }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Passport Date Of Issue -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.passportDateOfIssue' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.passportDateOfIssue | timezoneToDate }}</span>
+              </div>
+
+              <!-- Passport Date Of Expire -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.passportDateOfExpire' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.passportDateOfExpire | timezoneToDate }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Iqama Number -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.iqamaNumber' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.iqamaNumber }}</span>
+              </div>
+
+              <!-- Iqama Place Of Issue -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.iqamaPlaceOfIssue' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.iqamaPlaceOfIssue }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Iqama Start Date -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.iqamaStartDate' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.iqamaStartDate | timezoneToDate }}</span>
+              </div>
+
+              <!-- Iqama End Date -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.iqamaExpireDate' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.iqamaExpireDate | timezoneToDate }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Border Number -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.borderNumber' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.borderNumber }}</span>
+              </div>
+
+              <!-- Work License Start Date -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.workLicenseStartDate' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.workLicenseStartDate | timezoneToDate }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Work License End Date -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.workLicenseExpireDate' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.workLicenseExpireDate | timezoneToDate }}</span>
+              </div>
+
+              <!-- Insurance Company -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.insuranceCompany' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.insuranceCompany }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Insurance Category -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.insuranceCategory' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.insuranceCategory }}</span>
+              </div>
+
+              <!-- Policy Number -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.policyNumber' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.policyNumber }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Insurance Start Date -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.insuranceStartDate' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.insuranceStartDate | timezoneToDate }}</span>
+              </div>
+
+              <!-- Insurance End Date -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.insuranceExpireDate' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.insuranceExpireDate | timezoneToDate }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Experience Section -->
+        <mat-tab [label]="'experience_section_data' | translate">
+          <div class="section">
+            <div class="row mb-2 d-flex">
+              <!-- Experience Type -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.experienceType' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.experienceType.name }}</span>
+              </div>
+
+              <!-- Experience Of Years -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.yearsOfExperience' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.yearsOfExperience }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Last Country -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.lastCountry' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.lastCountry.name }}</span>
+              </div>
+
+              <!-- Experience Detail -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.detailsOfExperience' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.detailsOfExperience }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Education Level -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.educationalLevel' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.educationalLevel }}</span>
+              </div>
+
+              <!-- Arabic Level -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.arabicLevel' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.arabicLevel.name }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- English Level -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.englishLevel' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.englishLevel.name }}</span>
+              </div>
+
+              <!-- External Office -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.externalOffice' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.externalOffice.name }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Monthly Salary -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.monthlySalary' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.monthlySalary }}</span>
+              </div>
+
+              <!-- Apartment -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.apartment' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.apartment?.name ?? ('not_found' | translate) }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Extra Section -->
+        <mat-tab [label]="'extra_section_data' | translate">
+          <div class="section">
+            <div class="row mb-2 d-flex">
+              <!-- Relative Name -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.relativeName' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.relativeName }}</span>
+              </div>
+
+              <!-- Relative Type -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.relativeType' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.relativeType }}</span>
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Relative Phone -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.relativePhone' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.relativePhone }}</span>
+              </div>
+
+              <!-- Relative Address -->
+              <div class="col d-flex flex-column flex-1">
+                <mat-label class="label f-size-12">{{ 'field.worker.relativeAddress' | translate }}</mat-label>
+                <span class="mt-1">{{ workerData.relativeAddress }}</span>
+              </div>
+            </div>
+
+            <!-- Worker Skills -->
+            <div class="row mb-2 d-flex flex-column" *ngIf="allSkills.length > 0">
+              <mat-label class="label f-size-12">{{ 'worker_section_skills' | translate }}</mat-label>
+              <div class="d-flex flex-1 w-100">
+                <mat-chip class="view-chip mr-1 ml-1" *ngFor="let item of workerData.skillsIds">
+                  {{ findArrayName(allSkills, item) }}
+                </mat-chip>
+                <!-- <span class="d-flex align-center checkbox w-50" *ngFor="let item of workerData.skillsIds">
+                  <mat-icon class="icon-disabled" svgIcon="checkbox"></mat-icon>
+                  <span class="checkbox-title">{{ findArrayName(allSkills, item) }}</span>
+                </span> -->
+              </div>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Personal Image -->
+              <a
+                class="col d-flex flex-1 cursor-pointer"
+                (click)="downloadURL(workerData.personalImagePath, 'Personal Image')">
+                <mat-icon class="icon-disabled" svgIcon="pdf-disabled"></mat-icon>
+                <mat-label class="label f-size-12">{{ 'field.worker.personalImage' | translate }}</mat-label>
+              </a>
+
+              <!-- Border And Visa Image -->
+              <a
+                class="col d-flex flex-1 cursor-pointer"
+                (click)="downloadURL(workerData.borderAndVisaImagePath, 'Border And Visa Image')">
+                <mat-icon class="icon-disabled" svgIcon="pdf-disabled"></mat-icon>
+                <mat-label class="label f-size-12">{{ 'field.worker.borderAndVisaImage' | translate }}</mat-label>
+              </a>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- Iqama Image -->
+              <a
+                class="col d-flex flex-1 cursor-pointer"
+                (click)="downloadURL(workerData.iqamaImagePath, 'Residence Image')">
+                <mat-icon class="icon-disabled" svgIcon="pdf-disabled"></mat-icon>
+                <mat-label class="label f-size-12">{{ 'field.worker.iqamaImage' | translate }}</mat-label>
+              </a>
+
+              <!-- Passport Image -->
+              <a
+                class="col d-flex flex-1 cursor-pointer"
+                (click)="downloadURL(workerData.passportImagePath, 'Passport Image')">
+                <mat-icon class="icon-disabled" svgIcon="pdf-disabled"></mat-icon>
+                <mat-label class="label f-size-12">{{ 'field.worker.passportImage' | translate }}</mat-label>
+              </a>
+            </div>
+
+            <div class="row mb-2 d-flex">
+              <!-- CV Image -->
+              <a class="col d-flex flex-1 cursor-pointer" (click)="downloadURL(workerData.cvImagePath, 'CV Image')">
+                <mat-icon class="icon-disabled" svgIcon="pdf-disabled"></mat-icon>
+                <mat-label class="label f-size-12">{{ 'field.worker.cVImage' | translate }}</mat-label>
+              </a>
+            </div>
+
+            <!-- Worker Details -->
+            <div class="row mb-2 d-flex flex-column" *ngIf="allDetails.length > 0">
+              <mat-label class="label f-size-12">{{ 'cv_section_details' | translate }}</mat-label>
+              <div class="d-flex flex-1 w-100">
+                <span class="d-flex align-center checkbox w-50" *ngFor="let item of workerData.detailsIds">
+                  <mat-icon class="icon-disabled" svgIcon="checkbox"></mat-icon>
+                  <span class="checkbox-title">{{ findArrayName(allDetails, item) }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

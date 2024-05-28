@@ -1,0 +1,70 @@
+<div class="form-section">
+  <form novalidate [formGroup]="basicInformationGroup">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="housing"></mat-icon>
+        <span>{{ 'setting.fields.basic_information' | translate }}</span>
+      </div>
+
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="nameAr"
+          label="setting.fields.company_name_arabic"
+          type="text"
+          [group]="basicInformationGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="nameEn"
+          label="setting.fields.company_name_english"
+          type="text"
+          [group]="basicInformationGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="licenseNumber"
+          label="setting.fields.license_number"
+          type="text"
+          [group]="basicInformationGroup">
+        </mat-custom-field>
+        <mat-custom-field controlName="fax" label="setting.fields.fax" type="text" [group]="basicInformationGroup">
+        </mat-custom-field>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field controlName="mobile1" label="first_mobile" type="tel" [group]="basicInformationGroup">
+        </mat-custom-field>
+
+        <mat-custom-field controlName="mobile2" label="second_mobile" type="tel" [group]="basicInformationGroup">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="email1"
+          label="setting.fields.official_email"
+          type="email"
+          [group]="basicInformationGroup">
+        </mat-custom-field>
+        <mat-custom-field controlName="email2" label="email" type="email" [group]="basicInformationGroup">
+        </mat-custom-field>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+        <span>{{ 'setting.fields.supporting_settings' | translate }}</span>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="musanedPercent"
+          type="number"
+          textSuffix="%"
+          label="setting.fields.supporting_ratio"
+          [group]="basicInformationGroup">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="maroofaAmount"
+          type="number"
+          label="setting.fields.known_amount"
+          [group]="basicInformationGroup">
+        </mat-custom-field>
+      </div>
+    </div>
+  </form>
+</div>

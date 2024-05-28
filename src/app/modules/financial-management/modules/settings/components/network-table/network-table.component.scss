@@ -1,0 +1,12 @@
+:host {
+  height: 100%;
+}
+
+.network {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  .btn {
+    width: fit-content;
+  }
+}

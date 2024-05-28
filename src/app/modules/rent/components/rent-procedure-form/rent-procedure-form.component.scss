@@ -1,0 +1,124 @@
+.add-procedure {
+  width: 122px;
+  margin: 0 90%;
+}
+
+.v-line {
+  margin: 6rem 0;
+  height: 3px;
+  border: 0;
+  background: #e8e8e8;
+}
+
+.history-timeline {
+  display: flex;
+  place-content: space-evenly;
+  position: relative;
+
+  .point {
+    width: 12px;
+    height: 12px;
+    position: relative;
+    margin-top: -6.5rem;
+    border-radius: 50%;
+    background: var(--primary-color);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background-color: var(--white);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .tick {
+      display: block;
+      height: 50px;
+      width: 2px;
+      background-color: var(--light-gray);
+      position: relative;
+      left: -0.25rem;
+
+      .legend {
+        font-size: 12px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .date {
+        font-size: 12px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      &.bottom-tick {
+        transition: 0.5s;
+        top: 1.5rem;
+
+        &::after {
+          content: '';
+          width: 7px;
+          height: 7px;
+          background-color: var(--light-gray);
+          position: absolute;
+          bottom: 0;
+          left: -3px;
+          border-radius: 50%;
+          transition: 0.5s;
+        }
+
+        .legend {
+          top: 50px;
+        }
+
+        .date {
+          top: -50px;
+        }
+      }
+
+      &.top-tick {
+        transition: 0.5s;
+        bottom: 3.5rem;
+
+        &::after {
+          content: '';
+          width: 7px;
+          height: 7px;
+          background-color: var(--light-gray);
+          position: absolute;
+          top: 0;
+          left: -3px;
+          border-radius: 50%;
+          transition: 0.5s;
+        }
+
+        .legend {
+          bottom: 50px;
+        }
+
+        .date {
+          bottom: -50px;
+        }
+      }
+    }
+
+    &:hover {
+      .bottom-tick::after,
+      .bottom-tick,
+      .top-tick,
+      .top-tick::after {
+        background-color: var(--primary-color);
+      }
+    }
+  }
+}
+
+span.legend {
+  text-wrap: nowrap;
+}

@@ -1,0 +1,97 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="label.offices.add_price"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon
+        svgIcon="close"
+        class="c-pointer"
+        (click)="sidenav.close(); externalOfficesService.sideAddPrice.next(null)"></mat-icon>
+    </div>
+
+    <!-- Body -->
+    <div class="details">
+      <div *ngIf="isLoading" class="loader">
+        <mat-spinner color="primary" [diameter]="50"></mat-spinner>
+      </div>
+
+      <div class="form-section" *ngIf="!isLoading">
+        <form novalidate [formGroup]="externalOfficePriceForm">
+          <div class="section-card">
+            <div class="title mb-1">
+              <mat-icon class="icon-title" svgIcon="System-settings"></mat-icon>
+              <span>{{ 'label.offices.price' | translate }}</span>
+            </div>
+            <div class="row-flex-division">
+              <mat-custom-field
+                controlName="externalOfficeId"
+                [callApiFunction]="fetchExternalOffices"
+                label="field.office.external_office"
+                type="select"
+                [group]="externalOfficePriceForm"
+                [disabled]="true"></mat-custom-field>
+              <mat-custom-field
+                controlName="jobId"
+                label="field.office.career"
+                [callApiFunction]="fetchAllJobsSearchableSelect"
+                type="select"
+                [group]="externalOfficePriceForm"></mat-custom-field>
+
+              <mat-custom-field
+                controlName="experienceTypeId"
+                label="field.office.experience_type"
+                [callApiFunction]="fetchExperienceTypes"
+                type="select"
+                [group]="externalOfficePriceForm">
+              </mat-custom-field>
+            </div>
+
+            <div class="row-flex-division">
+              <mat-custom-field
+                controlName="religionId"
+                label="field.office.religion"
+                [callApiFunction]="fetchReligions"
+                type="select"
+                [group]="externalOfficePriceForm"></mat-custom-field>
+
+              <mat-spinner class="spinner" *ngIf="loadingFetchingPrices" [diameter]="30"></mat-spinner>
+
+              <mat-custom-field
+                controlName="agreementPrice"
+                label="field.office.agreement_price"
+                type="number"
+                textSuffix="dollar"
+                [disabled]="loadingFetchingPrices"
+                [group]="externalOfficePriceForm"></mat-custom-field>
+
+              <mat-custom-field
+                controlName="recruitmentPeriod"
+                label="field.office.recruitment_period"
+                type="number"
+                textSuffix="day"
+                [minNumberValue]="0"
+                [disabled]="loadingFetchingPrices"
+                [group]="externalOfficePriceForm">
+              </mat-custom-field>
+            </div>
+          </div>
+          <div class="stepper-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              class="mt-3"
+              [disabled]="!externalOfficePriceForm.valid"
+              (click)="addAgreementPrice()">
+              <span>
+                {{ 'buttons.add' | translate }}
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

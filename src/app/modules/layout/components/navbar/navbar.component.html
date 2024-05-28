@@ -1,0 +1,213 @@
+<nav>
+  <ul>
+    <li
+      *ngIf="matDrawer"
+      style="max-width: 40px"
+      [ngStyle]="{
+        'margin-right': direction.getDirection() === 'ltr' ? '10px' : '0px',
+        'margin-left': direction.getDirection() === 'rtl' ? '10px' : '0px'
+      }">
+      <div class="menu-button">
+        <div class="box">
+          <div class="btn" (click)="drawerMenuButton()" [ngClass]="openButton ? 'active' : 'not-active'">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li style="max-width: 190px; max-height: 80px">
+      <img src="assets/images/logo.png" alt="YSSR" class="mx-auto w-60" />
+    </li>
+    <li class="field">
+      <mat-custom-field
+        class="search-bar"
+        [prefix]="direction.getDirection() === 'rtl' ? 'search-right' : 'search-left'"
+        [placeholder]="'find_anything' | translate"
+        [group]="searchForm"
+        controlName="search">
+      </mat-custom-field>
+    </li>
+    <li class="d-flex align-center lang-noti user-data">
+      <button style="margin: 0 1rem" mat-icon-button [matMenuTriggerFor]="menu" (click)="getNotification()">
+        <mat-icon
+          [matBadge]="
+            storageService.notificationsCount.getValue() > -1
+              ? storageService.notificationsCount.getValue()
+              : storageService.notificationsCount.getValue() > 99
+              ? '+99'
+              : ''
+          "
+          matBadgeColor="warn"
+          matBadgeSize="medium"
+          svgIcon="notification"
+          class="svg-bell"></mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu" xPosition="before" class="notification-list-content" [dir]="direction.getDirection()">
+        <mat-form-field
+          *ngIf="sectionsControl.value"
+          (click)="$event.stopPropagation()"
+          (keydown)="$event.stopPropagation()"
+          [dir]="direction.getDirection()"
+          class="filter-notifications-field">
+          <mat-label>{{ 'filter-section' | translate }}</mat-label>
+          <mat-select [formControl]="sectionsControl" multiple>
+            <mat-select-trigger>
+              <mat-chip-listbox>
+                <mat-chip
+                  style="font-size: 10px"
+                  *ngFor="let section of sectionsControl.value"
+                  [removable]="true"
+                  (removed)="onSectionRemoved(section)">
+                  {{ section.name }}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-listbox>
+            </mat-select-trigger>
+
+            <mat-option *ngFor="let section of sectionsList" [value]="section">
+              {{ section.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- <div
+          class="filter-notifications"
+          (click)="$event.stopPropagation()"
+          (keydown)="$event.stopPropagation()">
+          <mat-select class="filter-select" [multiple]="true" [value]="[1]">
+            <mat-option color="primary" [value]="1">
+              <ng-container>{{ 'all' | translate }}</ng-container>
+            </mat-option>
+            <mat-option color="primary" [value]="2">
+              <ng-container>{{ 'recruitment' | translate }}</ng-container>
+            </mat-option>
+          </mat-select>
+        </div> -->
+
+        <mat-list
+          infiniteScroll
+          (scrollPosition)="onScroll($event)"
+          *ngIf="!isSkeleton"
+          class="notification-list"
+          (click)="$event.stopPropagation()"
+          (keydown)="$event.stopPropagation()"
+          [dir]="direction.getDirection()">
+          <div class="no-notification" *ngIf="notifications.length === 0">
+            {{ 'no_notification' | translate }}
+          </div>
+          <ng-container *ngFor="let notification of notifications; let last = last; let first = first">
+            <mat-list-item
+              class="notification-item"
+              lines="2"
+              [ngStyle]="{ 'background-color': notification.read ? 'unset' : 'rgb(63 81 181 / 10%)' }">
+              <mat-icon
+                matListItemIcon
+                class="notification-icon"
+                *ngIf="notification.type.value as nTypeValue"
+                [svgIcon]="nTypeValue.toString()">
+              </mat-icon>
+              <div matListItemTitle>{{ notification.title }}</div>
+              <span style="font-size: 14px">{{ notification.description }}</span>
+              <span class="notification-date" [dir]="direction.getDirection()">
+                <div class="d-flex align-center" style="gap: 0.35rem; flex-direction: row-reverse">
+                  <span matTooltipShowDelay="1000" [matTooltip]="notification.date">
+                    {{ notification.date | date : 'yyyy/MM/dd' }}
+                  </span>
+                  <span
+                    role="button"
+                    (click)="markAsRead(notification.id)"
+                    class="read-indicator"
+                    *ngIf="!notification.read"
+                    [matTooltip]="'mark-as-read' | translate">
+                    ☑
+                  </span>
+                </div>
+              </span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-spinner
+              *ngIf="notificationPaginateLoader && last"
+              style="margin: 0 auto"
+              [diameter]="30"
+              color="primary"></mat-spinner>
+          </ng-container>
+        </mat-list>
+
+        <ng-container *ngIf="isSkeleton">
+          <div class="skeleton-container">
+            <div
+              [ngStyle]="{
+              'flex-direction': direction.getDirection() === 'ltr' ? 'row' : 'row-reverse',
+            }"
+              class="skeleton-line"
+              *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8]">
+              <ngx-skeleton-loader appearance="circle" [theme]="{ width: '30px', height: '30px' }" />
+              <ngx-skeleton-loader
+                class="w-100"
+                [dir]="direction.getDirection()"
+                [theme]="{ width: '100%', height: '30px', 'border-radius': '8px', margin: '0 0' }" />
+            </div>
+          </div>
+        </ng-container>
+      </mat-menu>
+      <span class="d-flex flex-column">
+        <span class="user-name text-center">
+          {{ user.userName | titlecase }}
+        </span>
+        <span class="role text-center">
+          {{ user.role | titlecase }}
+        </span>
+      </span>
+      <img [matMenuTriggerFor]="afterMenu" class="profile-image" src="assets/images/owner.jpg" />
+    </li>
+  </ul>
+</nav>
+<mat-menu class="card-menu" #afterMenu="matMenu" xPosition="after">
+  <div class="header-menu">
+    <img class="profile-image" src="assets/images/owner.jpg" />
+    <div class="user-info">
+      <span>{{ user.userName | titlecase }}</span>
+      <span>{{ user.role | titlecase }}</span>
+    </div>
+  </div>
+  <div class="content-menu">
+    <ul class="list-menu mt-2">
+      <li mat-menu-item [class]="direction.getDirection() === 'rtl' ? 'li-rtl' : 'li-ltr'" (click)="flipDirection()">
+        <span mat-raised-button color="primary" class="c-pointer" class="lang-rtl"> العربية </span>
+        <span> - </span>
+        <span mat-raised-button color="primary" class="c-pointer" class="lang-ltr"> English </span>
+        <mat-icon svgIcon="language" color="primary" class="c-pointer profile-icon" mat-raised-button> </mat-icon>
+      </li>
+      <li
+        mat-menu-item
+        [class]="direction.getDirection() === 'rtl' ? 'li-rtl' : 'li-ltr'"
+        (click)="openChangePasswordDialog()">
+        <span>{{ 'change_password' | translate }}</span>
+        <mat-icon svgIcon="change-password" color="primary" class="c-pointer profile-icon" mat-raised-button>
+        </mat-icon>
+      </li>
+      <li
+        mat-menu-item
+        [class]="direction.getDirection() === 'rtl' ? 'li-rtl' : 'li-ltr'"
+        (click)="navigateToSettingPage()">
+        <span>{{ 'system_settings' | translate }}</span>
+        <mat-icon svgIcon="System-settings-p" color="primary" class="c-pointer profile-icon" mat-raised-button>
+        </mat-icon>
+      </li>
+      <li mat-menu-item [class]="direction.getDirection() === 'rtl' ? 'li-rtl' : 'li-ltr'" (click)="logout()">
+        <ng-container *ngIf="!loading; else elseTemplate">
+          <span> {{ 'logout' | translate }}</span>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <mat-spinner [diameter]="30"></mat-spinner>
+        </ng-template>
+        <mat-icon svgIcon="out-p" color="primary" class="c-pointer profile-icon" style="scale: 1.3" mat-raised-button>
+        </mat-icon>
+      </li>
+    </ul>
+  </div>
+</mat-menu>

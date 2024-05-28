@@ -1,0 +1,17 @@
+:host {
+  height: 100%;
+  flex: 0.5;
+}
+
+.tables {
+  flex-direction: column;
+}
+#myGrid {
+  height: 185px;
+}
+.cards-procedure {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  height: fit-content;
+  margin-bottom: 0.5rem;
+}

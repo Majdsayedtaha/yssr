@@ -1,0 +1,28 @@
+<mat-dialog-content class="toast">
+  <div class="toast-container">
+    <div class="toast-header">
+      <mat-icon svgIcon="close" class="c-pointer" (click)="dialogRef.close()"> </mat-icon>
+    </div>
+    <div class="toast-content" [ngStyle]="{ 'justify-content': toastData.centralize ? 'center' : '' }">
+      <mat-icon
+        [svgIcon]="toastData.svgIcon"
+        class="d-flex align-center justify-center"
+        *ngIf="toastData.svgIcon"></mat-icon>
+      <p class="f-size-18 text-center mt-0 mb-0" *ngIf="!toastData.hideTranslate">
+        {{ 'toast.' + toastData.messageContent | translate }}
+      </p>
+      <p class="f-size-18 text-center mt-0 mb-0" *ngIf="toastData.hideTranslate">{{ toastData.messageContent }}</p>
+    </div>
+    <div class="toast-footer">
+      <button mat-stroked-button color="primary" (click)="dialogRef.close()" *ngIf="toastData.firstButtonContent">
+        {{ 'toast.buttons.' + toastData.firstButtonContent | translate }}
+      </button>
+      <button mat-raised-button color="primary" (click)="dialogRef.close(true)" *ngIf="toastData.secondButtonContent">
+        {{ 'toast.buttons.' + toastData.secondButtonContent | translate }}
+      </button>
+      <!-- <button mat-stroked-button color="primary" (click)="dialogRef.close(true)" *ngIf="!toastData.svgIcon">
+        {{ 'toast.buttons.close' | translate }}
+      </button> -->
+    </div>
+  </div>
+</mat-dialog-content>

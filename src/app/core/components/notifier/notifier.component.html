@@ -1,0 +1,17 @@
+<div *ngIf="!data.normal" class="snack-container-message">
+  <button class="snack-container-icon">
+    <mat-icon svgIcon="red-alert"></mat-icon>
+  </button>
+  <div class="message-container">
+    <span class="title">{{ warn ? ('notification.warning' | translate) : ('notification.bug' | translate) }}</span>
+    <span>{{ data.message }}</span>
+  </div>
+</div>
+<div class="d-flex" *ngIf="data.normal">
+  <span class="example-pizza-party" matSnackBarLabel> {{ data.message }} </span>
+  <span matSnackBarActions>
+    <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">
+      <mat-icon [svgIcon]="'x-icon'" style="color: white; scale: 0.8"></mat-icon>
+    </button>
+  </span>
+</div>

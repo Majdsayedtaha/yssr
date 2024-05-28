@@ -1,0 +1,46 @@
+:host {
+  height: 100%;
+  ::ng-deep {
+    .title-icon {
+      margin: 0 5px 0 5px;
+      svg path {
+        fill: var(--primary-color);
+      }
+    }
+  }
+}
+.cdk-overlay-dark-backdrop {
+  background: rgb(77 77 77 / 50%);
+}
+
+.toast {
+  height: auto;
+  height: 100%;
+  min-height: 525px;
+  background: var(--background-color);
+  padding: 0 !important;
+  .contant {
+    .toast-content {
+      p {
+        line-height: 1.2;
+        color: var(--primary-color);
+      }
+    }
+  }
+}
+
+.toast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-family: 'Tajawal', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: right;
+    color: var(--primary-color);
+  }
+}

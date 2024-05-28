@@ -1,0 +1,139 @@
+<app-loader-data *ngIf="loadingData"></app-loader-data>
+<div class="form-section">
+  <form novalidate [formGroup]="orderForm">
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="report"></mat-icon>
+        <span>{{ 'order_waiver' | translate }}</span>
+      </div>
+
+      <div class="row-flex-division">
+        <mat-custom-field controlName="requestDateMilady" label="order_date" type="date" [group]="orderForm">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="sponsorshipTransferType"
+          label="sponsorship_transfer_type"
+          type="select"
+          [callApiFunction]="fetchSponsorTransferTypes"
+          [group]="orderForm"
+          [selectValueAsObject]="true"></mat-custom-field>
+        <!-- <mat-custom-field
+          [matTooltip]="
+            !this.orderForm.get('sponsorshipTransferType')?.value
+              ? ('choose_sponsorship_transfer_type' | translate)
+              : ''
+          "
+          controlName="request"
+          label="order_number_due_type"
+          type="select"
+          [callApiFunction]="fetchNumbersByType"
+          [group]="orderForm"
+          [selectValueAsObject]="true"></mat-custom-field> -->
+
+        <mat-searchable-select
+          [matTooltip]="
+            !this.orderForm.get('sponsorshipTransferType')?.value
+              ? ('choose_sponsorship_transfer_type' | translate)
+              : ''
+          "
+          controlName="request"
+          label="order_number_due_type"
+          [callApiFunction]="fetchNumbersByType"
+          [group]="orderForm"
+          [selectValueAsObject]="true">
+        </mat-searchable-select>
+      </div>
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="oldSponsor"
+          label="old_sponsor"
+          type="text"
+          [readonly]="true"
+          [group]="orderForm"></mat-custom-field>
+        <!-- <mat-custom-field
+          controlName="newSponsor"
+          label="new_sponsor"
+          type="select"
+          [callApiFunction]="getCustomers"
+          [group]="orderForm"
+          [selectValueAsObject]="true"></mat-custom-field> -->
+
+        <mat-searchable-select
+          controlName="newSponsor"
+          label="new_sponsor"
+          [callApiFunction]="getCustomers"
+          [group]="orderForm"
+          [selectValueAsObject]="true">
+        </mat-searchable-select>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="financial-data"></mat-icon>
+        <span>{{ 'financial_data' | translate }}</span>
+      </div>
+
+      <div class="row-flex-division">
+        <mat-custom-field
+          controlName="sponsorshipTransferAmount"
+          label="surety_transfer_amount"
+          type="number"
+          [textSuffix]="'label.suffixes.rial_sa' | translate"
+          [group]="orderForm">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="taxType"
+          label="tax_type"
+          type="select"
+          [group]="orderForm"
+          [callApiFunction]="fetchTaxTypes"
+          [selectValueAsObject]="true">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="sponsorshipTransferTaxAmount"
+          label="tax_amount"
+          type="number"
+          [readonly]="true"
+          [textSuffix]="'label.suffixes.rial_sa' | translate"
+          [group]="orderForm">
+        </mat-custom-field>
+
+        <mat-custom-field
+          controlName="taxNet"
+          label="net_tax"
+          type="number"
+          [textSuffix]="'label.suffixes.rial_sa' | translate"
+          [readonly]="true"
+          [group]="orderForm">
+        </mat-custom-field>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="title mb-1">
+        <mat-icon class="icon-title" svgIcon="note"></mat-icon>
+        <span>{{ 'comments' | translate }}</span>
+      </div>
+
+      <mat-custom-field controlName="note" label="" type="textarea" [group]="orderForm"> </mat-custom-field>
+    </div>
+  </form>
+  <div class="stepper-actions">
+    <button mat-stroked-button color="primary" class="mt-3" (click)="cancel()">
+      {{ 'buttons.cancel' | translate }}
+    </button>
+    <ng-container *ngIf="isLoading; then strokedButton; else raisedButton"></ng-container>
+    <ng-template #raisedButton>
+      <button mat-raised-button color="primary" class="mt-3" (click)="submit()" [disabled]="!orderForm.valid">
+        {{ 'buttons.save' | translate }}
+      </button>
+    </ng-template>
+
+    <ng-template #strokedButton>
+      <button mat-stroked-button color="primary" class="f-size-14 f-weight-500" disabled>
+        <mat-spinner [diameter]="30"></mat-spinner>
+      </button>
+    </ng-template>
+  </div>
+</div>

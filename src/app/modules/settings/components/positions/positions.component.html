@@ -1,0 +1,44 @@
+<!-- Statistics -->
+<div class="d-flex-header">
+  <!-- Search -->
+  <mat-form-field [dir]="getDirection()" class="input-table w-90">
+    <input matInput (input)="getDeepWithFilter($event)" placeholder="{{ 'search_for_position' | translate }}" />
+    <mat-icon
+      matSuffix
+      class="icon"
+      [svgIcon]="getDirection() === 'rtl' ? 'search-right' : 'search-left'"></mat-icon>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    class="ml-2 w-10"
+    (click)="openPositionForm()"
+    authorization
+    [roleValue]="role"
+    [authName]="authCanAdd">
+    {{ 'buttons.add' | translate }}
+  </button>
+</div>
+
+<!-- Ag Grid -->
+<ag-grid-angular
+  id="myGrid"
+  authorization
+  roleCss="block"
+  [roleValue]="role"
+  [enableRtl]="true"
+  [rowData]="listData"
+  [authName]="authCanView"
+  [columnDefs]="columnDefs"
+  [gridOptions]="gridOptions"
+  class="ag-theme-alpine grid"
+  (gridReady)="onGridReady($event)">
+</ag-grid-angular>
+
+<!-- Ag Pagination -->
+<ag-pagination
+(pageChanged)="onSetPage($event)"
+  [pageSize]="paginationOptions.pageSize"
+  [lengthData]="paginationOptions.totalCount"
+></ag-pagination>

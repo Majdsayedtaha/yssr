@@ -1,0 +1,84 @@
+<mat-sidenav-container class="side-nav-container" [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" position="end" class="side-nav" [dir]="getDirection()">
+    <!-- Header -->
+    <div class="title mb-1 d-flex justify-between">
+      <!-- BreadCrumb -->
+      <nav-breadcrumb child="label.contract.action" *ngIf="!dataProcedureContract?.contractInfo?.id"></nav-breadcrumb>
+      <nav-breadcrumb child="label.contract.update" *ngIf="dataProcedureContract?.contractInfo?.id"></nav-breadcrumb>
+
+      <!-- Close -->
+      <mat-icon svgIcon="close" class="c-pointer" (click)="close()"></mat-icon>
+    </div>
+
+    <!-- Body -->
+    <div class="section">
+      <header class="d-flex header">
+        <mat-icon class="icon" svgIcon="rent"></mat-icon>
+        <span>{{ 'procedure_data' | translate }}</span>
+      </header>
+      <div class="row mb-2 mt-2 d-flex">
+        <div class="col d-flex flex-column flex-1">
+          <mat-label class="label f-size-12">{{ 'customer_name' | translate }}</mat-label>
+          <span class="mt-1">
+            {{
+              dataProcedureContract?.customerName
+                ? dataProcedureContract?.customerName
+                : dataProcedureContract?.contractInfo?.customerName
+            }}
+          </span>
+        </div>
+      </div>
+      <div class="row mb-2 mt-2 d-flex">
+        <div class="col d-flex flex-column flex-1">
+          <mat-label class="label f-size-12">{{ 'contract_or_visa_number' | translate }}</mat-label>
+          <span class="mt-1">
+            {{ dataProcedureContract?.code ? dataProcedureContract?.code : dataProcedureContract?.contractInfo?.code }}
+          </span>
+        </div>
+      </div>
+      <form novalidate [formGroup]="addProcedureForm">
+        <mat-custom-field
+          controlName="procedureId"
+          label="procedure"
+          type="select"
+          [selectValueAsObject]="true"
+          [callApiFunction]="fetchCustomerProceduresSelect"
+          [group]="addProcedureForm">
+        </mat-custom-field>
+        <mat-custom-field
+          controlName="statusId"
+          [selectValueAsObject]="true"
+          label="procedure_status"
+          type="select"
+          [callApiFunction]="fetchStatus"
+          [group]="addProcedureForm">
+        </mat-custom-field>
+        <mat-custom-field controlName="date" label="procedure_date" type="date" [group]="addProcedureForm">
+        </mat-custom-field>
+
+        <mat-custom-field controlName="note" label="comments" type="textarea" [group]="addProcedureForm">
+        </mat-custom-field>
+        <div class="d-flex add-procedure">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            (click)="submitProcedure()"
+            [disabled]="!addProcedureForm.valid"
+            *ngIf="!isLoading">
+            <span>
+              {{
+                dataProcedureContract?.contractInfo?.id
+                  ? ('update_procedure' | translate)
+                  : ('add_procedure' | translate)
+              }}
+            </span>
+          </button>
+          <button mat-stroked-button color="primary" disabled *ngIf="isLoading">
+            <mat-spinner [diameter]="30" color="accent"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>
